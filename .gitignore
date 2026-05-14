@@ -221,3 +221,4 @@ $RECYCLE.BIN/
 # 캐시 파일 제외
 __pycache__/util/VSCodeUserSetup-x64-1.114.0.exe
 util/VSCodeUserSetup-x64-1.114.0.exe
+google인증키.json
