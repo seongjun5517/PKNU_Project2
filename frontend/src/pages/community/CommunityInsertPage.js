@@ -7,9 +7,7 @@ import {setCommunityInsert} from "../../springApi/communitySpringBootApi";
 function CommunityInsertPage(){
 
     const navigate = useNavigate();
-
-    const [community,setCommunity]
-        = useState({
+    const [community,setCommunity] = useState({
 
         mem_id : "user01",
         com_title : "",
@@ -43,7 +41,6 @@ function CommunityInsertPage(){
     return(
 
         <div>
-
             <h2>게시글 등록 페이지</h2>
             <hr/>
 
@@ -51,15 +48,8 @@ function CommunityInsertPage(){
 
                 <div>
                     <p>
-                        게시글 등록 
-                    </p>
-
-                    <input
-                        type="number"
-                        value={community.com_id || ""}
-                        disabled
-                    />
-
+                        게시글 등록하기
+                    </p>                 
                 </div>
 
                 <div>

@@ -1,19 +1,15 @@
 import React, {useEffect,useState}from "react";
 
 import {Link} from "react-router-dom";
-
 import {getCommunityPaging} from "../../springApi/communitySpringBootApi";
 
 function CommunityListPaging(){
 
-    const [list, setList]
-        = useState([]);
+    const [list, setList] = useState([]);
 
-    const [page, setPage]
-        = useState(1);
+    const [page, setPage] = useState(1);
 
-    const [totalPages, setTotalPages]
-        = useState(0);
+    const [totalPages, setTotalPages] = useState(0);
 
     const size = 10;
 
@@ -35,7 +31,6 @@ useEffect(() => {
             setTotalPages(
                 res.data.totalPages
             );
-
         }
 
         catch(error){
@@ -53,11 +48,7 @@ useEffect(() => {
     */
     const pageNumbers = [];
 
-    for(
-        let i = 1;
-        i <= totalPages;
-        i++
-    ){
+    for(let i = 1; i <= totalPages;i++){
 
         pageNumbers.push(i);
     }
@@ -72,17 +63,28 @@ useEffect(() => {
 
             <div
               style={{marginBottom : "10px"}}>
+              <Link to="/community/insert">
 
-                <Link to="/community/insert">
-
+              <button type="button">
                     게시글 등록
+              </button>
 
-                </Link>
+              </Link>
 
+            <Link to="/">
+
+                <button type="button" style={{marginLeft : "10px"}}>
+                    Home 바로가기
+                </button>
+
+            </Link>
+                    
+                
             </div>
 
             <table border="1"
-                   width="100%">
+                   width="100%"
+                   style={{textAlign : "center"}}>
 
                 <thead>
 
@@ -156,12 +158,9 @@ useEffect(() => {
             {/* 페이징 버튼 */}
 
             <div
-              style={{
-                marginTop : "20px"
-              }}>
+              style={{marginTop : "20px", textAlign : "center"}}>
 
                 {/* 이전 */}
-
                 <button
 
                     disabled={page === 1}

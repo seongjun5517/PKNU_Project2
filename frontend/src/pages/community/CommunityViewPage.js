@@ -7,12 +7,9 @@ import {getCommunityView,setCommunityLike} from "../../springApi/communitySpring
 function CommunityViewPage(){
 
     const navigate = useNavigate();
+    const { com_id } = useParams();
 
-    const { com_id } =
-        useParams();
-
-    const [data, setData]
-        = useState({});
+    const [data, setData] = useState({});
 
     const loadData = useCallback(
     async() => {const res =await getCommunityView(com_id);

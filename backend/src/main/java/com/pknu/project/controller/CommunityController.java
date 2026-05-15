@@ -74,7 +74,7 @@ public class CommunityController {
     /**
      * 등록
      * http://localhost:8080/community/insert
-     */
+    */
     @PostMapping("/insert")
     public ResponseEntity<?>
     setCommunityInsert(@RequestBody Community community){
@@ -139,8 +139,7 @@ public class CommunityController {
             @RequestParam(name = "size", defaultValue = "10")
             int size){
 
-        Page<Community> community_list =
-                this.communityService.getCommunityListPaging(page - 1, size);
+        Page<Community> community_list = this.communityService.getCommunityListPaging(page - 1, size);
 
         return ResponseEntity.ok(community_list);
     }

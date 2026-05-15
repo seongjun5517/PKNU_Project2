@@ -59,11 +59,6 @@ public class CommunityService {
     public Community setCommunityInsert( 
             Community community){
 
-        // if(this.communityRepository.existsById(community.getCom_id())){
-
-        //     return null;
-        // }
-
         community.setCom_view(10);
         community.setCom_like(20);
 
@@ -100,7 +95,7 @@ public class CommunityService {
 
     /**
      * 삭제
-     */
+    */
     public String setCommunityDelete(
             Integer com_id){
 
@@ -118,7 +113,7 @@ public class CommunityService {
 
     /**
      * 좋아요 증가
-     */
+    */
     public Community setCommunityLike(
             Integer com_id){
 
