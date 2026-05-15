@@ -16,7 +16,7 @@ import lombok.ToString;
 @Entity
 
 // 실제 사용할 테이블명 정의
-@Table(name = "health_diagnose_test")
+@Table(name = "data_test")
 
 // 해당 클래스를 디폴트(default) 생성자로 자동 생성시키도록 정의
 @NoArgsConstructor
@@ -34,28 +34,25 @@ import lombok.ToString;
 
 // 모든 getter 메소드의 결과의 반환(return) 타입을 문자열로 정의
 @ToString
-public class Health_Diagnose {
+public class Data {
 
     // 실제 테이블에서 고유한 값을 가지는 PK를 정의
     @Id
-    @Column(name = "diagnose_id")
-    private Integer diagnose_id;
+    @Column(name = "data_id")
+    private String data_id;
     private String mem_id;
     private LocalDate check_date;
+    private Integer sex;
     private Integer edu;
     private Integer incm;
     private Integer di1_dg;
     private Integer di2_dg;
     private Integer de1_dg;
     private Integer di3_dg;
-    private float he_sbp;
-    private float he_dbp;
     private Integer he_hp;
     private float he_glu;
     private float he_hba1c;
     private float he_chol;
-    private float he_hdl;
-    private float he_ldl;
     private float he_tg;
     private float he_wc;
     private float he_bmi;
@@ -64,5 +61,6 @@ public class Health_Diagnose {
     private Integer bd2_1;
     private Integer pa_aerobic;
     private Integer be8_1;
+    private float predict;
 
 }

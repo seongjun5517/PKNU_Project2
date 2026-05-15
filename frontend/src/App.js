@@ -18,6 +18,7 @@ import {BrowserRouter} from "react-router-dom";
 //  - 공통으로 사용할 컴포넌트
 import HomeRouters from "./routers/HomeRouters";
 import MemberRouters from './routers/MemberRouters';
+import DataRouters from './routers/DataRouters';
 
 
 
@@ -41,6 +42,7 @@ function App() {
       {/*   - 회원정보 관리(전체조회, 상세조회, 입력, 수정, 삭제)에 대한 링크 처리 */}
       <MemberRouters />
 
+      <DataRouters />
 
     </BrowserRouter>
   );

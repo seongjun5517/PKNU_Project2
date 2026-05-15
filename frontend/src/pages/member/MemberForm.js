@@ -17,7 +17,7 @@ const MemberForm = ({member, handleChange, handleCancel, handleSubmit, mode}) =>
         if(mode === "view") return true;
 
         // 수정(edit)인 경우에는 회원 이름을 제외한 나머지는 모두 읽기 전용으로 처리
-        if(mode === "edit" && field !== "mem_name") return true;
+        if(mode === "edit" && field === "mem_id") return true;
 
         // 이외 모든 처리 (저장(add))는 쓰기 전용으로
         return false;
@@ -30,7 +30,7 @@ const MemberForm = ({member, handleChange, handleCancel, handleSubmit, mode}) =>
         if(mode === "view") return "darkgrey";
 
         // 수정(edit)인 경우에는 회원 이름을 제외한 나머지는 모두 읽기 전용으로 처리
-        if(mode === "edit" && field !== "mem_name") return "darkgrey";
+        if(mode === "edit" && field === "mem_id") return "darkgrey";
 
         // 이외 모든 처리 (저장(add))는 쓰기 전용으로
         return "white";
@@ -64,6 +64,25 @@ const MemberForm = ({member, handleChange, handleCancel, handleSubmit, mode}) =>
                         readOnly={isReadOnly("mem_name")}
                         style={{backgroundColor : setBackGroundColor("mem_name")}} />
             </div>
+
+            {/* 회원 주소 입력 폼 정의 */}
+            <div>
+                <label>회원 주소 : </label>
+                <input type="text" name="mem_add" value={member.mem_add || ""}
+                        onChange={handleChange}
+                        readOnly={isReadOnly("mem_add")}
+                        style={{backgroundColor : setBackGroundColor("mem_add")}} />
+            </div>
+
+            {/* 회원 이메일 입력 폼 정의 */}
+            <div>
+                <label>회원 이메일 : </label>
+                <input type="email" name="mem_mail" value={member.mem_mail || ""}
+                        onChange={handleChange}
+                        readOnly={isReadOnly("mem_mail")}
+                        style={{backgroundColor : setBackGroundColor("mem_mail")}} />
+            </div>
+
 
             <hr/>
             {/* 저장 및 취소 버튼 */}

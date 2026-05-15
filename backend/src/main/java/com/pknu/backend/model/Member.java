@@ -46,8 +46,6 @@ public class Member {
 
     @Column(nullable = false)
     private String mem_name;
-    private Integer mem_edu;
-    private Integer mem_ho_incm;
     private String mem_add;
     private String mem_mail;
     private LocalDate mem_created;
