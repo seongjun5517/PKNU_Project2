@@ -1,4 +1,4 @@
-package com.pknu.backend.model;
+package com.pknu.project.model;
 
 import java.time.LocalDate;
 

@@ -1,4 +1,4 @@
-package com.pknu.backend.controller;
+package com.pknu.project.controller;
 
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.GetMapping;

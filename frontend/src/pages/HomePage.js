@@ -10,7 +10,7 @@ import {Link} from "react-router-dom";
 function HomePage(){
     return(
         /* 실제 브라우저에 보여질 태그 정의 */
-        <div>
+        <div> 
             <h3>React Home 페이지 입니다.</h3>
             <hr/>
 
@@ -46,6 +46,11 @@ function HomePage(){
             <p>
                 {/* <a href="/ml/fish_pred_form">[Flask - 생선종류 예측 바로가기]</a> */}
                 <Link to="/ml/fish_pred_form">[Flask - 생선종류 예측 바로가기]</Link>
+            </p>
+
+            {/* -------------- Community 처리 ------------------- */}
+            <p>
+                <Link to="/community/list_paging">[CommunityListPaging 바로가기]</Link>
             </p>
 
 

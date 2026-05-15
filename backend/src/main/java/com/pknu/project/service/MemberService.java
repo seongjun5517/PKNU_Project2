@@ -1,4 +1,4 @@
-package com.pknu.backend.service;
+package com.pknu.project.service;
 
 import java.util.List;
 import java.util.Optional;
@@ -8,8 +8,8 @@ import org.springframework.data.domain.PageRequest;
 import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Service;
 
-import com.pknu.backend.model.Member;
-import com.pknu.backend.repository.MemberRepository;
+import com.pknu.project.model.Member;
+import com.pknu.project.repository.MemberRepository;
 
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;

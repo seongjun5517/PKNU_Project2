@@ -1,4 +1,4 @@
-package com.pknu.backend.controller;
+package com.pknu.project.controller;
 
 import java.util.List;
 
@@ -15,8 +15,8 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
 
-import com.pknu.backend.model.Member;
-import com.pknu.backend.service.MemberService;
+import com.pknu.project.model.Member;
+import com.pknu.project.service.MemberService;
 
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
