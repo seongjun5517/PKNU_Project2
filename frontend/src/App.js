@@ -19,6 +19,7 @@ import {BrowserRouter} from "react-router-dom";
 import HomeRouters from "./routers/HomeRouters";
 import MemberRouters from './routers/MemberRouters';
 import CommunityRouters from './routers/CommunityRouters';
+import DataRouters from './routers/DataRouters';
 
 
 
@@ -45,6 +46,7 @@ function App() {
       {/* 게시판 관리 */}
       <CommunityRouters />
 
+      <DataRouters />
 
     </BrowserRouter>
   );

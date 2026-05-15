@@ -10,7 +10,7 @@ import {Link} from "react-router-dom";
 function HomePage(){
     return(
         /* 실제 브라우저에 보여질 태그 정의 */
-        <div> 
+        <div>
             <h3>React Home 페이지 입니다.</h3>
             <hr/>
 
@@ -26,12 +26,6 @@ function HomePage(){
                 <Link to="/react/springboot_test">[TestSpringBootPage 바로가기]</Link>
             </p>
 
-            {/* 회원 전체 리스트 목록 조회 링크 추가
-                - URL 패턴은 SpringBoot에서 회원전체조회 URL패턴 그대로 사용 */}
-            <p>
-                {/* <a href="/member/list">[MemberListPage 바로가기]</a> */}
-                <Link to="/member/list">[MemberListPage 바로가기]</Link>
-            </p>
 
             {/* -------------- Paging 처리 ----------- */}
             {/* 회원 전체 리스트 목록 조회 링크 추가
@@ -39,6 +33,15 @@ function HomePage(){
             <p>
                 {/* <a href="/member/list_paging">[MemberListPaging 바로가기]</a> */}
                 <Link to="/member/list_paging">[MemberListPaging 바로가기]</Link>
+            </p>
+
+
+            {/* -------------- Paging 처리 ----------- */}
+            {/* 회원 전체 리스트 목록 조회 링크 추가
+                - URL 패턴은 SpringBoot에서 회원전체조회 URL패턴 그대로 사용 */}
+            <p>
+                {/* <a href="/member/list_paging">[MemberListPaging 바로가기]</a> */}
+                <Link to="/data/list_paging">[DataListPaging 바로가기]</Link>
             </p>
 
             {/* ------------- Flask 백엔드 처리하기 -------------- */}
