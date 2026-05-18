@@ -59,8 +59,8 @@ public class CommunityService {
     public Community setCommunityInsert(
             Community community) {
 
-        community.setCom_view(10);
-        community.setCom_like(20);
+        community.setCom_view(0);
+        community.setCom_like(0);
 
         return this.communityRepository.save(community);
     }

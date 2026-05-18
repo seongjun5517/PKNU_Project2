@@ -15,7 +15,7 @@ import {setDataDelete} from "../../springApi/dataSpringBootApi";
 
 // 해당 페이지 몸체 정의
 const DataViewPaging = () => {
-    
+
     // 전달 받은 파라메터를 담을 상태변수 정의
     //  - 이미 메모리에 저정되어 있는 파라메터 변수를 사용하기에 중괄호로 사용
     const {data_id, page} = useParams();
@@ -27,7 +27,7 @@ const DataViewPaging = () => {
     //  - 회원 정보 하나의 행값은 -> 딕셔너리 타입으로 정의되어 있음
     const [data, setData] = useState({});
 
-    
+
     // 최초 페이지 로딩(실행)시 중간에 백엔드 요청 처리 함수 호출
     useEffect(() => {
         //SpringBoot 상세정보 요청 및 응답 받아오기 위한 함수 정의

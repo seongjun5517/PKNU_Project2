@@ -1,15 +1,13 @@
 // React 라이브러리 가져오기
 // import React from "react";
 
-
 /* ################################################################ */
 /*  OAuth2.0 */
 /* ################################################################ */
-// useContext : 전역적(서버영역 전체 페이지)으로 관리되는 상태 관리 훅(Hoc) 
+// useContext : 전역적(서버영역 전체 페이지)으로 관리되는 상태 관리 훅(Hoc)
 //  - 이 훅에 변수 AuthContext.jsx에서 정의한 로그인 상태 정보를 저장해서 사용하게됨
 import React from 'react';
 /* ################################################################ */
-
 
 // React Router 라이브러리 가져오기
 import {BrowserRouter} from "react-router-dom";
@@ -20,9 +18,7 @@ import HomeRouters from "./routers/HomeRouters";
 import MemberRouters from './routers/MemberRouters';
 import CommunityRouters from './routers/CommunityRouters';
 import DataRouters from './routers/DataRouters';
-
-
-
+import MyPageRouters from './routers/MypageRouters';
 
 function App() {
   return (
@@ -35,7 +31,7 @@ function App() {
 
     /* --------- [2. Router 적용하기] ----------- */
     <BrowserRouter>
-      {/* HomeRouters.js 컴포넌트(페이지) 적용하기 */}
+      {/* HomeRouters.js 컴포넌트(페이지) 적용하기
       {/*  - 공통으로 사용할 메뉴 구성에 대한 링크 처리 */}
       <HomeRouters />
 
@@ -43,10 +39,14 @@ function App() {
       {/*   - 회원정보 관리(전체조회, 상세조회, 입력, 수정, 삭제)에 대한 링크 처리 */}
       <MemberRouters />
 
-      {/* 게시판 관리 */}
-      <CommunityRouters />
-
+      {/* 데이터 관리 */}
       <DataRouters />
+
+      {/* 게시판 관리 */}
+      <CommunityRouters /> 
+
+      {/* 마이페이지 관리*/}
+      <MyPageRouters />
 
     </BrowserRouter>
   );

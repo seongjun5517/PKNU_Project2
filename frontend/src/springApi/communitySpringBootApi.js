@@ -2,7 +2,7 @@ import { springApi } from "../config/axiosInstance";
 
 // 전체 조회
 export const getCommunityList = () =>
-    springApi.get("/community/list");
+    springApi.get("/community/list_paging");
 
 // 상세 조회
 export const getCommunityView =

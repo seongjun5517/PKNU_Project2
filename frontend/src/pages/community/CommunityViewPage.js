@@ -1,86 +1,288 @@
-import React, {useEffect, useState, useCallback} from "react";
+import React, {useEffect,useState} from "react";
+import { getCommentList,setCommentInsert,setCommentDelete,setCommentUpdate} from "../../springApi/commentSpringBootApi";
 
-import {useParams} from "react-router-dom";
-import {useNavigate}from "react-router-dom";
-import {getCommunityView,setCommunityLike} from "../../springApi/communitySpringBootApi";
+function CommentPage(){
 
-function CommunityViewPage(){
+    /**
+     * 게시글 번호
+     * 테스트용
+    */
+    const comId = 1;
 
-    const navigate = useNavigate();
-    const { com_id } = useParams();
+    /**
+     * 댓글 목록
+    */
+    const [commentList, setCommentList] = useState([]);
 
-    const [data, setData] = useState({});
+    /**
+     * 댓글 입력
+    */
+    const [commentContent, setCommentContent] = useState("");
 
-    const loadData = useCallback(
-    async() => {const res =await getCommunityView(com_id);
+    /**
+     * 수정중 댓글
+    */
+    const [editComment, setEditComment] = useState(null);
 
-        setData(res.data);
+    /**
+     * 로그인 사용자
+    */
+    const loginMember =localStorage.getItem("loginMember");
 
-    },
+    /**
+     * 댓글 목록 조회
+    */
+    const getList = async() => {
 
-    [com_id]
-);
+        try{
+            const response =await getCommentList(comId);
+            setCommentList(response.data);
 
-useEffect(() => {
+        }
+        
+        catch(error){
 
-    loadData();
+            console.log(error);
+        }
+    };
 
-}, [loadData]);
+    /**
+     * 최초 실행
+     */
+    useEffect(() => {
 
-const likePost = async() => {
+        getList();
 
-    await setCommunityLike(com_id);
-    loadData();
-};
+    }, []);
+
+    /**
+     * 댓글 등록
+    */
+    const insertComment = async() => {
+
+        if(!loginMember){
+
+            alert(
+                "로그인 후 이용하세요."
+            );
+
+            return;
+        }
+
+        if(commentContent.trim() === ""){
+
+            alert(
+                "댓글 내용을 입력하세요."
+            );
+
+            return;
+        }
+
+        try{
+
+            const comment = {
+
+                comId : comId,
+                memId : loginMember,
+                commentContent : commentContent
+            };
+
+            await setCommentInsert(
+                comment
+            );
+
+            alert(
+                "댓글 등록 완료"
+            );
+
+            setCommentContent("");
+            getList();
+
+        }
+        
+        catch(error){
+
+            console.log(error);
+        }
+    };
+
+    /**
+     * 댓글 수정
+    */
+    const updateComment = async() => {
+
+        try{
+            const comment = {
+
+                comId : editComment.comId,
+                memId :editComment.memId,
+                commentCreated : editComment.commentCreated,
+                commentContent : commentContent
+            };
+
+            await setCommentUpdate(
+                comment
+            );
+
+            alert(
+                "수정 완료되었습니다!!!"
+            );
+
+            setEditComment(null);
+            setCommentContent("");
+            getList();
+
+        }
+        
+        catch(error){
+            console.log(error);
+        }
+    };
+
+    /**
+     * 댓글 삭제
+    */
+    const deleteComment =
+        async(comment) => {
+
+        try{
+            await setCommentDelete(
+                comment.comId,
+                comment.memId,
+                comment.commentCreated
+            );
+
+            alert(
+                "삭제 완료되었습니다!!!"
+            );
+
+            getList();
+
+        }catch(error){
+
+            console.log(error);
+        }
+    };
 
     return(
 
-        <div>
+        <div
+            style={{width : "70%",
+                    margin : "50px auto"
+            }}>
 
             <h2>
-                게시글 상세
+                댓글
             </h2>
 
-            <p>
-                번호 :
-                {data.com_id}
-            </p>
+            <hr/>
 
-            <p>
-                제목 :
-                {data.com_title}
-            </p>
+            {/* 댓글 입력 */}
+            <div style={{marginBottom : "30px"}}>
+                <textarea
+                    rows="4"
+                    style={{
+                        width : "100%",
+                        padding : "15px"
+                    }}
+                    value={commentContent}
+                    onChange={(e) => setCommentContent(
+                            e.target.value
+                        )
+                    }
+                />
 
-            <p>
-                작성자 :
-                {data.mem_id}
-            </p>
+                <button onClick={() => {
 
-            <p>
-                내용 :
-                {data.com_content}
-            </p>
+                        if(editComment){
+                            updateComment();
+                        }
+                        
+                        else{
+                            insertComment();
+                        }
+                    }}
 
-            <p>
-                조회수 :
-                {data.com_view}
-            </p>
+                    style={{
+                        marginTop : "10px",
+                        padding : "10px 20px"
+                    }}>
 
-            <p>
-                좋아요 :
-                {data.com_like}
-            </p>
+                    {editComment ? "댓글 수정" : "댓글 등록"}
+                </button>
 
-            <button onClick={likePost}>
-                좋아요
-            </button>
+            </div>
 
-            <button onClick={() => navigate("/community/list_paging")}>
-                이전
-            </button>
+            {/* 댓글 목록 */}
+            {commentList.map(
+                    (comment, idx) => (
+                    <div key={idx}
+                        style={{
+                            border :"1px solid #cccccc",
+                            padding : "15px",
+                            marginBottom : "15px",
+                            borderRadius : "10px"
+                        }}>
+
+                        <h4>
+                            작성자 :
+                            {" "}
+                            {comment.memId}
+
+                        </h4>
+
+                        <p>
+                            {comment.commentContent}
+                        </p>
+
+                        <small>
+                            {comment.commentCreated}
+                        </small>
+
+                        <br/>
+
+                        {loginMember === comment.memId && (
+                                <>
+                                    <button onClick={() => {
+
+                                            setEditComment(
+                                                comment
+                                            );
+
+                                            setCommentContent(
+                                                comment.commentContent
+                                            );
+                                        }}
+
+                                        style={{
+
+                                            marginTop : "10px",
+                                            marginRight : "10px"
+                                        }}>
+
+                                        수정
+
+                                    </button>
+
+                                    <button onClick={() =>  deleteComment(
+                                                comment
+                                            )
+                                        }
+
+                                        style={{marginTop : "10px"}}>
+                                        삭제
+                                    </button>
+
+                                </>
+                            )
+                        }
+
+                    </div>
+                ))
+            }
 
         </div>
     );
 }
 
-export default CommunityViewPage;
+export default CommentPage;

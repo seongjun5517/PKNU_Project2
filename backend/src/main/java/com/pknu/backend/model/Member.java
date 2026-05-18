@@ -1,7 +1,5 @@
 package com.pknu.backend.model;
 
-import java.time.LocalDate;
-
 import jakarta.persistence.Column;
 import jakarta.persistence.Entity;
 import jakarta.persistence.Id;
@@ -40,14 +38,7 @@ public class Member {
     @Id
     @Column(name = "mem_id")
     private String mem_id;
-
-    @Column(nullable = false)
-    private String mem_pass;
-
-    @Column(nullable = false)
+    private String mem_phone;
     private String mem_name;
-    private String mem_add;
-    private String mem_mail;
-    private LocalDate mem_created;
-
+    
 }

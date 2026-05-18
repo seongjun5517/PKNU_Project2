@@ -50,7 +50,7 @@ public class Index {
         // 테이블 태그 정의
         //  - 여러 행단위 문자열을 작성하기에 불편함이 있음
         //  - StringBuffer : 행단위로 버퍼 메모리(캐시 메모리)에 저장해 놓고 사용하는 문자열 객체
-        StringBuffer sb = new StringBuffer();
+        StringBuilder sb = new StringBuilder();
         sb.append("<style> a{ text-decoration : none; </style>");
         sb.append("<h1>스프링부트 메인 페이지 입니다.</h1>");
         sb.append("<hr/>");

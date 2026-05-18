@@ -42,7 +42,7 @@ public class DataService {
      * @param data_id
      * @return
      */
-    public Data getDataView(String data_id) {
+    public Data getDataView(Integer data_id) {
 
         // Repository에 한 건 처리 요청 : 
         // -findById(mem_id) : 한 건 요청 시(조건 값 이용)
@@ -113,7 +113,7 @@ public class DataService {
      * @param data_id
      * @return
      */
-    public String setDataDelete(String data_id) {
+    public String setDataDelete(Integer data_id) {
 
         //  step 1.
         if (this.dataRepository.existsById(data_id)) {

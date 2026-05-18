@@ -22,15 +22,13 @@ import com.pknu.backend.service.CommunityService;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 
+@CrossOrigin("*")
 @RestController
-
 @RequestMapping("/community")
-
 @RequiredArgsConstructor
-
 @Slf4j
 
-@CrossOrigin("*")
+
 public class CommunityController {
 
     private final CommunityService communityService;

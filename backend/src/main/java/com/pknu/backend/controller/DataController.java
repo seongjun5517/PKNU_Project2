@@ -5,6 +5,7 @@ import java.util.List;
 import org.springframework.data.domain.Page;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
+import org.springframework.web.bind.annotation.CrossOrigin;
 import org.springframework.web.bind.annotation.DeleteMapping;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
@@ -22,6 +23,7 @@ import lombok.extern.slf4j.Slf4j;
 
 // 사용자로부터 요청을 받을 때 사용(URL 패턴 처리 등)
 // 이 클래스가 Controller 클래스라는 것을 정의
+@CrossOrigin("*")
 @RestController
 // http://localhost:8080/member/xx 형태 중에
 // -> 8080 뒤에 /member가 있으면 무조건 MemberController 클래스가 캐치하여 사용하겠다는 의미의 어노테이션
@@ -72,7 +74,7 @@ public class DataController {
 
     @GetMapping(path = "/view/{data_id}")
     //                                        요청하는 값(파라미터) mem_id라는 PK 값으로 동일하게
-    public ResponseEntity<Data> getMemberView(@PathVariable("data_id") String data_id) {
+    public ResponseEntity<Data> getMemberView(@PathVariable("data_id") Integer data_id) {
 
         log.info("회원 상세보기 메소드 호출됨 : mem_id : {}", data_id);
 
@@ -150,7 +152,7 @@ public class DataController {
      */
     // @GetMapping(path="/delete")
     @DeleteMapping(path = "/delete/{data_id}")
-    public ResponseEntity<Void> setmemberDelete(@PathVariable("data_id") String data_id) {
+    public ResponseEntity<Void> setmemberDelete(@PathVariable("data_id") Integer data_id) {
 
         log.info("회원 삭제하기 : data_id={}", data_id);
 
