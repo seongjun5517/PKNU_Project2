@@ -1,5 +1,5 @@
 // 기본 라이브러리 불러들이기
-import React, {useState} from "react";
+import React, {useContext, useState} from "react";
 
 // 링크 페이지 정보 라이브러리 불러들이기
 import {useNavigate} from "react-router-dom";
@@ -7,11 +7,13 @@ import {useNavigate} from "react-router-dom";
 // SpringBoot 백엔드로 저장 요청을 위한 함수가 정의된 Api 불러들이기
 import {setMemberInsert} from "../../springApi/memberSpringBootApi";
 import MemberForm from "./MemberForm";
+import { AuthContext } from "../user/AuthContext";
 
 // 입력 처리를 위한 몸체 정의하기 (함수로 정의)
 const MemberInsertPage = () => {
     // 페이지 처리를 위한 네비게이트 정의
     const navigate = useNavigate();
+    const { user } = useContext(AuthContext);
 
     // 사용자로부터 입력받는 회원정보를 담을 딕셔너리 상태변수 정의하기
     //  - SpringBoot 백엔드에 저장 요청시 넘겨줄 데이터로 사용
@@ -24,12 +26,9 @@ const MemberInsertPage = () => {
      */
     const [member, setMember] = useState(
         {
-            "mem_id" : "",
-            "mem_pass" : "",
-            "mem_name" : "",
-            "mem_add" : "",
-            "mem_mail" : "",
-            "mem_created": new Date().toISOString().split('T')[0]
+            "mem_id" : user.id || user.email,
+            "mem_name" : user.name,
+            "mem_phone" : ""
 
         }
     );
@@ -56,10 +55,10 @@ const MemberInsertPage = () => {
             .then((res) => {                
                 alert(res.status);
 
-                alert("정상적으로 입력되었습니다!!");
+                alert("회원 가입되었습니다");
 
                 // 입력 후 전체목록 페이지로 이동
-                navigate("/member/list");
+                navigate("/");
             })
             // 오류 처리
             .catch((err) => {

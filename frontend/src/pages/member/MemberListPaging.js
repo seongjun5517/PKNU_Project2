@@ -45,7 +45,7 @@ const MemberListPaging = () => {
 
     // 한 페이지에 보여질 행의 갯수
     //  - 향후 한페이지에 보여지는 행의 갯수를 UI에서 선택하게 할수도 있음
-    const size = 3;
+    const size = 10;
     /* ------------------------------------------------- */
 
 
@@ -115,10 +115,6 @@ const MemberListPaging = () => {
                 {/* Home 바로가기 버튼 생성 */}
                 <button onClick={() => navigate("/")}>Home 바로가기</button>  
                 
-                {/* 신규 회원 추가 버튼 생성 (React Link 컴포넌트 사용) */}
-                <Link to="/member/insert">
-                    <button>신규 회원 추가</button>
-                </Link>
             </div>
             <div>
                 {/* 회원 전체 목록 데이터 출력 정의 */}
@@ -127,7 +123,7 @@ const MemberListPaging = () => {
                     <thead>
                         <tr>
                             <th>회원 아이디</th>
-                            <th>회원 패스워드</th>
+                            <th>회원 전화번호</th>
                             <th>회원 이름</th>
                         </tr>
                     </thead>
@@ -148,7 +144,7 @@ const MemberListPaging = () => {
                                         {member.mem_id}
                                     </Link>
                                 </td>
-                                <td>{member.mem_pass}</td>
+                                <td>{member.mem_phone}</td>
                                 <td>{member.mem_name}</td>
                             </tr>
                         ))}

@@ -17,6 +17,8 @@ const MemberForm = ({member, handleChange, handleCancel, handleSubmit, mode}) =>
         if(mode === "view") return true;
 
         // 수정(edit)인 경우에는 회원 이름을 제외한 나머지는 모두 읽기 전용으로 처리
+        if(field === "mem_name" || field === "mem_id") return true;
+
         if(mode === "edit" && field === "mem_id") return true;
 
         // 이외 모든 처리 (저장(add))는 쓰기 전용으로
@@ -29,6 +31,8 @@ const MemberForm = ({member, handleChange, handleCancel, handleSubmit, mode}) =>
         // 상세보기(view)는 모두 읽기 전용으로 처리
         if(mode === "view") return "darkgrey";
 
+        if(field === "mem_name" || field === "mem_id") return "darkgrey";
+
         // 수정(edit)인 경우에는 회원 이름을 제외한 나머지는 모두 읽기 전용으로 처리
         if(mode === "edit" && field === "mem_id") return "darkgrey";
 
@@ -40,20 +44,11 @@ const MemberForm = ({member, handleChange, handleCancel, handleSubmit, mode}) =>
         <form onSubmit={handleSubmit}>
             {/* 회원 아이디 입력 폼 정의 */}
             <div>
-                <label>회원 아이디 : </label>
-                <input type="text" name="mem_id" value={member.mem_id || ""}
+                <label>회원 이메일 : </label>
+                <input type="email" name="mem_id" value={member.mem_id || member.mem_email}
                         onChange={handleChange}
                         readOnly={isReadOnly("mem_id")}
                         style={{backgroundColor : setBackGroundColor("mem_id")}} />
-            </div>
-
-            {/* 회원 패스워드 입력 폼 정의 */}
-            <div>
-                <label>회원 패스워드 : </label>
-                <input type="password" name="mem_pass" value={member.mem_pass || ""}
-                        onChange={handleChange}
-                        readOnly={isReadOnly("mem_pass")}
-                        style={{backgroundColor : setBackGroundColor("mem_pass")}} />
             </div>
 
             {/* 회원 이름 입력 폼 정의 */}
@@ -65,22 +60,13 @@ const MemberForm = ({member, handleChange, handleCancel, handleSubmit, mode}) =>
                         style={{backgroundColor : setBackGroundColor("mem_name")}} />
             </div>
 
-            {/* 회원 주소 입력 폼 정의 */}
-            <div>
-                <label>회원 주소 : </label>
-                <input type="text" name="mem_add" value={member.mem_add || ""}
-                        onChange={handleChange}
-                        readOnly={isReadOnly("mem_add")}
-                        style={{backgroundColor : setBackGroundColor("mem_add")}} />
-            </div>
-
             {/* 회원 이메일 입력 폼 정의 */}
             <div>
-                <label>회원 이메일 : </label>
-                <input type="email" name="mem_mail" value={member.mem_mail || ""}
+                <label>회원 전화번호 : </label>
+                <input type="text" name="mem_phone" value={member.mem_phone || ""}
                         onChange={handleChange}
-                        readOnly={isReadOnly("mem_mail")}
-                        style={{backgroundColor : setBackGroundColor("mem_mail")}} />
+                        readOnly={isReadOnly("mem_phone")}
+                        style={{backgroundColor : setBackGroundColor("mem_phone")}} />
             </div>
 
 

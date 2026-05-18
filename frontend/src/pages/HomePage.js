@@ -2,7 +2,7 @@
 import React from "react";
 
 // -------- OAuth2 인증을 위해 Paging 처리를 위해 추가 ----
-//  - OAuth2 인증 체계레서는 React 라우터를 통한 페이지 이동만 유지됨
+//  - OAuth2 인증 체계에서는 React 라우터를 통한 페이지 이동만 유지됨
 //  - 따라서, 모든 페이지 이동을 위한 링크 처리는 Link 또는 Navigate를 통해서 진행
 import {Link} from "react-router-dom";
 
@@ -42,13 +42,6 @@ function HomePage(){
             <p>
                 {/* <a href="/member/list_paging">[MemberListPaging 바로가기]</a> */}
                 <Link to="/data/list_paging">[DataListPaging 바로가기]</Link>
-            </p>
-
-            {/* ------------- Flask 백엔드 처리하기 -------------- */}
-            {/* 생선 종류 예측 하기 : 예측에 사용할 독립변수 입력 페이지 */}
-            <p>
-                {/* <a href="/ml/fish_pred_form">[Flask - 생선종류 예측 바로가기]</a> */}
-                <Link to="/ml/fish_pred_form">[Flask - 생선종류 예측 바로가기]</Link>
             </p>
 
             {/* -------------- Community 처리 ------------------- */}
