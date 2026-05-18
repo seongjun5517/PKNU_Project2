@@ -20,7 +20,8 @@ import HomeRouters from "./routers/HomeRouters";
 import MemberRouters from './routers/MemberRouters';
 import CommunityRouters from './routers/CommunityRouters';
 import DataRouters from './routers/DataRouters';
-
+import PredictRouters from "./routers/PredictRouters";
+import GraphRouters from "./routers/GraphRouters";
 
 
 
@@ -47,6 +48,14 @@ function App() {
       <CommunityRouters />
 
       <DataRouters />
+
+      {/* 예측 페이지 */}
+      <PredictRouters />
+
+      {/* 그래프 페이지 */}
+      <GraphRouters/>
+
+
 
     </BrowserRouter>
   );

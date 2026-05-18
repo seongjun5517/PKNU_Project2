@@ -56,6 +56,16 @@ function HomePage(){
                 <Link to="/community/list_paging">[CommunityListPaging 바로가기]</Link>
             </p>
 
+            {/* 예측 모델 링크 */}
+            <p>
+                <Link to="/predict/heart_pred_form">[예측하기]</Link>
+            </p>
+
+            {/* 그래프 홈페이지 */}
+            <p>
+                <Link to="/graph/view/user1">[그래프 보기]</Link>
+            </p>
+
 
         </div>
     );
