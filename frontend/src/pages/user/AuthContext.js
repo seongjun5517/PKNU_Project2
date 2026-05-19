@@ -31,7 +31,7 @@
 // };
 
 ////////// 구글 + 카카오톡 동시 사용 //////////////
-import React, { createContext, useState, useEffect } from 'react';
+import React, { createContext, useState } from 'react';
 
 // 서버 전역에서 사용할 수 있는 React Context 객체를 생성
 export const AuthContext = createContext();
