@@ -1,4 +1,4 @@
-import '../styles/pages/ResultPage.css';
+import '../../styles/pages/ResultPage.css';
 import { useLocation } from 'react-router-dom';
 
 function ResultPage() {

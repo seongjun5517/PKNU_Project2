@@ -1,4 +1,4 @@
-import '../styles/pages/PolicyPage.css';
+import '../../styles/pages/PolicyPage.css';
 function PrivacyPolicyPage() {
   return (
     <main className="page policy-page">

@@ -1,4 +1,4 @@
-import '../styles/pages/CommunityPage.css';
+import '../../styles/pages/CommunityPage.css';
 
 import { useState } from 'react';
 import { useNavigate, useParams } from 'react-router-dom';

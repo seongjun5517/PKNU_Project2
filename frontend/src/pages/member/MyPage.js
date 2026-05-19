@@ -1,11 +1,11 @@
-import '../styles/pages/MyPage.css';
+import '../../styles/pages/MyPage.css';
 import { useState } from 'react';
 import { useNavigate } from 'react-router-dom';
-import { useAuth } from '../context/AuthContext';
+import { useAuth } from '../../context/AuthContext';
 
 function MyPage() {
   const navigate = useNavigate();
-  const { user, logout } = useAuth();
+  const { user } = useAuth();
 
   // 마이페이지 왼쪽 버튼 클릭 상태 관리
   const [activeMenu, setActiveMenu] = useState('내 정보');
@@ -15,11 +15,6 @@ function MyPage() {
     { id: 2, date: '2024.05.19', risk: '18.6% (낮음)' },
     { id: 3, date: '2024.05.12', risk: '24.3% (보통)' }
   ];
-
-  const handleLogout = () => {
-    logout();
-    navigate('/');
-  };
 
   // 상세보기 버튼 클릭 시 현재는 결과 페이지로 이동
   // 나중에 DB 연결 후 record.id로 상세 조회 API 연결 가능
@@ -58,8 +53,6 @@ function MyPage() {
           >
             회원 정보
           </button>
-
-          <button onClick={handleLogout}>로그아웃</button>
         </aside>
 
         <section className="mypage-content">

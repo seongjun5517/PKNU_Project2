@@ -1,4 +1,4 @@
-import '../styles/pages/AuthPage.css';
+import '../../styles/pages/AuthPage.css';
 import { useNavigate } from 'react-router-dom';
 
 function GoogleAuthPage() {
