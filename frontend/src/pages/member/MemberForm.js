@@ -27,6 +27,8 @@ const MemberForm = ({member, handleChange, handleCancel, handleSubmit, mode}) =>
         const setBackGroundColor = (field) => {
 
         if(mode === "view") return "darkgrey";
+        // 수정(edit)인 경우에는 회원 이름을 제외한 나머지는 모두 읽기 전용으로 처리
+        if(field === "mem_name" || field === "mem_id") return "darkgrey";    
 
         if(field === "mem_name" || field === "mem_id") return "darkgrey";
 

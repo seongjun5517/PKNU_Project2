@@ -9,12 +9,14 @@ function MyPage() {
     const navigate = useNavigate();
     const user = JSON.parse(localStorage.getItem("user_info"));
 
-    // /**
-    //  * 로그인 사용자
-    //  */
-    // const user_info = localStorage.getItem(
-    //         "user_info"
-    //     );
+    /**
+     * 로그인 사용자
+    */
+    const user_info = JSON.parse(
+        localStorage.getItem("user_info")
+    );
+
+    console.log(user_info);
 
     /**
      * 로그아웃
@@ -65,7 +67,7 @@ function MyPage() {
                         회원 정보 조회 및 수정
                     </p>
 
-                    <Link to={`/member/view_paging/${user.id}/${1}`}>
+                    <Link to={`/member/view_paging/${user_info.id}/${1}`}>
 
                         <button className="mypage-button">
                             이동
@@ -107,7 +109,7 @@ function MyPage() {
                         내가 작성한 게시글
                     </p>
 
-                    <Link to="/community/list_paging">
+                    <Link to={`/community/list_paging?mem_id=${user_info.id}`}>
 
                         <button className="mypage-button">
                             이동
