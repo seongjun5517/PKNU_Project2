@@ -7,6 +7,7 @@ import "../../css/MyPage.css";
 function MyPage() {
 
     const navigate = useNavigate();
+    const user = JSON.parse(localStorage.getItem("user_info"));
 
     // /**
     //  * 로그인 사용자
@@ -64,7 +65,7 @@ function MyPage() {
                         회원 정보 조회 및 수정
                     </p>
 
-                    <Link to="/member/list_paging">
+                    <Link to={`/member/view_paging/${user.id}/${1}`}>
 
                         <button className="mypage-button">
                             이동
