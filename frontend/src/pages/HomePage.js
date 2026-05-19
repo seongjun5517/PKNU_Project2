@@ -309,9 +309,7 @@ function HomePage(){
 
         <div className="footer">
 
-<<<<<<< HEAD
             ⓒ 2026 건강 관리 시스템
-=======
             {/* -------------- Paging 처리 ----------- */}
             {/* 회원 전체 리스트 목록 조회 링크 추가
                 - URL 패턴은 SpringBoot에서 회원전체조회 URL패턴 그대로 사용 */}
@@ -342,7 +340,6 @@ function HomePage(){
                 <Link to="/graph/view/user1">[그래프 보기]</Link>
             </p>
 
->>>>>>> seungjun
 
         </div>
 
