@@ -149,7 +149,6 @@ function CommunityViewPage(){
 
             console.log(error);
 
-    
             console.log(
                 error.response
             );
@@ -205,16 +204,14 @@ function CommunityViewPage(){
     const deleteComment = async(comment) => {
 
         try{
-            await setCommentDelete(
+            const result = await setCommentDelete(
                 comment.comid,
                 comment.memid,
-                comment.commentcreated
+                comment.commentcreated.substring(0, 19)
             );
 
-            alert(
-                "삭제 완료되었습니다!!!"
-            );
-
+            console.log(result.data);
+            alert(result.data);
             getList();
 
         }
@@ -222,6 +219,7 @@ function CommunityViewPage(){
         catch(error){
 
             console.log(error);
+            alert("삭제 실패하였습니다!!!");
         }
     };
 

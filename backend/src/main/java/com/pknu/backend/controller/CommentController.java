@@ -1,6 +1,7 @@
 package com.pknu.backend.controller;
 
 import java.time.LocalDateTime;
+import java.time.format.DateTimeFormatter;
 import java.util.List;
 
 import org.springframework.web.bind.annotation.CrossOrigin;
@@ -56,18 +57,26 @@ public class CommentController {
      * 댓글 삭제
     */
     @DeleteMapping("/delete")
+    public String setCommentDelete(
 
-    public String
-        setCommentDelete(
+        @RequestParam Integer comid,
+        @RequestParam String memid,
+        @RequestParam String commentcreated){
 
-            @RequestParam Integer comid,
-            @RequestParam String memid,
-            @RequestParam LocalDateTime commentcreated){
+    commentcreated = commentcreated.replace("T", " ").substring(0,19);
 
-        CommentId commentId = new CommentId(comid, memid, commentcreated);
+    DateTimeFormatter formatter = DateTimeFormatter.ofPattern("yyyy-MM-dd HH:mm:ss");
 
-        return this.commentService.setCommentDelete(commentId);
-    }
+    LocalDateTime time = LocalDateTime.parse(
+            commentcreated,
+            formatter
+        );
+
+    CommentId commentId = new CommentId(comid, memid, time);
+
+    return this.commentService
+        .setCommentDelete(commentId);
+}
 
     /**
     * 댓글 수정
