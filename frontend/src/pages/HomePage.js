@@ -13,8 +13,8 @@ import "../css/HomePage.css";
 function HomePage(){
 
     const navigate = useNavigate(); 
-    const loginMember = localStorage.getItem(
-            "loginMember"
+    const user_info = localStorage.getItem(
+            "user_info"
         );
 
     /**
@@ -22,7 +22,7 @@ function HomePage(){
     */
     const moveMyPage = () => {
 
-        if(!loginMember){
+        if(!user_info){
 
             alert(
                 "로그인 후 이용 가능합니다."
@@ -90,12 +90,11 @@ function HomePage(){
                     오른쪽 메뉴
                     ========================= */}
                 <div>
-                {!loginMember ? (
+                {!user_info ? (
 
                 <>
                     {/* 로그인 */}
-                    <Link to="/login">
-                        <button className="right-menu-button">
+                    <Link to="/login"> <button className="right-menu-button">
 
                             로그인
 
@@ -105,7 +104,6 @@ function HomePage(){
 
                     {/* 회원가입 */}
                     <Link to="/join">
-
                         <button className="right-menu-button">
 
                             회원가입
@@ -132,11 +130,11 @@ function HomePage(){
                     {/* 로그아웃 */}
                     <button className="right-menu-button"
                             onClick={() => {localStorage.removeItem(
-                                                "loginMember"
+                                                "user_info"
                                             );
 
                             alert("로그아웃 완료되었습니다!!!");
-                            navigate("/");
+                            window.location.reload();
                         }}>
 
                         로그아웃
@@ -185,28 +183,6 @@ function HomePage(){
                         만들어보세요.
 
                     </p>
-
-                    {/* 버튼 */}
-
-                    <div style={{marginTop : "30px"}}>
-
-                        <Link to="/login">
-
-                            <button className="main-button">
-                                로그인
-                            </button>
-
-                        </Link>
-
-                        <Link to="/join">
-
-                            <button className="sub-button">
-                                회원가입
-                            </button>
-
-                        </Link>
-
-                    </div>
 
                 </div>
 
@@ -332,19 +308,6 @@ function HomePage(){
         ========================= */}
 
         <div className="footer">
-
-            {/* -------------- Paging 처리 ----------- */}
-            {/* 회원 전체 리스트 목록 조회 링크 추가
-                - URL 패턴은 SpringBoot에서 회원전체조회 URL패턴 그대로 사용 */}
-            <p>
-                {/* <a href="/member/list_paging">[MemberListPaging 바로가기]</a> */}
-                <Link to="/data/list_paging">[DataListPaging 바로가기]</Link>
-            </p>
-
-            {/* -------------- Community 처리 ------------------- */}
-            <p>
-                <Link to="/community/list_paging">[CommunityListPaging 바로가기]</Link>
-            </p>
 
             ⓒ 2026 건강 관리 시스템
 

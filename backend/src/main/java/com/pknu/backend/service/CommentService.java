@@ -41,14 +41,11 @@ public class CommentService {
      * 댓글 삭제
     */
     public String
-        setCommentDelete(
-                CommentId commentId){
+        setCommentDelete( CommentId commentId){
 
-        if(this.commentRepository
-                .existsById(commentId)){
+        if(this.commentRepository.existsById(commentId)){
 
-            this.commentRepository
-                .deleteById(commentId);
+            this.commentRepository.deleteById(commentId);
 
             return "댓글 삭제 성공하였습니다!!!";
         }

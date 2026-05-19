@@ -102,8 +102,7 @@ function HomePage(){
 
                     </Link>
 
-                    <button
-                        className="right-menu-button"
+                    <button className="right-menu-button"
 
                         onClick={moveMyPage}>
 

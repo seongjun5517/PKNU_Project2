@@ -51,20 +51,26 @@ const GoogleLoginButton = () => {
                 login(login_data); 
                 alert(`로그인 성공: ${login_data.name}님 환영합니다.`);
                 navigate("/"); 
-            } else {
+            } 
+            
+            else {
                 // DB에 정보가 없으면 가입 페이지로 이동
                 alert("등록된 회원 정보가 없어 회원가입 페이지로 이동합니다.");
                 navigate("/member/insert");
             }
-        } catch (error) {
+        } 
+        
+        catch (error) {
             console.error("백엔드 구글 회원 확인 중 오류 발생:", error);
             alert("서버 연결 실패로 인해 로그인 인증을 완료할 수 없습니다.");
         }
 
         }}
+
         onError={() => {
             console.log('Google 로그인 실패');
         }}
+
         />
     );
 };
