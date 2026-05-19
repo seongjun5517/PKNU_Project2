@@ -26,10 +26,9 @@ const MemberInsertPage = () => {
      */
     const [member, setMember] = useState(
         {
-            "mem_id" : user.id || user.email,
-            "mem_name" : user.name,
+            "mem_id" : user.id || user.email || "",
+            "mem_name" : user.name || "",
             "mem_phone" : ""
-
         }
     );
 

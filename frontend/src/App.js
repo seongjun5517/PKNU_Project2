@@ -7,7 +7,7 @@
 /* ################################################################ */
 // useContext : 전역적(서버영역 전체 페이지)으로 관리되는 상태 관리 훅(Hoc) 
 //  - 이 훅에 변수 AuthContext.jsx에서 정의한 로그인 상태 정보를 저장해서 사용하게됨
-import React, { useContext } from 'react';
+import React, { useContext, useState } from 'react';
 /* ################################################################ */
 
 
@@ -53,11 +53,17 @@ const Home = () => {
     // AuthContext : 전역적으로 사용가능하며, 로그인 사용자 정보(이름, 이메일)를 가지고 있음
     //  - 다른 페이지에서 로그인 정보 확인을 위해서는 아래 코드를 이용해서 조건처리 하면됨 
     const { user } = useContext(AuthContext);
+    const [ member ] = useState(
+            {
+                "mem_id" : user?.id || user?.email || "",
+                "mem_name" : user?.name || "",
+                "mem_phone" : "",
+                "mem_provider" : user?.provider || ""
+            }
+        );
 
     return (
         <div style={{ padding: '30px' }}>
-
-            
 
             {/* ------------------기존것 그대로 추가------------------- */}
             <BrowserRouter>
@@ -65,14 +71,13 @@ const Home = () => {
                 {/* 사용자 정보가 있는 경우(로그인 성공인 경우..) */}
                 {user ? (
                 <div>
-                    <p>로그인됨: {user.name} ({user.id})</p>
-                        <img src={user.picture} alt="프로필" width="100" />
-                    <p>로그인 방식: {user.provider}</p>
+                    {/* 이제 에러 없이 안전하게 member 안의 값이 매핑됩니다 */}
+                    <p>로그인됨: {user?.name || member.mem_name} ({user?.id || user?.email || member.mem_id})</p>
+                    <img src={user?.picture} alt="프로필" width="100" />
+                    <p />
                     
                     <LogoutButton />
-
                     <hr/>
-
                 </div>
                 ) : (
                     // 사용자 정보가 없는 경우(로그인이 안된 경우..)
