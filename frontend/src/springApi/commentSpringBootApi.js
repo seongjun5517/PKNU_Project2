@@ -24,5 +24,5 @@ export const setCommentUpdate = (comment) =>
 export const setCommentDelete =
     (comid, memid, commentcreated) =>
 
-        springApi.delete(`/comment/delete?comId=${comid}&memId=${memid}
-                         &commentCreated=${commentcreated}`);
+        springApi.delete(`/comment/delete?comid=${comid}&memid=${memid}
+                         &commentcreated=${commentcreated}`);
