@@ -172,8 +172,8 @@ function CommunityViewPage(){
         try{
             const comment = {
 
-                comid : editComment.comId,
-                memid :editComment.memId,
+                comid : editComment.comid,
+                memid :editComment.memid,
                 commentcreated :  editComment.commentCreated,
                 commentcontent : commentContent
             };

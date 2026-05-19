@@ -1,62 +1,111 @@
+import React, { useState, useEffect } from 'react'; // useEffect 추가
+import { useNavigate, useParams } from 'react-router-dom';
+
 import '../../styles/pages/CommunityPage.css';
 
-import { useState } from 'react';
-import { useNavigate, useParams } from 'react-router-dom';
+// 사용할 API 임포트
+import { getCommunityView, setCommunityLike } from "../../springApi/communitySpringBootApi"; 
 
 function CommunityDetailPage() {
   const navigate = useNavigate();
-  const { postId } = useParams();
+  const { postId } = useParams(); // App.js 라우터 설정에 따라 com_id 또는 postId로 매핑됩니다.
 
-  // DB 연결 전 임시 상세 데이터
-  // 목록의 글 id와 맞춰두면 클릭한 글의 상세 화면으로 이동 가능
-  const posts = [
-    { id: 1, category: '건강 정보', title: '아침 공복 유산소, 정말 효과 있을까요?', writer: '건강한나', date: '2024.05.20', views: 123, likes: 12 },
-    { id: 2, category: '식단 이야기', title: '다이어트 식단 공유합니다!', writer: '운동러버', date: '2024.05.19', views: 98, likes: 9 },
-    { id: 3, category: '운동 공유', title: '단백질 섭취량, 하루에 얼마나 적당할까요?', writer: '헬시라이프', date: '2024.05.19', views: 76, likes: 7 },
-    { id: 4, category: '질문 & 답변', title: '스트레스 관리에 좋은 방법 추천해주세요!', writer: '마인드케어', date: '2024.05.18', views: 64, likes: 5 },
-    { id: 5, category: '자유 게시판', title: '심장에 좋은 음식과 나쁜 음식 정리', writer: '푸드가이드', date: '2024.05.18', views: 58, likes: 8 },
-    { id: 6, category: '건강 정보', title: '혈압 관리할 때 꼭 확인해야 하는 습관', writer: '케어닥터', date: '2024.05.17', views: 51, likes: 4 },
-    { id: 7, category: '식단 이야기', title: '저염식 식단 구성 어떻게 하면 좋을까요?', writer: '식단러', date: '2024.05.17', views: 43, likes: 6 },
-    { id: 8, category: '운동 공유', title: '퇴근 후 30분 걷기 루틴 공유', writer: '워킹맨', date: '2024.05.16', views: 39, likes: 3 },
-    { id: 9, category: '질문 & 답변', title: 'BMI가 정상이어도 복부비만이면 위험한가요?', writer: '궁금해요', date: '2024.05.16', views: 88, likes: 10 },
-    { id: 10, category: '자유 게시판', title: '요즘 수면 관리 앱 사용해보신 분?', writer: '슬립케어', date: '2024.05.15', views: 33, likes: 2 },
-    { id: 11, category: '건강 정보', title: '심혈관 건강에 좋은 운동 강도 정리', writer: '헬스가이드', date: '2024.05.15', views: 92, likes: 11 },
-    { id: 12, category: '식단 이야기', title: '오메가3 음식으로 챙기는 법', writer: '푸드케어', date: '2024.05.14', views: 45, likes: 5 },
-    { id: 13, category: '운동 공유', title: '초보자 홈트 루틴 추천합니다', writer: '홈트왕', date: '2024.05.14', views: 74, likes: 8 },
-    { id: 14, category: '질문 & 답변', title: '공복혈당이 높게 나왔는데 어떻게 해야 할까요?', writer: '질문자', date: '2024.05.13', views: 81, likes: 7 },
-    { id: 15, category: '자유 게시판', title: '건강검진 후기 공유합니다', writer: '검진완료', date: '2024.05.13', views: 29, likes: 3 }
-  ];
-
-  const post = posts.find((item) => item.id === Number(postId)) || posts[0];
-
-  // 좋아요는 상세 페이지 안에서만 작동하도록 처리
+  // 게시글 상세 데이터를 저장할 상태
+  const [post, setPost] = useState(null);
+  // 로딩 상태 및 좋아요 상태
+  const [isLoading, setIsLoading] = useState(true);
   const [liked, setLiked] = useState(false);
-  const [likeCount, setLikeCount] = useState(post.likes);
+  const [likeCount, setLikeCount] = useState(0);
 
-  const handleLikeClick = () => {
-    setLiked((prevLiked) => !prevLiked);
-    setLikeCount((prevCount) => (liked ? prevCount - 1 : prevCount + 1));
+  // 1. 페이지 로드 시 해당 게시글 상세 데이터 가져오기
+  useEffect(() => {
+    const fetchPostDetail = async () => {
+      try {
+        setIsLoading(true);
+        // useParams로 가져온 postId(또는 com_id)로 단건 조회 API 호출
+        const response = await getCommunityView(postId);
+        
+        if (response.data) {
+          setPost(response.data);
+          // 백엔드에서 받아온 초기 좋아요 수 설정
+          setLikeCount(response.data.com_like || 0);
+          // (선택사항) 로그인한 유저가 이미 좋아요를 눌렀는지 여부 데이터가 있다면 백엔드 기준 설정 가능
+          // 현재는 기본값 false로 세팅하되 데이터 구조에 맞춰 수정 가능합니다.
+        }
+      } catch (error) {
+        console.error("게시글 상세 내용을 불러오는 중 오류 발생:", error);
+        alert("존재하지 않거나 삭제된 게시글입니다.");
+        navigate('/community'); // 에러 발생 시 목록으로 튕겨내기
+      } finally {
+        setIsLoading(false);
+      }
+    };
+
+    if (postId) {
+      fetchPostDetail();
+    }
+  }, [postId, navigate]);
+
+  // 2. 좋아요 버튼 클릭 이벤트 처리
+  const handleLikeClick = async () => {
+    try {
+      // 서버에 좋아요 요청 보내기
+      await setCommunityLike(postId);
+
+      // 토글 형태로 상태 변경 (서버가 정상 처리되었다고 가정)
+      setLiked((prevLiked) => !prevLiked);
+      setLikeCount((prevCount) => (liked ? prevCount - 1 : prevCount + 1));
+      
+      // 만약 스프링 백엔드에서 좋아요 클릭 후 '갱신된 총 좋아요 수'를 응답(response.data)으로 준다면
+      // const response = await setCommunityLike(postId);
+      // setLikeCount(response.data); 
+      // 형태로 정확하게 동기화하는 것이 더 안전합니다.
+    } catch (error) {
+      console.error("좋아요 처리 중 오류 발생:", error);
+      alert("좋아요 처리에 실패했습니다.");
+    }
   };
+
+  // 로딩 중 화면 표시
+  if (isLoading) {
+    return (
+      <main className="page community-detail-page">
+        <section className="card detail-card" style={{ textAlign: 'center', padding: '40px' }}>
+          <p>데이터를 불러오는 중입니다...</p>
+        </section>
+      </main>
+    );
+  }
+
+  // 데이터가 없을 때 방어 코드
+  if (!post) {
+    return (
+      <main className="page community-detail-page">
+        <section className="card detail-card" style={{ textAlign: 'center', padding: '40px' }}>
+          <p>게시글을 찾을 수 없습니다.</p>
+          <button className="btn-outline" onClick={() => navigate('/community')}>목록으로</button>
+        </section>
+      </main>
+    );
+  }
 
   return (
     <main className="page community-detail-page">
       <section className="card detail-card">
-        <span className="category-badge detail-badge">{post.category}</span>
+        {/* 목록에서 카테고리를 post.category로 매핑했으니 그대로 유지 혹은 컬럼명에 맞게 변경 */}
+        <span className="category-badge detail-badge">{post.category || '일반'}</span>
 
-        <h2>{post.title}</h2>
+        <h2>{post.com_title}</h2>
 
         <div className="detail-meta">
-          <span>작성자 : {post.writer}</span>
-          <span>작성일 : {post.date}</span>
-          <span>조회수 : {post.views}</span>
+          <span>작성자 : {post.mem_id}</span>
+          <span>작성일 : {post.com_created}</span>
+          <span>조회수 : {post.com_view}</span>
         </div>
 
         <div className="detail-content">
-          <p>이 페이지는 게시글 상세보기 화면입니다.</p>
-          <p>
-            DB 연결 전에는 임시 데이터로 내용이 표시됩니다.
-            나중에 Spring Boot API에서 게시글 상세 데이터를 받아오면 됩니다.
-          </p>
+          {/* 백엔드에서 글 내용 본문이 오는 필드명(예: com_content)으로 맞춰주세요 */}
+          <p>{post.com_content || "내용이 없습니다."}</p>
         </div>
 
         <div className="detail-action-row">

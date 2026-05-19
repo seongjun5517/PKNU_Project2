@@ -1,7 +1,9 @@
+import React, { useState, useEffect } from 'react'; // useEffect 추가
+import { useNavigate } from 'react-router-dom';
+
 import '../../styles/pages/CommunityPage.css';
 
-import { useState } from 'react';
-import { useNavigate } from 'react-router-dom';
+import { getCommunityList } from "../../springApi/communitySpringBootApi"; 
 
 function CommunityPage() {
   const navigate = useNavigate();
@@ -13,25 +15,31 @@ function CommunityPage() {
   const [selectedCategory, setSelectedCategory] = useState('전체 게시글');
   const [currentPage, setCurrentPage] = useState(1);
 
-  // DB 연결 전 임시 게시글 데이터
-  // 좋아요는 상세 페이지에서만 보여주기 때문에 목록 테이블에는 표시하지 않음
-  const posts = [
-    { id: 1, category: '건강 정보', title: '아침 공복 유산소, 정말 효과 있을까요?', writer: '건강한나', date: '2024.05.20', views: 123, likes: 12 },
-    { id: 2, category: '식단 이야기', title: '다이어트 식단 공유합니다!', writer: '운동러버', date: '2024.05.19', views: 98, likes: 9 },
-    { id: 3, category: '운동 공유', title: '단백질 섭취량, 하루에 얼마나 적당할까요?', writer: '헬시라이프', date: '2024.05.19', views: 76, likes: 7 },
-    { id: 4, category: '질문 & 답변', title: '스트레스 관리에 좋은 방법 추천해주세요!', writer: '마인드케어', date: '2024.05.18', views: 64, likes: 5 },
-    { id: 5, category: '자유 게시판', title: '심장에 좋은 음식과 나쁜 음식 정리', writer: '푸드가이드', date: '2024.05.18', views: 58, likes: 8 },
-    { id: 6, category: '건강 정보', title: '혈압 관리할 때 꼭 확인해야 하는 습관', writer: '케어닥터', date: '2024.05.17', views: 51, likes: 4 },
-    { id: 7, category: '식단 이야기', title: '저염식 식단 구성 어떻게 하면 좋을까요?', writer: '식단러', date: '2024.05.17', views: 43, likes: 6 },
-    { id: 8, category: '운동 공유', title: '퇴근 후 30분 걷기 루틴 공유', writer: '워킹맨', date: '2024.05.16', views: 39, likes: 3 },
-    { id: 9, category: '질문 & 답변', title: 'BMI가 정상이어도 복부비만이면 위험한가요?', writer: '궁금해요', date: '2024.05.16', views: 88, likes: 10 },
-    { id: 10, category: '자유 게시판', title: '요즘 수면 관리 앱 사용해보신 분?', writer: '슬립케어', date: '2024.05.15', views: 33, likes: 2 },
-    { id: 11, category: '건강 정보', title: '심혈관 건강에 좋은 운동 강도 정리', writer: '헬스가이드', date: '2024.05.15', views: 92, likes: 11 },
-    { id: 12, category: '식단 이야기', title: '오메가3 음식으로 챙기는 법', writer: '푸드케어', date: '2024.05.14', views: 45, likes: 5 },
-    { id: 13, category: '운동 공유', title: '초보자 홈트 루틴 추천합니다', writer: '홈트왕', date: '2024.05.14', views: 74, likes: 8 },
-    { id: 14, category: '질문 & 답변', title: '공복혈당이 높게 나왔는데 어떻게 해야 할까요?', writer: '질문자', date: '2024.05.13', views: 81, likes: 7 },
-    { id: 15, category: '자유 게시판', title: '건강검진 후기 공유합니다', writer: '검진완료', date: '2024.05.13', views: 29, likes: 3 }
-  ];
+  // 1. API로 가져온 게시글 데이터를 저장할 상태(State) 생성
+  const [posts, setPosts] = useState([]);
+  // 로딩 상태 추가 (선택사항이지만 UX에 좋습니다)
+  const [isLoading, setIsLoading] = useState(true);
+
+  // 2. 컴포넌트 마운트 시 API 호출하여 데이터 가져오기
+  useEffect(() => {
+    const fetchPosts = async () => {
+      try {
+        setIsLoading(true);
+        const response = await getCommunityList();
+        
+        // 백엔드 응답 구조(response.data)에 따라 넣어줍니다.
+        // Spring 백엔드가 보통 객체나 배열을 넘겨주므로 response.data를 확인해 보세요.
+        setPosts(response.data || []); 
+      } catch (error) {
+        console.error("게시글 목록을 불러오는 중 오류 발생:", error);
+        alert("데이터를 로드하는 데 실패했습니다.");
+      } finally {
+        setIsLoading(false);
+      }
+    };
+
+    fetchPosts();
+  }, []); // 빈 배열을 넣어 처음 렌더링될 때 딱 한 번만 실행되도록 합니다.
 
   // 카테고리 필터링
   const filteredPosts = selectedCategory === '전체 게시글'
@@ -41,7 +49,10 @@ function CommunityPage() {
   // 페이지네이션 계산
   const postsPerPage = 5;
   const totalPages = Math.max(1, Math.ceil(filteredPosts.length / postsPerPage));
-  const pageNumbers = [1, 2, 3, 4, 5];
+  
+  // 데이터 양에 맞게 동적으로 페이지 번호 배열 생성 (기존 고정값 [1,2,3,4,5] 대신 변경)
+  const pageNumbers = Array.from({ length: totalPages }, (_, i) => i + 1);
+  
   const startIndex = (currentPage - 1) * postsPerPage;
   const currentPosts = filteredPosts.slice(startIndex, startIndex + postsPerPage);
 
@@ -58,7 +69,7 @@ function CommunityPage() {
 
   // 다음 페이지 버튼 클릭
   const handleNextPage = () => {
-    setCurrentPage((prev) => (prev >= 5 ? 1 : prev + 1));
+    setCurrentPage((prev) => (prev >= totalPages ? 1 : prev + 1));
   };
 
   return (
@@ -103,19 +114,24 @@ function CommunityPage() {
             </thead>
 
             <tbody>
-              {currentPosts.length > 0 ? (
+              {isLoading ? (
+                <tr>
+                  <td colSpan="4" className="empty-post-message">데이터를 불러오는 중입니다...</td>
+                </tr>
+              ) : currentPosts.length > 0 ? (
                 currentPosts.map((post) => (
-                  <tr key={post.id} onClick={() => navigate(`/community/${post.id}`)} className="clickable-row">
-                    <td>{post.title}</td>
-                    <td>{post.writer}</td>
-                    <td>{post.date}</td>
-                    <td>{post.views}</td>
+                  // 만약 백엔드 DB의 PK(아이디) 컬럼명이 id가 아니라 com_id라면 post.com_id로 변경해야 합니다.
+                  <tr key={post.com_id || post.id} onClick={() => navigate(`/community/${post.com_id || post.id}`)} className="clickable-row">
+                    <td>{post.com_title}</td>
+                    <td>{post.mem_id}</td> {/* 백엔드 필드명에 맞게 조정 필요 */}
+                    <td>{post.com_created}</td>     {/* 백엔드 필드명에 맞게 조정 필요 */}
+                    <td>{post.com_view}</td>   {/* 백엔드 필드명에 맞게 조정 필요 */}
                   </tr>
                 ))
               ) : (
                 <tr>
                   <td colSpan="4" className="empty-post-message">
-                    현재 선택한 페이지에 표시할 게시글이 없습니다.
+                    현재 선택한 카테고리에 표시할 게시글이 없습니다.
                   </td>
                 </tr>
               )}
