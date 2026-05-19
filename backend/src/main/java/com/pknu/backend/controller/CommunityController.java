@@ -115,18 +115,27 @@ public class CommunityController {
 
         return ResponseEntity.ok(this.communityService.setCommunityLike(com_id));
     }
+    
+/**
+ * Paging
+*/
+@GetMapping("/list_paging")
 
-    /**
-     * Paging
-    */
-    @GetMapping("/list_paging")
-    public ResponseEntity<Page<Community>> getCommunityListPaging(
+public ResponseEntity<Page<Community>>
+    getCommunityListPaging(
 
-            @RequestParam(name = "page", defaultValue = "1") int page,
+            @RequestParam(name = "page",defaultValue = "1")
+            int page,
 
-            @RequestParam(name = "size", defaultValue = "10") int size) {
+            @RequestParam(name = "size", defaultValue = "10")
+            int size,
 
-        Page<Community> community_list = this.communityService.getCommunityListPaging(page - 1, size);
+            @RequestParam( value = "mem_id", required = false)
+            String mem_id
+        )
+    {
+
+        Page<Community> community_list = this.communityService.getCommunityListPaging(page - 1, size, mem_id);
 
         return ResponseEntity.ok(community_list);
     }

@@ -63,14 +63,14 @@ public class CommentController {
         @RequestParam String memid,
         @RequestParam String commentcreated){
 
-    commentcreated = commentcreated.replace("T", " ").substring(0,16);
+        commentcreated = commentcreated.replace("T", " ").substring(0,16);
 
-    DateTimeFormatter formatter = DateTimeFormatter.ofPattern("yyyy-MM-dd HH:mm");
+        DateTimeFormatter formatter = DateTimeFormatter.ofPattern("yyyy-MM-dd HH:mm");
 
-    LocalDateTime time = LocalDateTime.parse(
-            commentcreated,
-            formatter
-        );
+        LocalDateTime time = LocalDateTime.parse(
+                commentcreated,
+                formatter
+            );
 
     CommentId commentId = new CommentId(comid, memid, time);
 
