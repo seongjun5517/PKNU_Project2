@@ -18,6 +18,7 @@ import MemberInsertPage from "../pages/member/MemberInsertPage";
 /* --------------- Paging 추가 ---------------- */
 import MemberListPaging from "../pages/member/MemberListPaging";
 import MemberViewPaging from "../pages/member/MemberViewPaging";
+import LoginPage from "../pages/member/LoginPage";
 
 
 function MemberRouters(){
@@ -41,6 +42,9 @@ function MemberRouters(){
             {/* 회원 상세 정보 조회하기 : MemberViewPage.js */}
             <Route path="/member/view_paging/:mem_id/:page" 
                    element={<MemberViewPaging />} />
+
+            <Route path="/login" element={< LoginPage/>} />
+
 
         </Routes>
     );

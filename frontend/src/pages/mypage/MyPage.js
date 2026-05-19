@@ -8,17 +8,17 @@ function MyPage() {
 
     const navigate = useNavigate();
 
-    /**
-     * 로그인 사용자
-     */
-    const loginMember = localStorage.getItem(
-            "loginMember"
-        );
+    // /**
+    //  * 로그인 사용자
+    //  */
+    // const user_info = localStorage.getItem(
+    //         "user_info"
+    //     );
 
     /**
      * 로그아웃
     */
-    const logout = () => {localStorage.removeItem("loginMember");
+    const logout = () => {localStorage.removeItem("user_info");
 
         alert(
             "로그아웃 완료되었습니다.."
@@ -43,7 +43,7 @@ function MyPage() {
                     {" "}
 
                     <b>
-                        {loginMember}
+                        {JSON.parse(localStorage.getItem('user_info')).name}
                     </b>
                     님
                 </p>
