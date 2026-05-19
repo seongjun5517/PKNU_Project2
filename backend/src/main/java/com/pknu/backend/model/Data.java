@@ -44,6 +44,7 @@ public class Data {
     private String mem_id;
     private LocalDate check_date;
     private Integer sex;
+    private Integer age;
     private Integer edu;
     private Integer incm;
     private Integer di1_dg;
