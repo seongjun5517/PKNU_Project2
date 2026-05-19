@@ -172,9 +172,9 @@ function CommunityViewPage(){
         try{
             const comment = {
 
-                comid : editComment.comid,
-                memid : editComment.memid,
-                commentcreated :  editComment.commentcreated,
+                comid : editComment.comId,
+                memid :editComment.memId,
+                commentcreated :  editComment.commentCreated,
                 commentcontent : commentContent
             };
 
