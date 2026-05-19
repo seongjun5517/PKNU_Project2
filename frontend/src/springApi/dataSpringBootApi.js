@@ -3,19 +3,19 @@
 import {springApi} from "../config/axiosInstance";
 
 // 회원 전체 목록 조회를 위한 백엔드 URL 패턴 정의 및 전송방식 함수 정의
-export const getDataList = () => 
+export const getDataList = () =>
     // get() 방식으로 전송
     // SpringBoot Controller에서 사용할 URL 패턴 정의
     // - 현재 URL : http://localhost:3000/member/list
     springApi.get("/data/list")
 
 // 회원 상세 조회를 위한 백엔드 URL 패턴 정의 및 전송방식 함수 정의
-export const getDataView = (data_id) => 
+export const getDataView = (data_id) =>
     springApi.get(`/data/view/${data_id}`)
 
 
 // 회원 신규 입력 처리를 위한 백엔드 URL 패턴 정의 및 전송방식 함수 정의
-export const setDataInsert = (data) => 
+export const setDataInsert = (data) =>
     springApi.post("/data/insert", data)
 
 // 회원 삭제 처리를 위한 백엔드 URL 패턴 정의 및 전송방식 함수 정의

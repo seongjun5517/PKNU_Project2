@@ -18,12 +18,16 @@ function CommunityRouters(){
             />
 
             {/* 게시글 상세 */}
-            <Route path="/community/view/:com_id" 
+            <Route path="/community/view/:com_id"
                    element={<CommunityViewPage />}
             />
 
             {/* 게시글 등록 */}
             <Route path="/community/insert"
+                   element={<CommunityInsertPage />}
+            />
+
+            <Route path="/community/update/:com_id"
                    element={<CommunityInsertPage />}
             />
 

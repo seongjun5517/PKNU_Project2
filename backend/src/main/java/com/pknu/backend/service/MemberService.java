@@ -41,7 +41,7 @@ public class MemberService {
      * 회원 상세 조회(한 건 조회)
      * @param mem_id
      * @return
-     */
+    */
     public Member getMemberView(String mem_id) {
 
         // Repository에 한 건 처리 요청 : 

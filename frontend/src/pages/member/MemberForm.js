@@ -34,7 +34,7 @@ const MemberForm = ({member, handleChange, handleCancel, handleSubmit, mode}) =>
         if(field === "mem_name" || field === "mem_id") return "darkgrey";
 
         // 수정(edit)인 경우에는 회원 이름을 제외한 나머지는 모두 읽기 전용으로 처리
-        if(mode === "edit" && field === "mem_id") return "darkgrey";
+        if(mode === "edit" && field !== "mem_name") return "darkgrey";
 
         // 이외 모든 처리 (저장(add))는 쓰기 전용으로
         return "white";

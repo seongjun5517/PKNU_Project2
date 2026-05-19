@@ -26,13 +26,13 @@ const DataListPaging = () => {
 
     /* --------------- Paging 처리 ---------------- */
     // get방식으로 전달받는 모든 파라메터 변수들은 이곳에 저장됨
-    //  - 값 재정의 가능 
+    //  - 값 재정의 가능
     //  - page정보를 담아 놓기위해 사용
     const [searchParams, setSearchParams] = useSearchParams();
 
     // searchParams에서 page 파라메터 변수값 추출하기
     //  - 최초에는 외부에서 전송 받아오는 파라메터가 없는 상태임(디폴트 1 정의)
-    //  - page 파라메터 변수값은 사용자가 페이지 번호를 클릭할 때 값을 담아서 
+    //  - page 파라메터 변수값은 사용자가 페이지 번호를 클릭할 때 값을 담아서
     //    --> 자기 자신 페이지(MemberListPaging.js)를 재호출하게됨
     const currentPageParam = parseInt(searchParams.get("page") || "1");
 
@@ -113,8 +113,8 @@ const DataListPaging = () => {
             <hr/>
             <div>
                 {/* Home 바로가기 버튼 생성 */}
-                <button onClick={() => navigate("/")}>Home 바로가기</button>  
-                
+                <button onClick={() => navigate("/")}>Home 바로가기</button>
+
             </div>
             <div>
                 {/* 회원 전체 목록 데이터 출력 정의 */}
@@ -129,7 +129,7 @@ const DataListPaging = () => {
                     </thead>
                     {/* 데이터 정의 */}
                     <tbody>
-                        {/* 
+                        {/*
                             for(member in memberListData){
                                 member.mem_id
                                 member.mem_pass

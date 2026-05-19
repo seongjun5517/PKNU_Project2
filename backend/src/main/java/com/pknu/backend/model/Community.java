@@ -31,7 +31,9 @@ public class Community {
 
     private String mem_id;
 
+    @Column(name = "com_title")
     private String com_title;
+
     @Column(columnDefinition = "CLOB")
     private String com_content;
 

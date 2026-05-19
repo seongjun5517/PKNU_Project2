@@ -6,11 +6,8 @@ import {getCommunityPaging} from "../../springApi/communitySpringBootApi";
 function CommunityListPaging(){
 
     const [list, setList] = useState([]);
-
     const [page, setPage] = useState(1);
-
     const [totalPages, setTotalPages] = useState(0);
-
     const size = 10;
 
 /**

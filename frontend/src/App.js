@@ -1,15 +1,13 @@
 // React 라이브러리 가져오기
 // import React from "react";
 
-
 /* ################################################################ */
 /*  OAuth2.0 */
 /* ################################################################ */
-// useContext : 전역적(서버영역 전체 페이지)으로 관리되는 상태 관리 훅(Hoc) 
+// useContext : 전역적(서버영역 전체 페이지)으로 관리되는 상태 관리 훅(Hoc)
 //  - 이 훅에 변수 AuthContext.jsx에서 정의한 로그인 상태 정보를 저장해서 사용하게됨
 import React, { useContext } from 'react';
 /* ################################################################ */
-
 
 // React Router 라이브러리 가져오기
 import {BrowserRouter} from "react-router-dom";
@@ -20,9 +18,7 @@ import HomeRouters from "./routers/HomeRouters";
 import MemberRouters from './routers/MemberRouters';
 import CommunityRouters from './routers/CommunityRouters';
 import DataRouters from './routers/DataRouters';
-
-
-
+import MyPageRouters from './routers/MypageRouters';
 
 /* ################################################################ */
 /*  OAuth2.0 */
@@ -93,6 +89,8 @@ const Home = () => {
                 <CommunityRouters />
 
                 <DataRouters />
+
+                <MyPageRouters />
 
             </BrowserRouter>
 

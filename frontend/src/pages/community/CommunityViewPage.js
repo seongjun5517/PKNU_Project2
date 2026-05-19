@@ -1,45 +1,231 @@
 import React, {useEffect, useState, useCallback} from "react";
 
-import {useParams} from "react-router-dom";
-import {useNavigate}from "react-router-dom";
+import {useParams,useNavigate} from "react-router-dom";
+
 import {getCommunityView,setCommunityLike} from "../../springApi/communitySpringBootApi";
+
+import {getCommentList,setCommentInsert,setCommentDelete,setCommentUpdate} from "../../springApi/commentSpringBootApi";
 
 function CommunityViewPage(){
 
     const navigate = useNavigate();
     const { com_id } = useParams();
 
+    /**
+     * 로그인 사용자
+    */
+    const loginMember = localStorage.getItem(
+            "loginMember"
+        );
+
+    /**
+     * 게시글 데이터
+    */
     const [data, setData] = useState({});
 
+    /**
+     * 댓글 목록
+    */
+    const [commentList, setCommentList] = useState([]);
+
+    /**
+     * 댓글 입력
+     */
+    const [commentContent, setCommentContent] = useState("");
+
+    /**
+     * 수정중 댓글
+    */
+    const [editComment, setEditComment] = useState(null);
+
+    /**
+     * 게시글 조회
+    */
     const loadData = useCallback(
-    async() => {const res =await getCommunityView(com_id);
 
-        setData(res.data);
+        async() => {
 
-    },
+            const res = await getCommunityView(com_id);
 
-    [com_id]
-);
+            setData(res.data);
+        },
 
-useEffect(() => {
+        [com_id]
+    );
 
-    loadData();
+    /**
+     * 댓글 조회
+    */
+    const getList = useCallback(
 
-}, [loadData]);
+        async() => {
 
-const likePost = async() => {
+            try{const response = 
+                await getCommentList(com_id);
 
-    await setCommunityLike(com_id);
-    loadData();
-};
+                setCommentList(
+                    response.data
+                );
+
+            }
+
+            catch(error){
+
+                console.log(error);
+            }
+        },
+
+        [com_id]
+    );
+
+    /**
+     * 최초 실행
+    */
+    useEffect(() => {
+
+        loadData();
+
+        getList();
+
+    }, [loadData, getList]);
+
+    /**
+     * 좋아요
+    */
+    const likePost = async() => {
+
+        await setCommunityLike(
+            com_id
+        );
+
+        setData({
+            
+            ...data,
+            com_like : data.com_like + 1
+        });
+    };
+
+    /**
+     * 댓글 등록
+    */
+    const insertComment = async() => {
+
+        if(!loginMember){
+
+            alert(
+                "로그인 후 이용하세요."
+            );
+
+            return;
+        }
+
+        if(commentContent.trim() === ""){
+
+            alert(
+                "댓글 내용을 입력하세요."
+            );
+
+            return;
+        }
+
+        try{
+            const comment = {
+                comId : Number(com_id),
+                memId : loginMember,
+                commentContent : commentContent
+            };
+
+            await setCommentInsert(
+                comment
+            );
+
+            alert(
+                "댓글 등록 완료되었습니다!!!"
+            );
+
+            setCommentContent("");
+            getList();
+
+        }
+
+        catch(error){
+
+            console.log(error);
+        }
+    };
+
+    /**
+     * 댓글 수정
+    */
+    const updateComment = async() => {
+
+        try{
+            const comment = {
+
+                comId : editComment.comId,
+                memId :editComment.memId,
+                commentCreated :  editComment.commentCreated,
+                commentContent : commentContent
+            };
+
+            await setCommentUpdate(
+                comment
+            );
+
+            alert(
+                "수정 완료되었습니다!!!"
+            );
+
+            setEditComment(null);
+            setCommentContent("");
+            getList();
+
+        }
+
+        catch(error){
+
+            console.log(error);
+        }
+    };
+
+    /**
+     * 댓글 삭제
+    */
+    const deleteComment = async(comment) => {
+
+        try{
+            await setCommentDelete(
+                comment.comId,
+                comment.memId,
+                comment.commentCreated
+            );
+
+            alert(
+                "삭제 완료되었습니다!!!"
+            );
+
+            getList();
+
+        }
+
+        catch(error){
+
+            console.log(error);
+        }
+    };
 
     return(
 
-        <div>
+        <div style={{
+                width : "70%",
+                margin : "50px auto"
+            }}>
 
             <h2>
                 게시글 상세
             </h2>
+
+            <hr/>
 
             <p>
                 번호 :
@@ -78,6 +264,134 @@ const likePost = async() => {
             <button onClick={() => navigate("/community/list_paging")}>
                 이전
             </button>
+
+            <button onClick={() => navigate( `/community/update/${com_id}`)}>
+                수정
+            </button>
+
+            <hr/>
+
+            <h2>
+                댓글
+            </h2>
+
+            {/* 댓글 입력 */}
+
+            <div
+                style={{marginBottom : "30px"}}>
+
+                <textarea
+                    rows="4"
+                    style={{
+                        width : "100%",
+                        padding : "15px"
+                    }}
+
+                    value={commentContent}
+                    onChange={(e) => setCommentContent(
+                            e.target.value
+                        )
+                    }
+                />
+
+                <br/>
+
+                <button  onClick={() => {
+
+                        if(editComment){
+                            updateComment();
+                        }
+
+                        else{
+
+                            insertComment();
+                        }
+                    }}
+
+                    style={{
+                        marginTop : "10px",
+                        padding : "10px 20px"
+                    }}>
+
+                    {editComment ? "댓글 수정"  : "댓글 등록"}
+
+                </button>
+
+            </div>
+
+            {/* 댓글 목록 */}
+
+            { commentList.map(
+
+                    (comment, idx) => (
+
+                    <div
+                        key={idx}
+                        style={{
+                            border : "1px solid #cccccc",
+                            padding : "15px",
+                            marginBottom : "15px",
+                            borderRadius : "10px"
+                        }}>
+
+                        <h4>
+
+                            작성자 :
+                            {" "}
+                            {comment.memId}
+
+                        </h4>
+
+                        <p>
+
+                            {comment.commentContent}
+
+                        </p>
+
+                        <small>
+
+                            {comment.commentCreated}
+
+                        </small>
+
+                        <br/>
+
+                        {loginMember ===
+                            comment.memId && (
+                                <>
+                                    <button onClick={() => {
+
+                                            setEditComment(
+                                                comment
+                                            );
+
+                                            setCommentContent(
+                                                comment.commentContent
+                                            );
+                                        }}
+
+                                        style={{
+
+                                            marginTop : "10px",
+                                            marginRight : "10px"
+                                        }}>
+
+                                        수정
+
+                                    </button>
+
+                                    <button onClick={() => deleteComment(comment)}
+                                            style={{ marginTop : "10px" }}>
+                                        삭제
+                                    </button>
+
+                                </>
+                            )
+                        }
+
+                    </div>
+                ))
+            }
 
         </div>
     );

@@ -1,25 +1,22 @@
 // 기본적으로 React 라이브러리 불러들여놓기
 import React from "react";
 
-// -------- OAuth2 인증을 위해 Paging 처리를 위해 추가 ----
-//  - OAuth2 인증 체계에서는 React 라우터를 통한 페이지 이동만 유지됨
-//  - 따라서, 모든 페이지 이동을 위한 링크 처리는 Link 또는 Navigate를 통해서 진행
 // 페이지 이동 링크
 import {Link, useNavigate} from "react-router-dom";
 
 // 외부 CSS 파일 불러들이기
-import "../css/HomePage.css";
+import "./css/HomePage.css";
 
+// HomePage.js 정의
 function HomePage(){
 
-    const navigate = useNavigate(); 
-    const loginMember = localStorage.getItem(
-            "loginMember"
-        );
+    const navigate = useNavigate();
+
+    const loginMember =  localStorage.getItem("loginMember");
 
     /**
      * 마이페이지 이동
-    */
+     */
     const moveMyPage = () => {
 
         if(!loginMember){
@@ -86,65 +83,34 @@ function HomePage(){
 
                 </div>
 
-                {/* =========================
-                    오른쪽 메뉴
-                    ========================= */}
+                {/* 오른쪽 메뉴 */}
+
                 <div>
-                {!loginMember ? (
-
-                <>
-                    {/* 로그인 */}
                     <Link to="/login">
+
                         <button className="right-menu-button">
-
                             로그인
-
                         </button>
 
                     </Link>
 
-                    {/* 회원가입 */}
                     <Link to="/join">
 
                         <button className="right-menu-button">
-
                             회원가입
-
                         </button>
 
                     </Link>
 
-                </>
+                    <button
+                        className="right-menu-button"
 
-            )
-
-            :
-
-            (
-                <>
-                    {/* 마이페이지 */}
-                    <button className="right-menu-button"
-                            onClick={moveMyPage}>
+                        onClick={moveMyPage}>
 
                         마이페이지
+
                     </button>
 
-                    {/* 로그아웃 */}
-                    <button className="right-menu-button"
-                            onClick={() => {localStorage.removeItem(
-                                                "loginMember"
-                                            );
-
-                            alert("로그아웃 완료되었습니다!!!");
-                            navigate("/");
-                        }}>
-
-                        로그아웃
-                    </button>
-
-                        </>
-                            )
-                        }
                 </div>
 
             </div>
@@ -188,7 +154,9 @@ function HomePage(){
 
                     {/* 버튼 */}
 
-                    <div style={{marginTop : "30px"}}>
+                    <div style={{
+                            marginTop : "30px"
+                        }}>
 
                         <Link to="/login">
 
@@ -228,13 +196,9 @@ function HomePage(){
 
             <div className="card-grid">
 
-            {/* 회원관리 */}
+                {/* 회원관리 */}
 
-            <Link to="/member/list_paging"
-                  className="card-link">
-                    
                 <div className="card">
-
                     <h3>
                         회원 관리
                     </h3>
@@ -242,18 +206,11 @@ function HomePage(){
                     <p>
                         회원 정보 관리
                     </p>
-
                 </div>
 
-            </Link>
-
-            {/* 건강 데이터 */}
-
-            <Link to="/data/list_paging"
-                  className="card-link">
+                {/* 건강 데이터 */}
 
                 <div className="card">
-
                     <h3>
                         건강 데이터
                     </h3>
@@ -261,18 +218,11 @@ function HomePage(){
                     <p>
                         건강 데이터 기록
                     </p>
-
                 </div>
 
-            </Link>
-
-            {/* 통계 */}
-
-            <Link to="/chart"
-                  className="card-link">
+                {/* 통계 */}
 
                 <div className="card">
-
                     <h3>
                         통계/차트
                     </h3>
@@ -280,18 +230,11 @@ function HomePage(){
                     <p>
                         건강 통계 시각화
                     </p>
-
                 </div>
 
-            </Link>
-
-            {/* 커뮤니티 */}
-
-            <Link to="/community/list_paging"
-                  className="card-link">
+                {/* 커뮤니티 */}
 
                 <div className="card">
-
                     <h3>
                         커뮤니티
                     </h3>
@@ -302,14 +245,7 @@ function HomePage(){
 
                 </div>
 
-            </Link>
-
-            {/* 마이페이지 */}
-
-            <div className="card-link"
-                onClick={moveMyPage}
-                style={{cursor : "pointer"}}>
-
+                {/* 마이페이지 */}
                 <div className="card">
 
                     <h3>
@@ -319,40 +255,22 @@ function HomePage(){
                     <p>
                         내 정보 및 활동
                     </p>
-
                 </div>
 
             </div>
 
-    </div>
+            {/* =========================
+                Footer
+            ========================= */}
 
+            <div className="footer">
 
-    {/* =========================
-            Footer
-        ========================= */}
+                ⓒ 2026 건강 관리 시스템
 
-        <div className="footer">
-
-            {/* -------------- Paging 처리 ----------- */}
-            {/* 회원 전체 리스트 목록 조회 링크 추가
-                - URL 패턴은 SpringBoot에서 회원전체조회 URL패턴 그대로 사용 */}
-            <p>
-                {/* <a href="/member/list_paging">[MemberListPaging 바로가기]</a> */}
-                <Link to="/data/list_paging">[DataListPaging 바로가기]</Link>
-            </p>
-
-            {/* -------------- Community 처리 ------------------- */}
-            <p>
-                <Link to="/community/list_paging">[CommunityListPaging 바로가기]</Link>
-            </p>
-
-            ⓒ 2026 건강 관리 시스템
+            </div>
 
         </div>
-
-        </div>
-
-        );
-    }
+    );
+}
 
 export default HomePage;

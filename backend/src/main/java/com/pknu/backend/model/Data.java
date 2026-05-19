@@ -39,7 +39,7 @@ public class Data {
     // 실제 테이블에서 고유한 값을 가지는 PK를 정의
     @Id
     @Column(name = "data_id")
-    private String data_id;
+    private Integer data_id;
     private String mem_id;
     private LocalDate check_date;
     private Integer sex;
