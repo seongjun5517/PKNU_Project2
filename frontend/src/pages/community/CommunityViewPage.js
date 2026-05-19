@@ -91,15 +91,51 @@ function CommunityViewPage(){
     */
     const likePost = async() => {
 
-        await setCommunityLike(
-            com_id
+        if(!user_info){
+
+        alert("로그인 후 이용하세요.");
+
+        return;
+    }
+
+    // 게시글별 좋아요 key 생성
+    const likeKey = `like_${com_id}_${user_info.email}`;
+
+    // 이미 좋아요 눌렀는지 확인
+    const isLiked = localStorage.getItem(likeKey);
+
+    if(isLiked){
+
+        alert("이미 좋아요를 눌렀습니다.");
+
+        return;
+    }
+
+    try{
+
+        await setCommunityLike(com_id);
+
+        // localStorage 저장
+        localStorage.setItem(
+            likeKey,
+            "true"
         );
 
         setData({
-            
+
             ...data,
+
             com_like : data.com_like + 1
         });
+
+        alert("좋아요 완료!!!");
+    }
+
+    catch(error){
+
+            console.log(error);
+            alert("좋아요 실패!!!");
+        }
     };
 
     const deletePost = async() => {
@@ -233,9 +269,7 @@ function CommunityViewPage(){
         const result = await setCommentDelete(
 
             comment.comid,
-
             comment.memid.trim(),
-
             comment.commentcreated.substring(0, 16)
 
         );
