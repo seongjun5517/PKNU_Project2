@@ -57,7 +57,7 @@ const MemberViewPaging = () => {
         // - 페이지 리로드시 항상 실행됨
         memberView();
 
-    }, []);
+    }, [mem_id]);
 
 
     // 회원 [삭제] 버튼 처를 위한 함수 정의(SpringBoot 백엔드 처리 진행됨)
@@ -77,6 +77,7 @@ const MemberViewPaging = () => {
                 // 삭제 후 전체 리스트 페이지로 이동
                 navigate("/member/list_paging?page="+page);
             })
+
             // 오류 처리
             .catch((err) => {
                 console.error(">>>>>>>>>>> 회원 삭제 오류 : ", err);
@@ -112,21 +113,29 @@ const MemberViewPaging = () => {
         setMode("view");
     };
 
-    // 수정 처리하는 함수 선언 및 정의(SpringBoot 백엔드 요청)
     const handleUpdate = (e) => {
-        e.preventDefault();
 
-        // SpringBoot 수정 요청 함수 호출
-        setMemberUpdate(member)
-            .then(() => {
-                alert("정상적으로 수정되었습니다.");
+            e.preventDefault();
 
-                // 수정 완료 후에는 페이지 이동이 아닌, 상세보기 모드로 전환
-                setMode("view");
-            })
-            .catch((err) => {
-                console.error(">>>>>> 물리적 오류  발생 : ", err);
-            });
+            console.log(member);
+
+            setMemberUpdate(member)
+
+        .then((res) => {
+
+            console.log(res.data);
+
+            alert("정상적으로 수정되었습니다.");
+
+            navigate("/member/list_paging");
+        })
+
+        .catch((err) => {
+
+            console.error(err);
+
+            alert("회원 수정 실패!!!");
+        });
     };
 
 
