@@ -45,7 +45,7 @@ public class CommentService {
     String time = commentId.getCommentcreated()
              .toString()
              .replace("T", " ")
-             .substring(0,19);
+             .substring(0,16);
 
     System.out.println(time);
     

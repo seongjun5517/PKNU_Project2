@@ -72,6 +72,12 @@ const Home = () => {
 
                 <MyPageRouters />
 
+                {/* 예측 페이지 */}
+                <PredictRouters />
+
+                {/* 그래프 페이지 */}
+                <GraphRouters/>
+
             </BrowserRouter>
 
         </div>
@@ -108,3 +114,12 @@ const App = () => {
 };
 
 export default App;
+<<<<<<< HEAD
+=======
+     
+
+
+
+ 
+
+>>>>>>> minjae

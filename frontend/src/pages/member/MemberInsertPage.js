@@ -28,7 +28,7 @@ const MemberInsertPage = () => {
         {
             "mem_id" : user.id || user.email || "",
             "mem_name" : user.name || "",
-            "mem_phone" : ""
+            "mem_phone" : user.phone || ""
         }
     );
 

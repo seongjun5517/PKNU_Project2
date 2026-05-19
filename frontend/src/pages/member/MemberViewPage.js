@@ -57,7 +57,7 @@ const MemberViewPage = () => {
         // - 페이지 리로드시 항상 실행됨
         memberView();
 
-    }, []);
+    }, [mem_id]);
 
 
     // 회원 [삭제] 버튼 처를 위한 함수 정의(SpringBoot 백엔드 처리 진행됨)
