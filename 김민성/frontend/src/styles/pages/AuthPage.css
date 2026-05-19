@@ -1,0 +1,454 @@
+/* Auth 공통 페이지 */
+.auth-page {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  min-height: calc(100vh - 170px);
+  padding-top: 32px;
+  padding-bottom: 32px;
+}
+
+.auth-card {
+  background: #fff;
+  border: 1px solid #dbeeee;
+  border-radius: 18px;
+  box-shadow: 0 8px 24px rgba(15, 118, 110, .06);
+  padding: 44px;
+}
+
+/* 로그인/회원가입/구글 인증의 기본 비율 통일 */
+.auth-split-card,
+.google-card,
+.signup-card,
+.login-card {
+  width: min(920px, 100%);
+  min-height: 500px;
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  align-items: center;
+  gap: 48px;
+}
+
+.auth-form-area {
+  width: 100%;
+  max-width: 380px;
+}
+
+.auth-form-area h2,
+.google-card h2 {
+  margin: 0 0 16px;
+  font-size: 34px;
+  color: #0f172a;
+}
+
+.auth-form-area p,
+.google-card p {
+  margin: 0 0 24px;
+  color: #334155;
+  line-height: 1.55;
+}
+
+.auth-form-area form {
+  display: flex;
+  flex-direction: column;
+}
+
+.auth-form-area label {
+  margin: 14px 0 7px;
+  font-weight: 700;
+  color: #0f172a;
+}
+
+.auth-form-area input {
+  height: 42px;
+  border: 1px solid #d0e5e5;
+  border-radius: 6px;
+  padding: 0 12px;
+  outline: none;
+}
+
+.auth-form-area input:focus {
+  border-color: #10bfae;
+  box-shadow: 0 0 0 3px rgba(16, 191, 174, .12);
+}
+
+.auth-bottom-text {
+  text-align: center;
+  margin: 20px 0 0 !important;
+  font-size: 14px;
+}
+
+.auth-bottom-text a {
+  color: #0f9f8d;
+  font-weight: 800;
+}
+
+.auth-illust-area {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  min-height: 320px;
+  border-radius: 18px;
+  background: linear-gradient(135deg, rgba(232, 248, 246, .8), rgba(255, 255, 255, .2));
+}
+
+.big-illust {
+  font-size: 132px;
+  line-height: 1;
+}
+
+.auth-logo {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  font-size: 24px;
+  font-weight: 800;
+  margin-bottom: 56px;
+}
+
+.auth-logo.compact {
+  margin-bottom: 34px;
+}
+
+.google-button {
+  width: 320px;
+  height: 52px;
+  background: #fff;
+  border: 1px solid #d0e5e5;
+  border-radius: 7px;
+  font-size: 16px;
+  font-weight: 700;
+}
+
+.google-button:hover {
+  border-color: #10bfae;
+  background: #f7fffd;
+}
+
+.google-button span {
+  margin-right: 12px;
+  color: #ea4335;
+  font-weight: 900;
+}
+
+.full-google {
+  width: 100%;
+  margin-top: 12px;
+}
+
+/* 비밀번호 찾기 단독 페이지 */
+.single-auth-card {
+  width: min(460px, 100%);
+}
+
+.single-auth-form {
+  display: flex;
+  flex-direction: column;
+}
+
+.single-auth-form label {
+  margin: 14px 0 7px;
+  font-weight: 700;
+}
+
+.single-auth-form input {
+  height: 42px;
+  border: 1px solid #d0e5e5;
+  border-radius: 6px;
+  padding: 0 12px;
+}
+
+/* 이전 버전 호환용 */
+.auth-card.wide {
+  width: min(920px, 100%);
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+}
+
+/* 로그인 화면 상세 조정
+   - 회원가입 화면과 같은 2분할 카드 구조
+   - 하단에는 Google 버튼 + 회원가입 링크만 표시 */
+.login-card {
+  width: min(820px, 100%);
+  min-height: 500px;
+  grid-template-columns: 1fr 1fr;
+  gap: 54px;
+  padding: 44px 52px;
+}
+
+.login-form-area {
+  max-width: 390px;
+}
+
+.login-form-area h2 {
+  margin-top: 0;
+  margin-bottom: 10px;
+}
+
+.login-form-area > p {
+  margin-bottom: 22px;
+}
+
+.login-form-area .btn-primary.full {
+  margin-top: 18px;
+}
+
+.login-card .full-google {
+  margin-top: 16px;
+  height: 50px;
+}
+
+.login-card .auth-bottom-text {
+  margin-top: 18px !important;
+  margin-bottom: 0 !important;
+}
+
+.login-card .auth-illust-area {
+  min-height: 330px;
+}
+
+/* 로그인 화면 최종 수정
+   - 아이디/비밀번호 입력폼 제거
+   - 오른쪽 일러스트 제거
+   - Google로 계속하기 + 계정이 없으신가요? 회원가입 만 표시 */
+.login-only-page {
+  min-height: calc(100vh - 170px);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+.login-only-card {
+  width: min(520px, 100%);
+  min-height: auto;
+  padding: 0;
+  border: none;
+  box-shadow: none;
+  background: transparent;
+}
+
+.login-google-button {
+  width: 100%;
+  height: 64px;
+  border-radius: 8px;
+  font-size: 20px;
+  background: #ffffff;
+  border: 1px solid #c8e2e2;
+}
+
+.login-only-bottom {
+  margin-top: 28px !important;
+  font-size: 18px;
+}
+
+/* 로그인 화면 재수정
+   - 아이디/비밀번호 없이 구글 로그인만 사용
+   - 회원가입/구글 인증 화면과 같은 2분할 디자인 적용 */
+.login-google-page {
+  min-height: calc(100vh - 170px);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+.login-google-card {
+  width: min(1080px, 100%);
+  min-height: 520px;
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  align-items: center;
+  gap: 72px;
+  padding: 64px 72px;
+  border: none;
+  box-shadow: none;
+  background: transparent;
+}
+
+.login-google-left {
+  width: 100%;
+  max-width: 430px;
+}
+
+.login-auth-logo {
+  margin-bottom: 70px;
+  font-size: 30px;
+}
+
+.login-google-left h2 {
+  margin: 0 0 22px;
+  font-size: 44px;
+  line-height: 1.2;
+  font-weight: 900;
+  color: #0f172a;
+}
+
+.login-google-left p {
+  margin: 0 0 34px;
+  font-size: 20px;
+  color: #1e293b;
+}
+
+.login-google-button {
+  width: 100%;
+  height: 66px;
+  border-radius: 8px;
+  border: 1px solid #c8e2e2;
+  background: #ffffff;
+  font-size: 22px;
+  font-weight: 800;
+}
+
+.login-google-button span {
+  margin-right: 14px;
+  color: #ea4335;
+  font-weight: 900;
+}
+
+.login-only-bottom {
+  margin-top: 28px !important;
+  text-align: center;
+  font-size: 18px !important;
+}
+
+.login-google-illust {
+  min-height: 410px;
+  border-radius: 24px;
+  background: linear-gradient(135deg, #eefdfb 0%, #ffffff 100%);
+}
+
+.login-google-illust .big-illust {
+  font-size: 150px;
+}
+
+/* 로그인 화면 최종 디자인 고정
+   - 구글 인증 화면과 같은 좌우 2분할 카드
+   - 남기는 요소: 로고, 제목, 설명, Google 버튼, 회원가입 링크 */
+.login-google-page {
+  min-height: calc(100vh - 170px);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  padding: 48px 24px;
+  background: #f6fbfb;
+}
+
+.login-google-card {
+  width: min(1080px, 100%);
+  min-height: 520px;
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  align-items: center;
+  gap: 70px;
+  padding: 64px 72px;
+  border: 1px solid #cfe8e8;
+  border-radius: 18px;
+  background: #ffffff;
+  box-shadow: 0 20px 44px rgba(15, 118, 110, 0.08);
+}
+
+.login-google-left {
+  width: 100%;
+  max-width: 430px;
+}
+
+.login-auth-logo {
+  margin-bottom: 68px;
+  font-size: 30px;
+  font-weight: 900;
+}
+
+.login-auth-logo .logo-icon {
+  font-size: 34px;
+}
+
+.login-google-left h2 {
+  margin: 0 0 20px;
+  font-size: 44px;
+  line-height: 1.2;
+  font-weight: 900;
+  letter-spacing: -1.5px;
+  color: #0f172a;
+}
+
+.login-google-left > p:not(.auth-bottom-text) {
+  margin: 0 0 34px;
+  font-size: 20px;
+  line-height: 1.5;
+  color: #1f2937;
+}
+
+.login-google-button {
+  width: 100%;
+  height: 64px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  border: 1px solid #c8e2e2;
+  border-radius: 8px;
+  background: #ffffff;
+  color: #000000;
+  font-size: 20px;
+  font-weight: 900;
+}
+
+.login-google-button:hover {
+  border-color: #10bfae;
+  background: #f7fffd;
+}
+
+.login-google-button span {
+  margin-right: 14px;
+  color: #ea4335;
+  font-weight: 900;
+}
+
+.login-only-bottom {
+  margin: 28px 0 0 !important;
+  text-align: center;
+  font-size: 18px !important;
+  color: #0f172a;
+}
+
+.login-only-bottom a {
+  color: #0f9f8d;
+  font-weight: 900;
+}
+
+.login-google-illust-box {
+  min-height: 400px;
+  border-radius: 18px;
+  background: linear-gradient(135deg, #eefdfb 0%, #ffffff 100%);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+.login-google-illust-box .big-illust {
+  font-size: 140px;
+  line-height: 1;
+}
+
+@media (max-width: 900px) {
+  .login-google-card {
+    grid-template-columns: 1fr;
+    min-height: auto;
+    padding: 44px 32px;
+    gap: 36px;
+  }
+
+  .login-auth-logo {
+    margin-bottom: 42px;
+  }
+
+  .login-google-left h2 {
+    font-size: 34px;
+  }
+
+  .login-google-left > p:not(.auth-bottom-text) {
+    font-size: 16px;
+  }
+
+  .login-google-illust-box {
+    min-height: 260px;
+  }
+}
