@@ -29,7 +29,7 @@ public interface CommentRepository
     @Transactional
     @Modifying
 
-   @Query(value = """
+    @Query(value = """
 
     DELETE FROM comment_test
 
@@ -39,7 +39,7 @@ public interface CommentRepository
 
     AND TO_CHAR(
         comment_created,
-        'YYYY-MM-DD HH24:MI'
+         'YYYY-MM-DD HH24:MI'
     )
 
     =

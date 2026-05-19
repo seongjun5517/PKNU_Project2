@@ -56,6 +56,8 @@ public class Data {
     private BigDecimal he_chol;
     private BigDecimal he_tg;
     private BigDecimal he_wc;
+    
+    @Column(name = "HE_BMI")
     private BigDecimal heBmi;
     private Integer bs1_1;
     private Integer bd1_11;
