@@ -4,6 +4,7 @@ import java.util.List;
 import java.util.Optional;
 
 import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
 
 import com.pknu.backend.model.Comment;
 import com.pknu.backend.model.CommentId;
@@ -31,8 +32,7 @@ public class CommentService {
     /**
      * 댓글 등록
     */
-    public Comment
-        setCommentInsert(Comment comment){
+    public Comment setCommentInsert(Comment comment){
 
         return this.commentRepository.save(comment);
     }
@@ -40,18 +40,32 @@ public class CommentService {
     /**
      * 댓글 삭제
     */
-    public String
-        setCommentDelete( CommentId commentId){
+    @Transactional
+    public String setCommentDelete(CommentId commentId){
+    String time = commentId.getCommentcreated()
+             .toString()
+             .replace("T", " ")
+             .substring(0,19);
 
-        if(this.commentRepository.existsById(commentId)){
+    System.out.println(time);
+    
+    int result = this.commentRepository.deleteComment(
+            commentId.getComid(),
+            commentId.getMemid(),
+            time
+  
+        
+        );
 
-            this.commentRepository.deleteById(commentId);
+    System.out.println(result);
 
-            return "댓글 삭제 성공하였습니다!!!";
-        }
+    if(result > 0){
 
-        return "삭제할 댓글 없습니다!!!";
+        return "댓글 삭제 성공하였습니다!!!";
     }
+
+    return "삭제할 댓글 없습니다!!!";
+}
 
     /**
      * 댓글 수정
