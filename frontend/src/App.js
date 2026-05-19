@@ -114,12 +114,3 @@ const App = () => {
 };
 
 export default App;
-<<<<<<< HEAD
-=======
-     
-
-
-
- 
-
->>>>>>> minjae

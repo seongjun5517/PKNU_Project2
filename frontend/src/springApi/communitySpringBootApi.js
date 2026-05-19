@@ -1,8 +1,9 @@
 import { springApi } from "../config/axiosInstance";
 
-// 전체 조회
-export const getCommunityList = () =>
-    springApi.get("/community/list_paging");
+// 게시글 조회
+export const getCommunityList = (mem_id = null) =>
+
+    springApi.get("/community/list_paging" + (mem_id? `?mem_id=${mem_id}`: ""));
 
 // 상세 조회
 export const getCommunityView =
@@ -25,5 +26,6 @@ export const setCommunityLike =
     (com_id) =>springApi.post(`/community/like/${com_id}`);
 
 // Paging
-export const getCommunityPaging =
-    (page, size) =>springApi.get(`/community/list_paging?page=${page}&size=${size}`);
+export const getCommunityPaging = (page, size, mem_id) => 
+        springApi.get(`/community/list_paging?page=${page}&size=${size}`
+        +(mem_id ? `&mem_id=${mem_id}`: ""));

@@ -1,6 +1,6 @@
 import React, {useEffect,useState}from "react";
 
-import {Link} from "react-router-dom";
+import {Link, useLocation} from "react-router-dom";
 import {getCommunityPaging} from "../../springApi/communitySpringBootApi";
 
 function CommunityListPaging(){
@@ -9,6 +9,10 @@ function CommunityListPaging(){
     const [page, setPage] = useState(1);
     const [totalPages, setTotalPages] = useState(0);
     const size = 10;
+    const location = useLocation();
+    const queryParams = new URLSearchParams( location.search);
+
+    const mem_id = queryParams.get("mem_id");
 
 /**
  * 데이터 조회
@@ -19,7 +23,13 @@ useEffect(() => {
 
         try{
 
-            const res = await getCommunityPaging(page,size);
+            const res = await getCommunityPaging(page, size, mem_id);
+
+            console.log("mem_id =", mem_id);
+
+            console.log(res.data);
+
+            console.log(res.data.content[0]);
 
             setList(
                 res.data.content
@@ -38,7 +48,7 @@ useEffect(() => {
 
         loadData();
 
-    }, [page]);
+    }, [page, mem_id]);
 
     /**
      * 페이지 번호 배열
@@ -58,8 +68,7 @@ useEffect(() => {
                 게시판 목록
             </h2>
 
-            <div
-              style={{marginBottom : "10px"}}>
+            <div style={{marginBottom : "10px"}}>
               <Link to="/community/insert">
 
               <button type="button">
