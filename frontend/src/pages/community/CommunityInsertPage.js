@@ -8,9 +8,11 @@ function CommunityInsertPage(){
 
     const {com_id} = useParams();
 
+    const user = JSON.parse(localStorage.getItem("user_info"))
+
     const [community,setCommunity] = useState({
 
-        mem_id : "shintra0070@gmail.com",
+        mem_id : user.id,
         com_title : "",
         com_content : ""
 
