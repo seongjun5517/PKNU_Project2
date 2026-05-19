@@ -7,17 +7,15 @@ function CommunityForm({
         changeData,
         submitData,
         isUpdate = false
-    }) 
+    })
 
 {
     const navigate = useNavigate();
 
     return(
 
-        <form
-            onSubmit={submitData}>
-
-            {/* 게시글 번호 */}
+        <form onSubmit={submitData}>
+             {/* 게시글 번호 */}
             <div>
                 <p>
                     게시글 번호
@@ -30,7 +28,6 @@ function CommunityForm({
                     onChange={changeData}
                     disabled={isUpdate}
                 />
-
             </div>
 
             {/* 작성자 */}

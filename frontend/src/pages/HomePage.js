@@ -7,7 +7,6 @@ import {Link, useNavigate} from "react-router-dom";
 // 외부 CSS 파일 불러들이기
 import "../css/HomePage.css";
 
-// HomePage.js 정의
 function HomePage(){
 
     const navigate = useNavigate(); 
@@ -17,7 +16,7 @@ function HomePage(){
 
     /**
      * 마이페이지 이동
-     */
+    */
     const moveMyPage = () => {
 
         if(!loginMember){

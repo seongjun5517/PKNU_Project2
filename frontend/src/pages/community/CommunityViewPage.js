@@ -1,13 +1,27 @@
-import React, {useEffect,useState} from "react";
-import { getCommentList,setCommentInsert,setCommentDelete,setCommentUpdate} from "../../springApi/commentSpringBootApi";
+import React, {useEffect, useState, useCallback} from "react";
 
-function CommentPage(){
+import {useParams,useNavigate} from "react-router-dom";
+
+import {getCommunityView,setCommunityLike} from "../../springApi/communitySpringBootApi";
+
+import {getCommentList,setCommentInsert,setCommentDelete,setCommentUpdate} from "../../springApi/commentSpringBootApi";
+
+function CommunityViewPage(){
+
+    const navigate = useNavigate();
+    const { com_id } = useParams();
 
     /**
-     * 게시글 번호
-     * 테스트용
+     * 로그인 사용자
     */
-    const comId = 1;
+    const loginMember = localStorage.getItem(
+            "loginMember"
+        );
+
+    /**
+     * 게시글 데이터
+    */
+    const [data, setData] = useState({});
 
     /**
      * 댓글 목록
@@ -16,7 +30,7 @@ function CommentPage(){
 
     /**
      * 댓글 입력
-    */
+     */
     const [commentContent, setCommentContent] = useState("");
 
     /**
@@ -25,35 +39,71 @@ function CommentPage(){
     const [editComment, setEditComment] = useState(null);
 
     /**
-     * 로그인 사용자
+     * 게시글 조회
     */
-    const loginMember =localStorage.getItem("loginMember");
+    const loadData = useCallback(
+
+        async() => {
+
+            const res = await getCommunityView(com_id);
+
+            setData(res.data);
+        },
+
+        [com_id]
+    );
 
     /**
-     * 댓글 목록 조회
+     * 댓글 조회
     */
-    const getList = async() => {
+    const getList = useCallback(
 
-        try{
-            const response =await getCommentList(comId);
-            setCommentList(response.data);
+        async() => {
 
-        }
-        
-        catch(error){
+            try{const response = 
+                await getCommentList(com_id);
 
-            console.log(error);
-        }
-    };
+                setCommentList(
+                    response.data
+                );
+
+            }
+
+            catch(error){
+
+                console.log(error);
+            }
+        },
+
+        [com_id]
+    );
 
     /**
      * 최초 실행
-     */
+    */
     useEffect(() => {
+
+        loadData();
 
         getList();
 
-    }, []);
+    }, [loadData, getList]);
+
+    /**
+     * 좋아요
+    */
+    const likePost = async() => {
+
+        await setCommunityLike(
+            com_id
+        );
+
+        setData({
+            
+            ...data,
+            com_like : data.com_like + 1
+        });
+    };
 
     /**
      * 댓글 등록
@@ -79,10 +129,8 @@ function CommentPage(){
         }
 
         try{
-
             const comment = {
-
-                comId : comId,
+                comId : Number(com_id),
                 memId : loginMember,
                 commentContent : commentContent
             };
@@ -92,14 +140,14 @@ function CommentPage(){
             );
 
             alert(
-                "댓글 등록 완료"
+                "댓글 등록 완료되었습니다!!!"
             );
 
             setCommentContent("");
             getList();
 
         }
-        
+
         catch(error){
 
             console.log(error);
@@ -116,7 +164,7 @@ function CommentPage(){
 
                 comId : editComment.comId,
                 memId :editComment.memId,
-                commentCreated : editComment.commentCreated,
+                commentCreated :  editComment.commentCreated,
                 commentContent : commentContent
             };
 
@@ -133,8 +181,9 @@ function CommentPage(){
             getList();
 
         }
-        
+
         catch(error){
+
             console.log(error);
         }
     };
@@ -142,8 +191,7 @@ function CommentPage(){
     /**
      * 댓글 삭제
     */
-    const deleteComment =
-        async(comment) => {
+    const deleteComment = async(comment) => {
 
         try{
             await setCommentDelete(
@@ -158,7 +206,9 @@ function CommentPage(){
 
             getList();
 
-        }catch(error){
+        }
+
+        catch(error){
 
             console.log(error);
         }
@@ -166,25 +216,77 @@ function CommentPage(){
 
     return(
 
-        <div
-            style={{width : "70%",
-                    margin : "50px auto"
+        <div style={{
+                width : "70%",
+                margin : "50px auto"
             }}>
+
+            <h2>
+                게시글 상세
+            </h2>
+
+            <hr/>
+
+            <p>
+                번호 :
+                {data.com_id}
+            </p>
+
+            <p>
+                제목 :
+                {data.com_title}
+            </p>
+
+            <p>
+                작성자 :
+                {data.mem_id}
+            </p>
+
+            <p>
+                내용 :
+                {data.com_content}
+            </p>
+
+            <p>
+                조회수 :
+                {data.com_view}
+            </p>
+
+            <p>
+                좋아요 :
+                {data.com_like}
+            </p>
+
+            <button onClick={likePost}>
+                좋아요
+            </button>
+
+            <button onClick={() => navigate("/community/list_paging")}>
+                이전
+            </button>
+
+            <button onClick={() => navigate( `/community/update/${com_id}`)}>
+                수정
+            </button>
+
+            <hr/>
 
             <h2>
                 댓글
             </h2>
 
-            <hr/>
-
             {/* 댓글 입력 */}
-            <div style={{marginBottom : "30px"}}>
+
+            <div
+                style={{marginBottom : "30px"}}>
+
                 <textarea
                     rows="4"
                     style={{
                         width : "100%",
                         padding : "15px"
                     }}
+
                     value={commentContent}
                     onChange={(e) => setCommentContent(
                             e.target.value
@@ -192,13 +294,16 @@ function CommentPage(){
                     }
                 />
 
-                <button onClick={() => {
+                <br/>
+
+                <button  onClick={() => {
 
                         if(editComment){
                             updateComment();
                         }
-                        
+
                         else{
+
                             insertComment();
                         }
                     }}
@@ -208,23 +313,29 @@ function CommentPage(){
                         padding : "10px 20px"
                     }}>
 
-                    {editComment ? "댓글 수정" : "댓글 등록"}
+                    {editComment ? "댓글 수정"  : "댓글 등록"}
+
                 </button>
 
             </div>
 
             {/* 댓글 목록 */}
-            {commentList.map(
+
+            { commentList.map(
+
                     (comment, idx) => (
-                    <div key={idx}
+
+                    <div
+                        key={idx}
                         style={{
-                            border :"1px solid #cccccc",
+                            border : "1px solid #cccccc",
                             padding : "15px",
                             marginBottom : "15px",
                             borderRadius : "10px"
                         }}>
 
                         <h4>
+
                             작성자 :
                             {" "}
                             {comment.memId}
@@ -232,16 +343,21 @@ function CommentPage(){
                         </h4>
 
                         <p>
+
                             {comment.commentContent}
+
                         </p>
 
                         <small>
+
                             {comment.commentCreated}
+
                         </small>
 
                         <br/>
 
-                        {loginMember === comment.memId && (
+                        {loginMember ===
+                            comment.memId && (
                                 <>
                                     <button onClick={() => {
 
@@ -264,12 +380,8 @@ function CommentPage(){
 
                                     </button>
 
-                                    <button onClick={() =>  deleteComment(
-                                                comment
-                                            )
-                                        }
-
-                                        style={{marginTop : "10px"}}>
+                                    <button onClick={() => deleteComment(comment)}
+                                            style={{ marginTop : "10px" }}>
                                         삭제
                                     </button>
 
@@ -285,4 +397,4 @@ function CommentPage(){
     );
 }
 
-export default CommentPage;
+export default CommunityViewPage;

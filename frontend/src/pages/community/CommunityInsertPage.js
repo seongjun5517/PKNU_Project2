@@ -10,7 +10,7 @@ function CommunityInsertPage(){
 
     const [community,setCommunity] = useState({
 
-        mem_id : "user01",
+        mem_id : "user1",
         com_title : "",
         com_content : ""
 
