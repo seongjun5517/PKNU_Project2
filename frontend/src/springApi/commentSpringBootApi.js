@@ -3,8 +3,8 @@ import { springApi } from "../config/axiosInstance";
 /**
  * 댓글 전체 조회
 */
-export const getCommentList = (comId) =>
-    springApi.get(`/comment/list/${comId}`);
+export const getCommentList = (comid) =>
+    springApi.get(`/comment/list/${comid}`);
 
 /**
  * 댓글 등록
@@ -22,7 +22,7 @@ export const setCommentUpdate = (comment) =>
  * 댓글 삭제
 */
 export const setCommentDelete =
-    (comId, memId, commentCreated) =>
+    (comid, memid, commentcreated) =>
 
-        springApi.delete(`/comment/delete?comId=${comId}&memId=${memId}
-                         &commentCreated=${commentCreated}`);
+        springApi.delete(`/comment/delete?comid=${comid}&memId=${memid}
+                         &commentcreated=${commentcreated}`);

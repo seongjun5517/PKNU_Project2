@@ -14,8 +14,8 @@ function CommunityViewPage(){
     /**
      * 로그인 사용자
     */
-    const loginMember = localStorage.getItem(
-            "loginMember"
+    const user_info = localStorage.getItem(
+            "user_info"
         );
 
     /**
@@ -110,7 +110,7 @@ function CommunityViewPage(){
     */
     const insertComment = async() => {
 
-        if(!loginMember){
+        if(!user_info){
 
             alert(
                 "로그인 후 이용하세요."
@@ -130,9 +130,9 @@ function CommunityViewPage(){
 
         try{
             const comment = {
-                comId : Number(com_id),
-                memId : loginMember,
-                commentContent : commentContent
+                comid : Number(com_id),
+                memid : user_info,
+                commentcontent : commentContent
             };
 
             await setCommentInsert(
@@ -162,10 +162,10 @@ function CommunityViewPage(){
         try{
             const comment = {
 
-                comId : editComment.comId,
-                memId :editComment.memId,
-                commentCreated :  editComment.commentCreated,
-                commentContent : commentContent
+                comid : editComment.comId,
+                memid :editComment.memId,
+                commentcreated :  editComment.commentCreated,
+                commentcontent : commentContent
             };
 
             await setCommentUpdate(
@@ -195,9 +195,9 @@ function CommunityViewPage(){
 
         try{
             await setCommentDelete(
-                comment.comId,
-                comment.memId,
-                comment.commentCreated
+                comment.comid,
+                comment.memid,
+                comment.commentcreated
             );
 
             alert(
@@ -338,26 +338,26 @@ function CommunityViewPage(){
 
                             작성자 :
                             {" "}
-                            {comment.memId}
+                            {comment.memid}
 
                         </h4>
 
                         <p>
 
-                            {comment.commentContent}
+                            {comment.commentcontent}
 
                         </p>
 
                         <small>
 
-                            {comment.commentCreated}
+                            {comment.commentcreated}
 
                         </small>
 
                         <br/>
 
-                        {loginMember ===
-                            comment.memId && (
+                        {user_info ===
+                            comment.memud && (
                                 <>
                                     <button onClick={() => {
 
@@ -366,7 +366,7 @@ function CommunityViewPage(){
                                             );
 
                                             setCommentContent(
-                                                comment.commentContent
+                                                comment.commentcontent
                                             );
                                         }}
 

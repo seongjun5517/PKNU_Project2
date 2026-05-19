@@ -13,16 +13,14 @@ import "../css/HomePage.css";
 function HomePage(){
 
     const navigate = useNavigate(); 
-    const loginMember = localStorage.getItem(
-            "loginMember"
-        );
+    const user_info = localStorage.getItem("user_info");
 
     /**
      * 마이페이지 이동
     */
     const moveMyPage = () => {
 
-        if(!loginMember){
+        if(!user_info){
 
             alert(
                 "로그인 후 이용 가능합니다."
@@ -90,7 +88,7 @@ function HomePage(){
                     오른쪽 메뉴
                     ========================= */}
                 <div>
-                {!loginMember ? (
+                {!user_info ? (
 
                 <>
                     {/* 로그인 */}
@@ -131,9 +129,7 @@ function HomePage(){
 
                     {/* 로그아웃 */}
                     <button className="right-menu-button"
-                            onClick={() => {localStorage.removeItem(
-                                                "loginMember"
-                                            );
+                            onClick={() => {localStorage.removeItem("user_info");
 
                             alert("로그아웃 완료되었습니다!!!");
                             navigate("/");
@@ -185,28 +181,6 @@ function HomePage(){
                         만들어보세요.
 
                     </p>
-
-                    {/* 버튼 */}
-
-                    <div style={{marginTop : "30px"}}>
-
-                        <Link to="/login">
-
-                            <button className="main-button">
-                                로그인
-                            </button>
-
-                        </Link>
-
-                        <Link to="/join">
-
-                            <button className="sub-button">
-                                회원가입
-                            </button>
-
-                        </Link>
-
-                    </div>
 
                 </div>
 
