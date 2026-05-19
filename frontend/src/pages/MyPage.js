@@ -1,3 +1,4 @@
+import '../styles/pages/MyPage.css';
 import { useState } from 'react';
 import { useNavigate } from 'react-router-dom';
 import { useAuth } from '../context/AuthContext';
@@ -42,13 +43,6 @@ function MyPage() {
             onClick={() => setActiveMenu('분석 기록')}
           >
             분석 기록
-          </button>
-
-          <button
-            className={activeMenu === '목표 관리' ? 'active' : ''}
-            onClick={() => setActiveMenu('목표 관리')}
-          >
-            목표 관리
           </button>
 
           <button
@@ -105,8 +99,6 @@ function MyPage() {
                   </div>
                 ))}
               </div>
-
-              <GoalCard />
             </>
           )}
 
@@ -127,31 +119,38 @@ function MyPage() {
             </div>
           )}
 
-          {activeMenu === '목표 관리' && <GoalCard />}
-
           {activeMenu === '알림 설정' && (
             <div className="card mypage-full-card">
               <h3>알림 설정</h3>
               <p>건강 관리 알림을 설정할 수 있습니다.</p>
 
               <div className="setting-list">
-                <label><input type="checkbox" defaultChecked /> 매일 물 섭취 알림 받기</label>
-                <label><input type="checkbox" defaultChecked /> 주간 운동 목표 알림 받기</label>
-                <label><input type="checkbox" /> 분석 결과 업데이트 알림 받기</label>
+                <label><input type="checkbox" defaultChecked /> 매일 건강 체크 알림 받기</label>
+                <label><input type="checkbox" defaultChecked /> 주간 분석 결과 알림 받기</label>
+                <label><input type="checkbox" /> 커뮤니티 댓글 알림 받기</label>
               </div>
 
-              <button className="btn-primary small" onClick={() => alert('알림 설정이 저장되었습니다.')}>저장하기</button>
+              <button
+                className="btn-primary small"
+                onClick={() => alert('알림 설정이 저장되었습니다.')}
+              >
+                저장하기
+              </button>
             </div>
           )}
 
           {activeMenu === '회원 정보' && (
             <div className="card mypage-full-card">
               <h3>회원 정보 수정</h3>
-              <p>DB 연결 전이므로 화면 동작만 처리됩니다.</p>
+              <p>아이디는 수정할 수 없습니다.</p>
 
               <form className="mypage-edit-form" onSubmit={(e) => e.preventDefault()}>
                 <label>아이디</label>
-                <input defaultValue="testUser" />
+                <input
+                  defaultValue={user?.id || 'testUser'}
+                  readOnly
+                  className="readonly-input"
+                />
 
                 <label>이름</label>
                 <input defaultValue={user?.name || '홍길동'} />
@@ -159,37 +158,18 @@ function MyPage() {
                 <label>전화번호</label>
                 <input defaultValue="010-1234-5678" />
 
-                <button className="btn-primary small" onClick={() => alert('회원 정보가 저장되었습니다.')}>수정 완료</button>
+                <button
+                  className="btn-primary small"
+                  onClick={() => alert('회원 정보가 저장되었습니다.')}
+                >
+                  수정 완료
+                </button>
               </form>
             </div>
           )}
         </section>
       </section>
     </main>
-  );
-}
-
-function GoalCard() {
-  return (
-    <div className="card goal-card">
-      <h3>나의 목표</h3>
-
-      <div className="goal-grid">
-        <div>
-          <p>주간 운동 목표</p>
-          <strong>4</strong>
-          <span>/5회</span>
-          <div className="progress"><div style={{ width: '80%' }}></div></div>
-        </div>
-
-        <div>
-          <p>일간 물 섭취 목표</p>
-          <strong>1.6</strong>
-          <span>/2L</span>
-          <div className="progress"><div style={{ width: '80%' }}></div></div>
-        </div>
-      </div>
-    </div>
   );
 }
 

@@ -1,3 +1,4 @@
+import '../styles/pages/PolicyPage.css';
 import { useState } from 'react';
 
 function CustomerCenterPage() {

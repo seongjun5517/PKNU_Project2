@@ -1,3 +1,4 @@
+import '../styles/pages/AuthPage.css';
 import { useNavigate, Link } from 'react-router-dom';
 import { useState } from 'react';
 

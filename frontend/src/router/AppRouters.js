@@ -1,65 +1,38 @@
 import { BrowserRouter, Routes, Route, Navigate } from 'react-router-dom';
-import { useAuth } from '../context/AuthContext';
 
 import Navbar from '../components/layout/Navbar';
 import Footer from '../components/layout/Footer';
 
-import HomePage from '../pages/HomePage';
-import LoginPage from '../pages/LoginPage';
-import FindPasswordPage from '../pages/FindPasswordPage';
-import GoogleAuthPage from '../pages/GoogleAuthPage';
-import SignupPage from '../pages/SignupPage';
-import AnalysisPage from '../pages/AnalysisPage';
-import ResultPage from '../pages/ResultPage';
-import CommunityPage from '../pages/CommunityPage';
-import CommunityWritePage from '../pages/CommunityWritePage';
-import CommunityDetailPage from '../pages/CommunityDetailPage';
-import MyPage from '../pages/MyPage';
-import PrivacyPolicyPage from '../pages/PrivacyPolicyPage';
-import TermsPage from '../pages/TermsPage';
-import CustomerCenterPage from '../pages/CustomerCenterPage';
-
-// 로그인 안 된 사용자가 마이페이지 접근하면 로그인 페이지로 이동
-function PrivateRoute({ children }) {
-  const { user } = useAuth();
-  return user ? children : <Navigate to="/login" replace />;
-}
+import HomeRoutes from './HomeRoutes';
+import AuthRoutes from './AuthRoutes';
+import AnalysisRoutes from './AnalysisRoutes';
+import CommunityRoutes from './CommunityRoutes';
+import MyPageRoutes from './MyPageRoutes';
+import PolicyRoutes from './PolicyRoutes';
 
 function AppRouters() {
   return (
     <BrowserRouter>
+      {/* 모든 페이지 공통 상단 메뉴 */}
       <Navbar />
 
-      <Routes>
-        <Route path="/" element={<HomePage />} />
-        <Route path="/login" element={<LoginPage />} />
-        <Route path="/find-password" element={<FindPasswordPage />} />
-        <Route path="/google-auth" element={<GoogleAuthPage />} />
-        <Route path="/signup" element={<SignupPage />} />
-        <Route path="/analysis" element={<AnalysisPage />} />
-        <Route path="/result" element={<ResultPage />} />
+      {/* Footer 위치가 페이지마다 달라지지 않도록 본문 영역을 공통 래퍼로 감쌈 */}
+      <div className="main-content">
+        <Routes>
+          {/* 라우터를 기능별 파일로 분리 */}
+          {HomeRoutes()}
+          {AuthRoutes()}
+          {AnalysisRoutes()}
+          {CommunityRoutes()}
+          {MyPageRoutes()}
+          {PolicyRoutes()}
 
-        <Route path="/community" element={<CommunityPage />} />
-        <Route path="/community/write" element={<CommunityWritePage />} />
-        <Route path="/community/:postId" element={<CommunityDetailPage />} />
+          {/* 없는 주소는 메인페이지로 이동 */}
+          <Route path="*" element={<Navigate to="/" replace />} />
+        </Routes>
+      </div>
 
-        {/* Footer 링크 페이지 */}
-        <Route path="/privacy-policy" element={<PrivacyPolicyPage />} />
-        <Route path="/terms" element={<TermsPage />} />
-        <Route path="/customer-center" element={<CustomerCenterPage />} />
-
-        <Route
-          path="/mypage"
-          element={
-            <PrivateRoute>
-              <MyPage />
-            </PrivateRoute>
-          }
-        />
-
-        <Route path="*" element={<Navigate to="/" replace />} />
-      </Routes>
-
+      {/* 모든 페이지 공통 하단 */}
       <Footer />
     </BrowserRouter>
   );

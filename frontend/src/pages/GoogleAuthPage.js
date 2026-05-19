@@ -1,3 +1,4 @@
+import '../styles/pages/AuthPage.css';
 import { useNavigate } from 'react-router-dom';
 
 function GoogleAuthPage() {
@@ -18,7 +19,7 @@ function GoogleAuthPage() {
           </div>
 
           <h2>구글 계정으로 인증</h2>
-          <p>구글 계정으로 간편하게 시작하세요.</p>
+          <p>구글 계정으로 간편하게 회원가입하세요.</p>
 
           <button className="google-button" onClick={handleGoogleAuth}>
             <span>G</span>

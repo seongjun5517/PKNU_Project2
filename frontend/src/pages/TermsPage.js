@@ -1,3 +1,4 @@
+import '../styles/pages/PolicyPage.css';
 function TermsPage() {
   return (
     <main className="page policy-page">
