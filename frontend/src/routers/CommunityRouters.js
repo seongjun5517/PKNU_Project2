@@ -13,7 +13,7 @@ function CommunityRouters(){
         <Routes>
 
             {/* 게시판 목록 */}
-            <Route path="/community/list_Paging"
+            <Route path="/community/list_paging"
                    element={<CommunityListPaging />}
             />
 

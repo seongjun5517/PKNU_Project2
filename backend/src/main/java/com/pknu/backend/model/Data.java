@@ -44,9 +44,9 @@ public class Data {
     private String mem_id;
     private LocalDate check_date;
     private Integer sex;
+    private Integer age;
     private Integer edu;
     private Integer incm;
-    private Integer age;
     private Integer di1_dg;
     private Integer di2_dg;
     private Integer de1_dg;
@@ -57,7 +57,9 @@ public class Data {
     private BigDecimal he_chol;
     private BigDecimal he_tg;
     private BigDecimal he_wc;
-    private BigDecimal he_bmi;
+
+    @Column(name = "HE_BMI")
+    private BigDecimal heBmi;
     private Integer bs1_1;
     private Integer bd1_11;
     private Integer bd2_1;

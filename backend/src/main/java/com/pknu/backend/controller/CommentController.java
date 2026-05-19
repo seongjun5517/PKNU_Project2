@@ -63,9 +63,9 @@ public class CommentController {
         @RequestParam String memid,
         @RequestParam String commentcreated){
 
-    commentcreated = commentcreated.replace("T", " ").substring(0,19);
+    commentcreated = commentcreated.replace("T", " ").substring(0,16);
 
-    DateTimeFormatter formatter = DateTimeFormatter.ofPattern("yyyy-MM-dd HH:mm:ss");
+    DateTimeFormatter formatter = DateTimeFormatter.ofPattern("yyyy-MM-dd HH:mm");
 
     LocalDateTime time = LocalDateTime.parse(
             commentcreated,

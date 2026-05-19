@@ -310,36 +310,6 @@ function HomePage(){
         <div className="footer">
 
             ⓒ 2026 건강 관리 시스템
-            {/* -------------- Paging 처리 ----------- */}
-            {/* 회원 전체 리스트 목록 조회 링크 추가
-                - URL 패턴은 SpringBoot에서 회원전체조회 URL패턴 그대로 사용 */}
-            <p>
-                {/* <a href="/member/list_paging">[MemberListPaging 바로가기]</a> */}
-                <Link to="/data/list_paging">[DataListPaging 바로가기]</Link>
-            </p>
-
-            {/* ------------- Flask 백엔드 처리하기 -------------- */}
-            {/* 생선 종류 예측 하기 : 예측에 사용할 독립변수 입력 페이지 */}
-            <p>
-                {/* <a href="/ml/fish_pred_form">[Flask - 생선종류 예측 바로가기]</a> */}
-                <Link to="/ml/fish_pred_form">[Flask - 생선종류 예측 바로가기]</Link>
-            </p>
-
-            {/* -------------- Community 처리 ------------------- */}
-            <p>
-                <Link to="/community/list_paging">[CommunityListPaging 바로가기]</Link>
-            </p>
-
-            {/* 예측 모델 링크 */}
-            <p>
-                <Link to="/predict/heart_pred_form">[예측하기]</Link>
-            </p>
-
-            {/* 그래프 홈페이지 */}
-            <p>
-                <Link to="/graph/view/user1">[그래프 보기]</Link>
-            </p>
-
 
         </div>
 

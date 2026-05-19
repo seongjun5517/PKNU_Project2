@@ -72,8 +72,6 @@ const Home = () => {
 
                 <MyPageRouters />
 
-                <DataRouters />
-
                 {/* 예측 페이지 */}
                 <PredictRouters />
 
@@ -117,5 +115,4 @@ const App = () => {
 
 
       
-
 export default App;

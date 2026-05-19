@@ -15,7 +15,7 @@ function CommunityInsertPage(){
         mem_id : user.id,
         com_title : "",
         com_content : ""
-
+    
     });
 
     // 수정 페이지일 때 기존 데이터 불러오기

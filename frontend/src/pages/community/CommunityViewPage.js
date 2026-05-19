@@ -2,7 +2,7 @@ import React, {useEffect, useState, useCallback} from "react";
 
 import {useParams,useNavigate} from "react-router-dom";
 
-import {getCommunityView,setCommunityLike} from "../../springApi/communitySpringBootApi";
+import {getCommunityView,setCommunityLike, setCommunityDelete} from "../../springApi/communitySpringBootApi";
 
 import {getCommentList,setCommentInsert,setCommentDelete,setCommentUpdate} from "../../springApi/commentSpringBootApi";
 
@@ -102,6 +102,31 @@ function CommunityViewPage(){
         });
     };
 
+    const deletePost = async() => {
+
+    if(!window.confirm("게시글을 삭제하시겠습니까?")){
+
+        return;
+    }
+
+    try{
+
+        await setCommunityDelete(com_id);
+
+        alert("게시글 삭제 완료되었습니다!!!");
+
+        navigate("/community/list_paging");
+
+    }
+
+    catch(error){
+
+        console.log(error);
+
+            alert("게시글 삭제 실패하였습니다!!!");
+        }
+    };
+
     /**
      * 댓글 등록
     */
@@ -172,9 +197,9 @@ function CommunityViewPage(){
         try{
             const comment = {
 
-                comid : editComment.comId,
-                memid :editComment.memId,
-                commentcreated :  editComment.commentCreated,
+                comid : editComment.comid,
+                memid : editComment.memid,
+                commentcreated : editComment.commentcreated,
                 commentcontent : commentContent
             };
 
@@ -203,25 +228,42 @@ function CommunityViewPage(){
     */
     const deleteComment = async(comment) => {
 
-        try{
-            const result = await setCommentDelete(
-                comment.comid,
-                comment.memid,
-                comment.commentcreated.substring(0, 19)
-            );
+    try{
 
-            console.log(result.data);
-            alert(result.data);
+        const result = await setCommentDelete(
+
+            comment.comid,
+
+            comment.memid.trim(),
+
+            comment.commentcreated.substring(0, 16)
+
+        );
+
+        console.log(result.data);
+
+        if(result.data.includes("성공")){
+
+            alert("댓글 삭제 완료되었습니다!!!");
+
             getList();
 
         }
+        
+        else{
 
-        catch(error){
-
-            console.log(error);
-            alert("삭제 실패하였습니다!!!");
+            alert("댓글 삭제 실패하였습니다!!!");
         }
-    };
+
+    }
+
+    catch(error){
+
+        console.log(error);
+
+        alert("댓글 삭제 실패하였습니다!!!");
+    }
+};
 
     return(
 
@@ -276,6 +318,10 @@ function CommunityViewPage(){
 
             <button onClick={() => navigate(`/community/update/${com_id}`)}>
                 수정
+            </button>
+
+            <button onClick={deletePost}>
+                삭제
             </button>
 
             <hr/>

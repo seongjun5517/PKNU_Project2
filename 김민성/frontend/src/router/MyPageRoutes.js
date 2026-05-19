@@ -1,6 +1,6 @@
 import {Routes, Route } from 'react-router-dom';
 
-import PrivateRoute from '../pages/footer/PrivacyPolicyPage';
+import PrivateRoute from '../pages/member/LoginPage';
 import MyPage from '../pages/member/MyPage';
 
 // 마이페이지는 로그인한 사용자만 접근 가능
