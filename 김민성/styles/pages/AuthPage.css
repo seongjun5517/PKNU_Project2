@@ -1,0 +1,75 @@
+/* Auth */
+.auth-page {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  min-height: calc(100vh - 170px);
+}
+.auth-card {
+  background: #fff;
+  border: 1px solid #dbeeee;
+  border-radius: 18px;
+  box-shadow: 0 8px 24px rgba(15,118,110,.06);
+  padding: 36px;
+}
+.auth-card.wide {
+  width: 950px;
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+}
+.auth-form-area { max-width: 380px; width: 100%; }
+.auth-form-area form { display: flex; flex-direction: column; }
+.auth-form-area label { margin: 14px 0 7px; font-weight: 700; }
+.auth-form-area input {
+  height: 42px;
+  border: 1px solid #d0e5e5;
+  border-radius: 6px;
+  padding: 0 12px;
+}
+.auth-bottom-text { text-align: center; margin-top: 20px; }
+.auth-bottom-text a { color: #0f9f8d; font-weight: 800; }
+.auth-illust-area { display: flex; align-items: center; justify-content: center; }
+.big-illust { font-size: 130px; }
+.google-card {
+  width: 760px;
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  align-items: center;
+}
+.auth-logo {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  font-size: 24px;
+  font-weight: 800;
+  margin-bottom: 60px;
+}
+.google-button {
+  width: 320px;
+  height: 52px;
+  background: #fff;
+  border: 1px solid #d0e5e5;
+  border-radius: 7px;
+  font-size: 16px;
+  font-weight: 700;
+}
+.google-button span { margin-right: 12px; color: #ea4335; font-weight: 900; }
+
+/* 로그인/회원가입 같은 비율 사용 */
+.signup-card,
+.login-card {
+  width: 780px;
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  align-items: center;
+  gap: 30px;
+}
+.single-auth-card { width: 460px; }
+.single-auth-form { display: flex; flex-direction: column; }
+.single-auth-form label { margin: 14px 0 7px; font-weight: 700; }
+.single-auth-form input {
+  height: 42px;
+  border: 1px solid #d0e5e5;
+  border-radius: 6px;
+  padding: 0 12px;
+}
