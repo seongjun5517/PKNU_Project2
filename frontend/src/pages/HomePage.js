@@ -6,6 +6,7 @@ import React from "react";
 //  - 따라서, 모든 페이지 이동을 위한 링크 처리는 Link 또는 Navigate를 통해서 진행
 // 페이지 이동 링크
 import {Link, useNavigate} from "react-router-dom";
+import { useAuth } from "../pages/user/AuthContext";
 
 // 외부 CSS 파일 불러들이기
 import "../css/HomePage.css";
@@ -13,16 +14,16 @@ import "../css/HomePage.css";
 function HomePage(){
 
     const navigate = useNavigate(); 
-    const user_info = localStorage.getItem(
-            "user_info"
-        );
+    const { user, logout } = useAuth();
 
     /**
      * 마이페이지 이동
     */
     const moveMyPage = () => {
 
-        if(!user_info){
+        if(!user){
+
+            console.log(user)
 
             alert(
                 "로그인 후 이용 가능합니다."
@@ -31,8 +32,14 @@ function HomePage(){
             navigate("/login");
             return;
         }
-
+        console.log(user)
         navigate("/mypage");
+    };
+
+    const handleLogout = () => {
+        logout(); // 상태 트리 변경 + 로컬스토리지 삭제 일괄 처리
+        alert("로그아웃 완료되었습니다");
+        navigate("/"); // 안전하게 메인 경로로 상태 유지 리다이렉트
     };
 
     return(
@@ -90,7 +97,7 @@ function HomePage(){
                     오른쪽 메뉴
                     ========================= */}
                 <div>
-                {!user_info ? (
+                {!user ? (
 
                 <>
                     {/* 로그인 */}
@@ -129,13 +136,7 @@ function HomePage(){
 
                     {/* 로그아웃 */}
                     <button className="right-menu-button"
-                            onClick={() => {localStorage.removeItem(
-                                                "user_info"
-                                            );
-
-                            alert("로그아웃 완료되었습니다!!!");
-                            window.location.reload();
-                        }}>
+                            onClick={handleLogout}>
 
                         로그아웃
                     </button>

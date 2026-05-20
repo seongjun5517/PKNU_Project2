@@ -98,6 +98,8 @@ public class MemberService {
 
             Member member_update = member.get();
             member_update.setMem_name(p_member.getMem_name());
+            member_update.setMem_phone(p_member.getMem_phone());
+            member_update.setMem_nickname(p_member.getMem_nickname());
             // this.memberRepository.save(member_update);
 
             // return "회원 아이디 ["+p_member.getMem_id()+"]에 대한 정보가 수정되었습니다.";
