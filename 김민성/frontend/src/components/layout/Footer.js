@@ -4,7 +4,7 @@ import { Link } from 'react-router-dom';
 function Footer() {
   return (
     <footer className="footer">
-      <span>© 2024 HealthiQ. All rights reserved.</span>
+      <span>© 2026 HealthiQ. All rights reserved.</span>
 
       {/* 하단 링크: 클릭하면 각각 안내 페이지로 이동 */}
       <div className="footer-links">
