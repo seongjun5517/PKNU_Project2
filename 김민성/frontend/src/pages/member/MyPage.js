@@ -5,6 +5,8 @@ import { useAuth } from '../../context/AuthContext';
 
 function MyPage() {
   const navigate = useNavigate();
+  const user_info = JSON.parse(
+        localStorage.getItem("user_info"));
   const { user, logout } = useAuth();
 
   // 마이페이지 왼쪽 버튼 클릭 상태 관리
@@ -52,7 +54,16 @@ function MyPage() {
             알림 설정
           </button>
 
-          <button
+          <button 
+            className = {activeMenu === '내 게시글 조회' ? 'active' : ''}
+            onClick={() => {setActiveMenu('내 게시글 조회');
+            window.location.href =`/community?mem_id=${user_info.mem_id}`;}}>
+
+            내 게시글 조회
+
+          </button>
+
+          <button 
             className={activeMenu === '회원 정보' ? 'active' : ''}
             onClick={() => setActiveMenu('회원 정보')}
           >
@@ -72,8 +83,8 @@ function MyPage() {
                   <div className="profile-img">👨‍💻</div>
 
                   <div>
-                    <h2>{user?.name || '홍길동'}</h2>
-                    <p>{user?.email || 'hong@example.com'}</p>
+                    <h2>{user_info?.name || '홍길동'}</h2>
+                    <p>{user_info?.id || 'hong@example.com'}</p>
                     <p>가입일 2024.05.01</p>
 
                     <button

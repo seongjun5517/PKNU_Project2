@@ -39,6 +39,8 @@ public class Community {
 
     private Integer com_like;
 
+    private String com_category;
+
     @Column(insertable = false, updatable = false)
     private Date com_created;
 }

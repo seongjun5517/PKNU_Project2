@@ -2,7 +2,9 @@ package com.pknu.backend.controller;
 
 import java.util.List;
 
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Page;
+import org.springframework.data.domain.Pageable;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.CrossOrigin;
@@ -17,22 +19,24 @@ import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
 
 import com.pknu.backend.model.Community;
+import com.pknu.backend.repository.CommunityRepository;
 import com.pknu.backend.service.CommunityService;
 
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 
+@CrossOrigin("*")
 @RestController
-
 @RequestMapping("/community")
-
 @RequiredArgsConstructor
-
 @Slf4j
 
-@CrossOrigin("*")
+
 public class CommunityController {
 
+    // 중간 객체들을 자동 연결
+    @Autowired
+    private CommunityRepository communityRepository;    
     private final CommunityService communityService;
 
     /**
@@ -49,13 +53,25 @@ public class CommunityController {
      * 전체 조회
      * url : http://localhost:8080/community/list
     */
-    @GetMapping("/list")
-    public ResponseEntity<List<Community>> getCommunityList() {
+    @GetMapping(path = "/list")
+    public ResponseEntity<List<Community>> getCommunityList(
+        @RequestParam(required = false)
+            String mem_id,
+            Pageable pageable
+        ) 
+    {
+        log.info("getCommunityList() 메소드 호출");
 
-        log.info("게시판 전체 조회");
-
-        return ResponseEntity.ok(this.communityService.getCommunityList());
+    // 내 게시글 조회
+    if(mem_id != null){
+            return ResponseEntity.ok(this.communityRepository.findByMemId(mem_id,pageable).getContent()
+        );
     }
+
+    // 전체 게시글 조회
+        return ResponseEntity.ok(this.communityRepository .findAll(pageable).getContent()
+    );
+}
 
     /**
      * 상세 조회
@@ -117,18 +133,27 @@ public class CommunityController {
 
         return ResponseEntity.ok(this.communityService.setCommunityLike(com_id));
     }
+    
+/**
+ * Paging
+*/
+@GetMapping("/list_paging")
 
-    /**
-     * Paging
-    */
-    @GetMapping("/list_paging")
-    public ResponseEntity<Page<Community>> getCommunityListPaging(
+public ResponseEntity<Page<Community>>
+    getCommunityListPaging(
 
-            @RequestParam(name = "page", defaultValue = "1") int page,
+            @RequestParam(name = "page",defaultValue = "1")
+            int page,
 
-            @RequestParam(name = "size", defaultValue = "10") int size) {
+            @RequestParam(name = "size", defaultValue = "10")
+            int size,
 
-        Page<Community> community_list = this.communityService.getCommunityListPaging(page - 1, size);
+            @RequestParam( value = "mem_id", required = false)
+            String mem_id
+        )
+    {
+
+        Page<Community> community_list = this.communityService.getCommunityListPaging(page - 1, size, mem_id);
 
         return ResponseEntity.ok(community_list);
     }
