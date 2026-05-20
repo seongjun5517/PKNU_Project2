@@ -1,0 +1,49 @@
+/* Result */
+.result-grid { display: grid; grid-template-columns: .8fr 1.4fr; gap: 24px; }
+
+
+.circle-chart {
+    width: 190px;
+    height: 190px;
+    border-radius: 50%;
+    background: conic-gradient(var(--risk-main) var(--risk-deg), var(--risk-light) var(--risk-deg));
+    margin: 30px auto;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+}
+
+.circle-chart-inner {
+    width: 140px;
+    height: 140px;
+    border-radius: 50%;
+    background: white;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+}
+
+.circle-chart-inner span {
+    font-size: 36px;
+    font-weight: 800;
+    color: var(--risk-main);
+}
+
+.risk-low {
+    text-align: center;
+    color: var(--risk-main);
+}
+
+
+
+
+
+.risk-card p { text-align: center; color: #64748b; }
+.score-card strong { font-size: 48px; }
+.progress { height: 10px; background: #e5eeee; border-radius: 999px; overflow: hidden; margin: 16px 0; }
+.progress div { height: 100%; background: linear-gradient(135deg,#1db79f,#3b82f6); }
+.dot-list { padding-left: 20px; line-height: 2; }
+.icon-list { display: flex; gap: 24px; flex-wrap: wrap; margin-top: 24px; }
+.icon-list div { width: 88px; height: 88px; border-radius: 50%; background: #f1fbfa; display: flex; flex-direction: column; align-items: center; justify-content: center; gap: 6px; font-size: 26px; }
+.icon-list span { font-size: 12px; font-weight: 700; }
+

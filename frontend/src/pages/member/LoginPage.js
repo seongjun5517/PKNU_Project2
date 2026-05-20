@@ -1,3 +1,13 @@
+<<<<<<< HEAD
+import GoogleLoginButton from "../../components/user/GoogleLoginButton";
+
+const LoginPage = () => {
+    return(<GoogleLoginButton />);
+};
+
+
+export default LoginPage;
+=======
 import '../../styles/pages/AuthPage.css';
 import { Link, useNavigate } from 'react-router-dom';
 import { useAuth } from '../../context/AuthContext';
@@ -47,3 +57,4 @@ function LoginPage() {
 }
 
 export default LoginPage;
+>>>>>>> min

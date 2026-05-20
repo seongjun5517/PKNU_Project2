@@ -1,5 +1,6 @@
 package com.pknu.backend.model;
 
+import java.math.BigDecimal;
 import java.time.LocalDate;
 
 import jakarta.persistence.Column;
@@ -39,10 +40,11 @@ public class Data {
     // 실제 테이블에서 고유한 값을 가지는 PK를 정의
     @Id
     @Column(name = "data_id")
-    private String data_id;
+    private Integer data_id;
     private String mem_id;
     private LocalDate check_date;
     private Integer sex;
+    private Integer age;
     private Integer edu;
     private Integer incm;
     private Integer di1_dg;
@@ -50,17 +52,19 @@ public class Data {
     private Integer de1_dg;
     private Integer di3_dg;
     private Integer he_hp;
-    private float he_glu;
-    private float he_hba1c;
-    private float he_chol;
-    private float he_tg;
-    private float he_wc;
-    private float he_bmi;
+    private BigDecimal he_glu;
+    private BigDecimal he_hba1c;
+    private BigDecimal he_chol;
+    private BigDecimal he_tg;
+    private BigDecimal he_wc;
+
+    @Column(name = "HE_BMI")
+    private BigDecimal heBmi;
     private Integer bs1_1;
     private Integer bd1_11;
     private Integer bd2_1;
     private Integer pa_aerobic;
     private Integer be8_1;
-    private float predict;
+    private BigDecimal predict;
 
 }

@@ -1,0 +1,64 @@
+.mypage-container {
+    width: 80%;
+    margin: 0 auto;
+    padding: 30px;
+}
+
+/* 제목 영역 */
+.mypage-header {
+    text-align: center;
+    margin-bottom: 50px;
+}
+
+/* 카드 영역 */
+.mypage-card-grid {
+    display: grid;
+    grid-template-columns: repeat(3, 1fr);
+    gap: 20px;
+}
+
+/* 카드 스타일 */
+.mypage-card {
+    border: 1px solid #cccccc;
+    border-radius: 10px;
+    padding: 30px;
+    text-align: center;
+    box-shadow: 0 2px 5px rgba(0, 0, 0, 0.2);
+}
+
+/* 기본 버튼 */
+.mypage-button {
+    padding: 10px 20px;
+    border: none;
+    border-radius: 5px;
+    background-color: #4CAF50;
+    color: white;
+    cursor: pointer;
+}
+
+/* 하단 버튼 영역 */
+.mypage-footer {
+    text-align: center;
+    margin-top: 50px;
+}
+
+/* Home 버튼 */
+.home-button {
+    padding: 12px 30px;
+    border: none;
+    border-radius: 5px;
+    background-color: #333333;
+    color: white;
+    cursor: pointer;
+    margin-right: 15px;
+}
+
+/* 로그아웃 버튼 */
+.logout-button {
+    padding: 12px 30px;
+    border: none;
+    border-radius: 5px;
+    background-color: #d9534f;
+    color: white;
+    cursor: pointer;
+}
