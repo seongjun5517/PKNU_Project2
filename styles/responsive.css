@@ -1,0 +1,9 @@
+@media (max-width: 1000px) {
+  .home-grid, .form-two-column, .result-grid, .community-layout, .mypage-layout, .mypage-content, .auth-card.wide, .google-card, .signup-card, .login-card { grid-template-columns: 1fr; }
+  .menu { gap: 20px; }
+  .navbar-inner { height: auto; padding: 18px; flex-direction: column; gap: 16px; }
+  .footer { flex-direction: column; gap: 12px; text-align: center; }
+  .footer-links { justify-content: center; flex-wrap: wrap; gap: 16px; }
+  .auth-form-area { max-width: 100%; }
+  .mypage-full-card { grid-column: 1; }
+}

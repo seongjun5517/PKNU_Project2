@@ -1,5 +1,5 @@
-// React 라이브러리 가져오기
-// import React from "react";
+import './styles/common.css';
+import './styles/responsive.css';
 
 /* ################################################################ */
 /*  OAuth2.0 */
@@ -81,7 +81,6 @@ const Home = () => {
             </BrowserRouter>
 
         </div>
-
 
     );
 };
