@@ -22,7 +22,8 @@ function HomePage() {
     // 변경 명세 (useAuth 전체 인스턴스에 대한 이중 방어막 레이어)
     const authInstance = useAuth();
     const user = authInstance ? authInstance.user : null;
-    const memId = user ? user.mem_name : "방문자";
+    const memName = user ? user.mem_name : "방문자";
+    const memId = user ? user.mem_id : "";
 
     useEffect(() => {
         // [핵심 교정] 비로그인 사용자는 Spring Boot 서버 호출을 전면 차단하고 unauthenticated 상태로 즉시 반환
@@ -111,7 +112,7 @@ function HomePage() {
         <section className="home-grid">
             <div className="card chart-card" style={{ display: "flex", flexDirection: "column" }}>
             <div className="card-title-row" style={{ display: "flex", justifyContent: "space-between", alignItems: "center" }}>
-                <h3>오늘의 심근경색 발생 예측 ({memId}님)</h3>
+                <h3>오늘의 심근경색 발생 예측 ({memName}님)</h3>
                 <button 
                     type="button" 
                     className="text-button" 

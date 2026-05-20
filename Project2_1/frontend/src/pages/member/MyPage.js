@@ -3,7 +3,7 @@ import { useState, useEffect } from 'react';
 import { useNavigate } from 'react-router-dom';
 import { useAuth } from '../user/AuthContext';
 // [추가] 백엔드 수정 API 함수 호출 명세
-import { setMemberUpdate } from '../../springApi/memberSpringBootApi'; 
+import { getMemberView, setMemberUpdate } from '../../springApi/memberSpringBootApi'; 
 
 function MyPage() {
     const navigate = useNavigate();
@@ -27,17 +27,34 @@ function MyPage() {
         { id: 3, date: '2024.05.12', risk: '24.3% (보통)' }
     ];
 
-    // [추가] 전역 user 상태가 변경되거나 로드될 때 수정 폼의 초기값 동기화
     useEffect(() => {
-        if (user) {
-            setEditForm({
-                mem_id: user.mem_id || user.id || "",
-                mem_name: user.mem_name || user.name || "",
-                mem_phone: user.mem_phone || user.phone || "",
-                mem_nickname: user.mem_nickname || user.nickname || ""
-            });
-        }
-    }, [user]);
+    if (!user) return;
+
+    const mem_id = user.mem_id || user.id;
+
+    // 로컬스토리지 기본값 먼저 세팅 (빠른 렌더링)
+    setEditForm({
+        mem_id: mem_id || "",
+        mem_name: user.mem_name || user.name || "",
+        mem_phone: "",
+        mem_nickname: ""
+    });
+
+    // DB에서 전화번호 + 닉네임 조회
+    getMemberView(mem_id)
+        .then((res) => {
+            const data = res.data;
+            setEditForm((prev) => ({
+                ...prev,
+                mem_phone: data.mem_phone || "",
+                mem_nickname: data.mem_nickname || ""
+            }));
+        })
+        .catch((err) => {
+            console.error("❌ 회원 상세 조회 실패:", err);
+        });
+
+}, [user]);
 
     const handleRecordDetail = () => {
         navigate('/result');
@@ -68,10 +85,10 @@ function MyPage() {
             .then((res) => {
                 // [핵심 교정] 화면 전체의 네비게이션 바 및 프로필 뷰 동기화를 위한 객체 재정비
                 const updatedSessionUser = {
-                    id: editForm.mem_id,
-                    name: editForm.mem_name,
-                    phone: editForm.mem_phone,
-                    nickname: editForm.mem_nickname,
+                    // id: editForm.mem_id,
+                    // name: editForm.mem_name,
+                    // phone: editForm.mem_phone,
+                    // nickname: editForm.mem_nickname,
                     
                     // 호환성을 위한 원본 데이터 맵 유지
                     mem_id: editForm.mem_id,
@@ -137,12 +154,6 @@ function MyPage() {
                 알림 설정
             </button>
 
-            <button
-                className={activeMenu === '회원 정보' ? 'active' : ''}
-                onClick={() => setActiveMenu('회원 정보')}
-            >
-                회원 정보
-            </button>
             </aside>
 
             <section className="mypage-content">
