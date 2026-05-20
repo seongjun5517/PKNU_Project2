@@ -1,14 +1,24 @@
 import React, { useState, useEffect } from 'react';
 import '../../styles/pages/ResultPage.css';
-import { useLocation, useNavigate } from 'react-router-dom';
+import { useLocation  } from 'react-router-dom';
 import { getDataView } from "../../springApi/modeldataSpringBootApi"; 
 import { LineChart, Line, XAxis, YAxis, CartesianGrid, Tooltip, ResponsiveContainer } from "recharts";
 
 
 function ResultPage() {
-  const navigate = useNavigate();
   const location = useLocation();
-  const result = location.state?.result || { risk: 12.8, score: 86 };
+  const result = location.state?.result || { probability: 0 };
+  const probability = result.probability || 0;
+  const percent = (probability * 100).toFixed(2);
+  const fillDeg = Math.round(probability * 360);
+
+  const getRiskColor = (prob) => {
+      if (prob < 0.1) return { main: "#0f9f8d", light: "#e0f7f4", label: "낮음" };
+      if (prob < 0.3) return { main: "#f59e0b", light: "#fde68a", label: "보통" };
+      return          { main: "#ef4444", light: "#fca5a5", label: "높음" };
+  };
+
+  const riskColor = getRiskColor(probability);
   // 상태 관리
     const [chartData, setChartData] = useState([]);
     const [selectedData, setSelectedData] = useState(null); 
@@ -35,16 +45,10 @@ function ResultPage() {
     }, [memId]);
 
     // 구조적 예외 처리를 추가한 클릭 핸들러
-    const handlePointClick = (e) => {
-        let targetData = e?.payload;
-        
-        if (!targetData && e?.activePayload && e.activePayload.length > 0) {
-            targetData = e.activePayload[0].payload;
-        }
-
-        if (targetData) {
-            console.log("🎯 매핑된 상세 데이터:", targetData);
-            setSelectedData(targetData);
+    const handlePointClick = (payload) => {
+        if (payload?.payload) {
+        console.log("클릭된 데이터:", payload.payload);
+        setSelectedData(payload.payload);
         }
     };
 
@@ -59,8 +63,13 @@ function ResultPage() {
       <section className="result-grid">
         <div className="card risk-card">
           <h3>오늘의 심근경색 발생 확률</h3>
-          <div className="circle-chart"><span>{result.risk}%</span></div>
-          <h3 className="risk-low">위험도 : 낮음</h3>
+          <div className="circle-chart" style={{
+                                        "--risk-main": riskColor.main,
+                                        "--risk-light": riskColor.light,
+                                        "--risk-deg": `${fillDeg}deg`
+                                    }}
+          ><div className='circle-chart-inner'><span>{percent}%</span></div></div>
+          <h3 className="risk-low" style={{ color: riskColor.main }}>위험도 : {riskColor.label}</h3>
           <p>※ 위험도는 낮을수록 위험이 낮습니다.</p>
         </div>
 
@@ -69,7 +78,6 @@ function ResultPage() {
           <div style={{ width: "95%", margin: "0 auto", padding: "20px", fontFamily: "sans-serif" }}>
             <div style={{ display: "flex", justifyContent: "space-between", alignItems: "center", marginBottom: "20px" }}>
                 <h3>{memId} 님의 분석 그래프 보기</h3>
-                <button type="button" onClick={() => navigate(-1)} style={{ padding: "8px 16px", cursor: "pointer" }}>Home으로 가기</button>
             </div>
 
             {loading ? (
@@ -84,8 +92,7 @@ function ResultPage() {
                             <LineChart 
                                 data={chartData} 
                                 margin={{ top: 10, right: 30, left: 0, bottom: 0 }}
-                                onClick={handlePointClick} 
-                            >
+                                >
                                 <CartesianGrid strokeDasharray="3 3" stroke="#e0e0e0" />
                                 <XAxis dataKey="CHECK_DATE" tick={{ fontSize: 12 }} />
                                 <YAxis domain={[0, 'auto']} tick={{ fontSize: 12 }} />
@@ -96,12 +103,12 @@ function ResultPage() {
                                     name="예측 확률"
                                     stroke="#007bff"
                                     strokeWidth={3}
+                                    dot={{r : 5}}
                                     activeDot={{ 
-                                        r: 8, 
+                                        r: 12, 
                                         style: { cursor: "pointer" },
                                         onClick: (e, payload) => handlePointClick(payload)
                                     }}
-                                    onClick={handlePointClick} 
                                     style={{ cursor: "pointer" }} 
                                 />
                             </LineChart>

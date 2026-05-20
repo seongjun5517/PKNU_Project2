@@ -2,7 +2,6 @@ package com.pknu.backend.service;
 
 import java.util.List;
 
-
 import org.springframework.stereotype.Service;
 
 import com.pknu.backend.model.Model;
@@ -28,5 +27,13 @@ public class ModelService {
         return list; // 빈 리스트 반환
 
         
+    }
+    
+    public boolean hasPredictedToday(String mem_id) {
+        return modelRepository.countTodayByMemId(mem_id) > 0;
+    }
+
+    public Double getTodayPredict(String mem_id) {
+        return modelRepository.findTodayPredictByMemId(mem_id);
     }
 }
