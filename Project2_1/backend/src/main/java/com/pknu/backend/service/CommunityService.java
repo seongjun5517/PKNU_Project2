@@ -128,22 +128,31 @@ public class CommunityService {
 
         return null;
     }
+   
+    /**
+     * Paging 처리
+    */
+    public Page<Community>getCommunityListPaging(int page,int size, String mem_id){
+            log.info("게시판 Paging 조회");
 
-/**
- * Paging 처리
-*/
-public Page<Community>getCommunityListPaging(int page,int size, String mem_id){
-        log.info("게시판 Paging 조회");
+            Pageable pageable = PageRequest.of(page, size);
 
-        Pageable pageable = PageRequest.of(page, size);
+            log.info("mem_id = {}",mem_id);
 
-        log.info("mem_id = {}",mem_id);
+            // 내 게시글 조회
+            if(mem_id != null){return this.communityRepository.findByMemId(mem_id, pageable);
+            }
 
-        // 내 게시글 조회
-        if(mem_id != null){return this.communityRepository.findByMemId(mem_id, pageable);
+            // 전체 조회
+            return this.communityRepository.findAll(pageable);
         }
 
-        // 전체 조회
-        return this.communityRepository.findAll(pageable);
+    /**
+     * 인기글 조회
+    */
+    public List<Community>
+        getTopCommunityList(){
+
+        return this.communityRepository.findTopCommunityList();
     }
 }

@@ -29,3 +29,6 @@ export const setCommunityLike =
 // Paging
 export const getCommunityPaging =
     (page, size) =>springApi.get(`/community/list_paging?page=${page}&size=${size}`);
+
+// 좋아요수 정렬
+export const getCommunityTopList = () => springApi.get("/community/top_list");

@@ -9,7 +9,7 @@ import slideRunner from '../assets/slide-runner.svg';
 import slideChart from '../assets/slide-chart.svg';
 import slideCommunity from '../assets/slide-community.svg';
 import { useAuth } from './user/AuthContext';
-
+import {getCommunityTopList} from "../springApi/communitySpringBootApi";
 function HomePage() {
     const navigate = useNavigate();
     const [slideIndex, setSlideIndex] = useState(0);
@@ -23,6 +23,9 @@ function HomePage() {
     const authInstance = useAuth();
     const user = authInstance ? authInstance.user : null;
     const memId = user ? user.mem_name : "방문자";
+
+    // 실제 데이터 반영
+    const [communityPosts, setCommunityPosts] =useState([]);
 
     useEffect(() => {
         // [핵심 교정] 비로그인 사용자는 Spring Boot 서버 호출을 전면 차단하고 unauthenticated 상태로 즉시 반환
@@ -68,12 +71,31 @@ function HomePage() {
             setDbStatus("success");
             setLoading(false);
         })
+
         .catch((error) => {
             console.error("❌ [DB진단] 아예 Spring 서버와 통신에 실패했습니다.");
             setDbStatus("error");
             setLoading(false);
         });
     }, [memId, user]);
+
+    useEffect(() => {const loadTopPosts = async() => {
+
+        try{
+            const response = await getCommunityTopList();
+            console.log(response.data);
+            setCommunityPosts( response.data);
+        }
+
+        catch(error){
+
+            console.log(error);
+        }
+    };
+
+    loadTopPosts();
+
+}, []);
 
     const articleLinks = {
         more: 'https://health.kdca.go.kr/healthinfo/biz/health/gnrlzHealthInfo/gnrlzHealthInfo/gnrlzHealthInfoView.do?cntnts_sn=6770',
@@ -91,12 +113,7 @@ function HomePage() {
         { title: '건강 정보를 나누는\n커뮤니티 공간', buttonText: '커뮤니티 가기', link: '/community', image: slideCommunity, alt: '커뮤니티 일러스트' }
     ];
 
-    const communityPosts = [
-        { id: 1, category: '건강 정보', title: '아침 공복 유산소, 정말 효과 있을까요?', time: '5시간 전' },
-        { id: 2, category: '식단 이야기', title: '다이어트 식단 공유합니다!', time: '3시간 전' },
-        { id: 3, category: '운동 공유', title: '단백질 섭취량, 하루에 얼마나 적당할까요?', time: '5시간 전' },
-        { id: 4, category: '자유 게시판', title: '스트레스 관리에 좋은 방법 추천해주세요!', time: '1일 전' }
-    ];
+    
 
     const moveSlide = (direction) => {
         if (direction === 'prev') {
@@ -208,10 +225,10 @@ function HomePage() {
 
             <ul className="post-preview-list">
                 {communityPosts.map((post) => (
-                <li key={post.id} onClick={() => navigate(`/community/${post.id}`)}>
-                    <span className="category-badge">{post.category}</span>
-                    <span className="post-title">{post.title}</span>
-                    <span className="post-meta time">{post.time}</span>
+                <li key={post.com_id} onClick={() => navigate(`/community/${post.com_id}`)}>
+                    <span className="category-badge">{post.com_category}</span>
+                    <span className="post-title">{post.com_title}</span>
+                    <span className="post-meta time">{post.com_like}</span>
                 </li>
                 ))}
             </ul>

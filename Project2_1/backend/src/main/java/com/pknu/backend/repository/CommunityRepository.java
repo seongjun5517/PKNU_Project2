@@ -1,5 +1,7 @@
 package com.pknu.backend.repository;
 
+import java.util.List;
+
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
 import org.springframework.data.jpa.repository.JpaRepository;
@@ -13,6 +15,9 @@ import com.pknu.backend.model.Community;
 public interface CommunityRepository
         extends JpaRepository<Community, Integer> {
 
+    /**
+     * 내 게시글 조회
+    */
     @Query(value = """
 
         SELECT *
@@ -26,7 +31,7 @@ public interface CommunityRepository
         """
         SELECT COUNT(*)
         FROM community_test
-        WHERE TRIM(mem_id)= TRIM(:mem_id) 
+        WHERE TRIM(mem_id)= TRIM(:mem_id)
 
         """,
 
@@ -37,8 +42,30 @@ public interface CommunityRepository
 
             @Param("mem_id")
             String mem_id,
+
             Pageable pageable
     );
 
-    
+    /**
+     * 인기글 조회
+     * 좋아요 순
+    */
+    @Query(value = """
+
+        SELECT *
+        FROM
+        (
+            SELECT *
+            FROM community_test
+            ORDER BY com_like DESC      
+        )
+        WHERE ROWNUM <= 4
+
+        """,
+
+        nativeQuery = true
+    )
+
+    List<Community> findTopCommunityList();
+
 }
