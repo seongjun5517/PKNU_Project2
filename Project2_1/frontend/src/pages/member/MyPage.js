@@ -4,6 +4,8 @@ import { useNavigate } from 'react-router-dom';
 import { useAuth } from '../user/AuthContext';
 // [추가] 백엔드 수정 API 함수 호출 명세
 import { setMemberUpdate } from '../../springApi/memberSpringBootApi'; 
+// MyPage.js 상단 import에 추가
+import { getDataView } from '../../springApi/modeldataSpringBootApi';
 
 function MyPage() {
     const navigate = useNavigate();
@@ -21,22 +23,27 @@ function MyPage() {
     });
 
     // 정적 가상 데이터 (분석 기록용)
-    const records = [
-        { id: 1, date: '2024.05.26', risk: '12.8% (낮음)' },
-        { id: 2, date: '2024.05.19', risk: '18.6% (낮음)' },
-        { id: 3, date: '2024.05.12', risk: '24.3% (보통)' }
-    ];
+    const [records, setRecords] = useState([]);
+    const [recordLoading, setRecordLoading] = useState(true);
 
-    // [추가] 전역 user 상태가 변경되거나 로드될 때 수정 폼의 초기값 동기화
+
     useEffect(() => {
-        if (user) {
-            setEditForm({
-                mem_id: user.mem_id || user.id || "",
-                mem_name: user.mem_name || user.name || "",
-                mem_phone: user.mem_phone || user.phone || "",
-                mem_nickname: user.mem_nickname || user.nickname || ""
-            });
-        }
+        if (!user) return;
+
+        const memId = user.mem_id || user.id;  // ✅ ID로 수정
+        getDataView(memId)
+            .then((response) => {
+                if (!response?.data || response.data.length === 0) {
+                    setRecords([]);
+                    return;
+                }
+                const sorted = [...response.data]
+                    .sort((a, b) => new Date(b.CHECK_DATE) - new Date(a.CHECK_DATE))
+                    .slice(0, 3);
+                setRecords(sorted);
+            })
+            .catch(() => setRecords([]))
+            .finally(() => setRecordLoading(false));
     }, [user]);
 
     const handleRecordDetail = () => {
@@ -169,34 +176,45 @@ function MyPage() {
 
                 <div className="card record-card">
                     <h3>최근 분석 기록</h3>
-
-                    {records.map((record) => (
-                    <div className="record-row" key={record.id}>
-                        <span>{record.date}</span>
-                        <strong>{record.risk}</strong>
-                        <button className="btn-outline mint" onClick={handleRecordDetail}>
-                            상세보기
-                        </button>
-                    </div>
-                    ))}
+                    {recordLoading ? (
+                        <p style={{ color: '#888', fontSize: '14px' }}>불러오는 중...</p>
+                    ) : records.length === 0 ? (
+                        <p style={{ color: '#888', fontSize: '14px' }}>분석 기록이 없습니다.</p>
+                    ) : (
+                        records.map((record, index) => (
+                            <div className="record-row" key={index}>
+                                <span>{record.CHECK_DATE}</span>
+                                <strong>{(record.PREDICT * 100).toFixed(1)}% </strong>
+                                <button className="btn-outline mint" onClick={handleRecordDetail}>
+                                    상세보기
+                                </button>
+                            </div>
+                        ))
+                    )}
                 </div>
                 </>
             )}
 
             {activeMenu === '분석 기록' && (
                 <div className="card mypage-full-card">
-                <h3>분석 기록</h3>
-                <p>지금까지 진행한 심근경색 발생 확률 예측 기록입니다.</p>
+                    <h3>분석 기록</h3>
+                    <p>지금까지 진행한 심근경색 발생 확률 예측 기록입니다.</p>
 
-                {records.map((record) => (
-                    <div className="record-row large" key={record.id}>
-                    <span>{record.date}</span>
-                    <strong>{record.risk}</strong>
-                    <button className="btn-outline mint" onClick={handleRecordDetail}>
-                        상세보기
-                    </button>
-                    </div>
-                ))}
+                    {recordLoading ? (
+                        <p style={{ color: '#888', fontSize: '14px' }}>불러오는 중...</p>
+                    ) : records.length === 0 ? (
+                        <p style={{ color: '#888', fontSize: '14px' }}>분석 기록이 없습니다.</p>
+                    ) : (
+                        records.map((record, index) => (
+                            <div className="record-row large" key={index}>
+                                <span>{record.CHECK_DATE}</span>
+                                <strong>{(record.PREDICT * 100).toFixed(1)}%</strong>
+                                <button className="btn-outline mint" onClick={handleRecordDetail}>
+                                    상세보기
+                                </button>
+                            </div>
+                        ))
+                    )}
                 </div>
             )}
 

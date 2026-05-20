@@ -9,8 +9,8 @@ import { LineChart, Line, XAxis, YAxis, CartesianGrid, Tooltip, ResponsiveContai
 function ResultPage() {
   const { user } = useAuth() || {}; // [수정] 수정 완료 후 전역 세션 갱신을 위해 login 함수 구독
   const location = useLocation();
-  const result = location.state?.result || { probability: 0 };
-  const probability = result.probability || 0;
+  const result = location.state?.result || {};
+  const [probability, setProbability] = useState(result.probability || 0);
   const percent = (probability * 100).toFixed(2);
   const fillDeg = Math.round(probability * 360);
 
@@ -28,7 +28,6 @@ function ResultPage() {
 
     const memId = user.mem_id; 
 
-    // 컴포넌트 마운트 시 데이터 로드
     useEffect(() => {
         setLoading(true);
         
@@ -38,6 +37,13 @@ function ResultPage() {
                     return new Date(a.CHECK_DATE) - new Date(b.CHECK_DATE);
                 });
                 setChartData(sortedData);
+
+                if (sortedData.length > 0) {
+                    const latest = sortedData[sortedData.length - 1];
+                    // PREDICT가 0~1 사이 소수이면 그대로, 퍼센트 숫자면 /100 처리
+                    setProbability(latest.PREDICT);
+                }
+
                 setLoading(false);
             })
             .catch((error) => {
