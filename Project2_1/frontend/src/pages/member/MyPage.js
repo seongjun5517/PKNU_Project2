@@ -27,25 +27,23 @@ function MyPage() {
     const [recordLoading, setRecordLoading] = useState(true);
 
 
-    useEffect(() => {
-    //     if (!user) return;
+useEffect(() => {
 
-    //     const memId = user.mem_id || user.id;  // ✅ ID로 수정
-    //     getDataView(memId)
-    //         .then((response) => {
-    //             if (!response?.data || response.data.length === 0) {
-    //                 setRecords([]);
-    //                 return;
-    //             }
-    //             const sorted = [...response.data]
-    //                 .sort((a, b) => new Date(b.CHECK_DATE) - new Date(a.CHECK_DATE))
-    //                 .slice(0, 3);
-    //             setRecords(sorted);
-    //         })
-    //         .catch(() => setRecords([]))
-    //         .finally(() => setRecordLoading(false));
-    // }, [user]);
-    // if (!user) return;
+    const memId = user.mem_id || user.id;  // ✅ ID로 수정
+    getDataView(memId)
+        .then((response) => {
+            if (!response?.data || response.data.length === 0) {
+                setRecords([]);
+                return;
+            }
+            const sorted = [...response.data]
+                .sort((a, b) => new Date(b.CHECK_DATE) - new Date(a.CHECK_DATE))
+                .slice(0, 3);
+            setRecords(sorted);
+        })
+        .catch(() => setRecords([]))
+        .finally(() => setRecordLoading(false));
+    if (!user) return;
 
     const mem_id = user.mem_id || user.id;
 

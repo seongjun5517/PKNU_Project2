@@ -30,6 +30,18 @@ function Navbar() {
         
         navigate("/mypage");
     };
+    const handleAnalysisPage = (e) => {
+        // 만약 <Link> 태그의 기본 주소 이동 동작(Href)이 남아있다면 강제 차단
+        if (e) e.preventDefault();
+
+        if (!user) {
+            alert("로그인 후 이용 가능합니다.");
+            navigate("/login");
+            return;
+        }
+        
+        navigate("/analysis");
+    };
 
     return (
         <header className="navbar">
@@ -41,7 +53,7 @@ function Navbar() {
 
             <nav className="menu">
             <Link className={isActive('/') ? 'active' : ''} to="/">홈</Link>
-            <Link className={isActive('/analysis') || isActive('/result') ? 'active' : ''} to="/analysis">분석</Link>
+            <Link className={isActive('/analysis') || isActive('/result') ? 'active' : ''} to="/analysis" onClick={handleAnalysisPage}>분석</Link>
             <Link className={isActive('/community') ? 'active' : ''} to="/community">커뮤니티</Link>
             
             {/* [수정] 일반 Link 이동을 방지하고 onClick 핸들러 가드를 바인딩했습니다 */}
