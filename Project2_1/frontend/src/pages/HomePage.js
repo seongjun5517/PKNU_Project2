@@ -8,6 +8,9 @@ import { getDataView } from "../springApi/modeldataSpringBootApi";
 import slideRunner from '../assets/slide-runner.svg';
 import slideChart from '../assets/slide-chart.svg';
 import slideCommunity from '../assets/slide-community.svg';
+import runningImg from '../assets/run.png';
+import foodImg from '../assets/food.png';
+
 import { useAuth } from './user/AuthContext';
 import {getCommunityTopList} from "../springApi/communitySpringBootApi";
 function HomePage() {
@@ -103,8 +106,8 @@ function HomePage() {
 
     const articleLinks = {
         more: 'https://health.kdca.go.kr/healthinfo/biz/health/gnrlzHealthInfo/gnrlzHealthInfo/gnrlzHealthInfoView.do?cntnts_sn=6770',
-        lifestyle: 'https://www.kdca.go.kr/menu.es?mid=a20303020300',
-        food: 'https://doctornow.co.kr/content/magazine/08c6a208de4a4da28aa8bfaacccbbea6'
+        lifestyle: 'https://kormedi.com/1342441/',
+        food: 'https://yuyu.co.kr/blog/b248f9bf-2f30-470b-858b-524d242a4204/'
     };
 
     const openArticle = (url) => {
@@ -144,7 +147,7 @@ function HomePage() {
             </div>
 
             {/* 그래프 및 디버깅 결과 메시지 레이어 */}
-            <div className="dynamic-chart-container" style={{ width: "100%", height: "230px", marginTop: "15px", position: "relative" }}>
+            <div className="dynamic-chart-container" style={{ width: "100%", height: "230px", marginTop: "25px", position: "relative" }}>
                 {loading ? (
                     <div style={{ textAlign: "center", paddingTop: "80px", color: "#666" }}>데이터를 로딩 중입니다...</div>
                 ) : dbStatus === "unauthenticated" ? (
@@ -170,7 +173,9 @@ function HomePage() {
                     </div>
                 ) : (
                     <ResponsiveContainer width="100%" height="100%">
-                        <LineChart data={chartData} margin={{ top: 5, right: 20, left: -20, bottom: 5 }}>
+                        <LineChart
+                         data={chartData}
+                         margin={{ top: 5, right: 20, left: -20, bottom: 5 }}>
                         <CartesianGrid strokeDasharray="3 3" stroke="#e0e0e0" />
                         <XAxis dataKey="CHECK_DATE" tick={{ fontSize: 10 }} />
                         <YAxis domain={[0, 'auto']} tick={{ fontSize: 10 }} />
@@ -193,30 +198,43 @@ function HomePage() {
             {/* 오른쪽 상단: 기사 카드 */}
             <div className="card article-card">
             <div className="card-title-row">
-                <h3>심혈관 및 심근경색에 대한 기사</h3>
-                <button type="button" className="text-button" onClick={() => openArticle(articleLinks.more)}>
-                더보기 〉
-                </button>
+                <h3>심혈관 및 심근경색에 대한 정보</h3>
             </div>
 
             <button type="button" className="article-link-card main-article-link" onClick={() => openArticle(articleLinks.more)}>
-                <div className="article-main-img">심장 이미지</div>
-                <h4>심근경색 전조증상, 이렇게 확인하세요</h4>
-                <p>심근경색은 조기 발견 and 생활습관 관리가 매우 중요합니다.</p>
-            </button>
+                <div >
+                <img className="article-main-img" src="https://cdn.bosa.co.kr/news/photo/202303/2193835_226001_417.jpg" alt="article"/>
+                </div>
+          </button>
 
             <div className="article-small-list">
-                <button type="button" className="article-link-card" onClick={() => openArticle(articleLinks.lifestyle)}>
-                <div className="article-thumb red">♥</div>
-                <p>혈관 건강을 지키는 5가지 생활습관</p>
-                </button>
+            <button
+              type="button"
+              className="article-link-card"
+              onClick={() => openArticle(articleLinks.lifestyle)}
+            >
+            <img
+              className="article-thumb-img"
+              src={runningImg}
+              alt="혈관 건강을 지키는 7가지 생활습관"
+            />
+            <p>혈관 건강을 지키는 7가지 생활습관</p>
+            </button>
 
-                <button type="button" className="article-link-card" onClick={() => openArticle(articleLinks.food)}>
-                <div className="article-thumb food">🥗</div>
-                <p>심장에 좋은 음식과 나쁜 음식</p>
-                </button>
-            </div>
-            </div>
+            <button
+              type="button"
+              className="article-link-card"
+              onClick={() => openArticle(articleLinks.food)}
+            >
+              <img
+                className="article-thumb-img"
+                src={foodImg}
+                alt="혈관 건강을 지키는 5가지 핵심 식단 전략"
+              />
+              <p>혈관 건강을 지키는 5가지 핵심 식단 전략</p>
+            </button>
+          </div>
+        </div>
 
             {/* 왼쪽 하단: 커뮤니티 인기글 */}
             <div className="card community-preview-card">

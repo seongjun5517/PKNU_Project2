@@ -17,6 +17,7 @@ function CommunityPage() {
   const [selectedCategory, setSelectedCategory] = useState('전체 게시글');
   const [currentPage, setCurrentPage] = useState(1);
 
+
   // 1. API로 가져온 게시글 데이터를 저장할 상태(State) 생성
   const [posts, setPosts] = useState([]);
   // 로딩 상태 추가 (선택사항이지만 UX에 좋습니다)
@@ -78,6 +79,15 @@ function CommunityPage() {
     setCurrentPage((prev) => (prev >= totalPages ? 1 : prev + 1));
   };
 
+  // iISO 날짜 문자열에서 날짜 부분만 추출
+  const formatDate = (dateString) => {
+  if (!dateString) {
+    return '';
+  }
+
+  return dateString.split('T')[0];
+  };
+
   return (
     <main className="page community-page">
       <section className="community-layout">
@@ -130,7 +140,7 @@ function CommunityPage() {
                   <tr key={post.com_id || post.id} onClick={() => navigate(`/community/${post.com_id || post.id}`)} className="clickable-row">
                     <td>{post.com_title}</td>
                     <td>{post.mem_nickname || post.mem_id}</td> 
-                    <td>{post.com_created}</td>    
+                    <td>{formatDate(post.com_created)}</td>    
                     <td>{post.com_view}</td>   
                   </tr>
                 ))

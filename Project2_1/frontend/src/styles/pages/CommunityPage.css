@@ -6,10 +6,27 @@
 /* ------------------------------
    커뮤니티 목록 레이아웃
 ------------------------------ */
+.community-page {
+  display: flex;
+  flex-direction: column;
+}
+
 .community-layout {
+  flex: 1;
   display: grid;
   grid-template-columns: 220px 1fr;
   gap: 24px;
+  align-items: stretch;
+}
+
+.community-sidebar,
+.community-content {
+  height: 100%;
+}
+
+.community-content {
+  display: flex;
+  flex-direction: column;
 }
 
 .community-sidebar {
@@ -44,11 +61,11 @@
 
 .community-actions {
   display: flex;
-  gap: 10px;
+  gap: 5px;
 }
 
 .community-actions input {
-  width: 260px;
+  width: 200px;
   border: 1px solid #d0e5e5;
   border-radius: 8px;
   padding: 0 12px;
@@ -64,10 +81,14 @@
   margin-top: 24px;
 }
 
+.post-table-area {
+  flex: 1;
+}
+
 .post-table th,
 .post-table td {
   border-bottom: 1px solid #edf5f5;
-  padding: 16px 10px;
+  padding: 29px 10px;
   text-align: left;
 }
 
@@ -94,8 +115,9 @@
    페이지네이션
 ------------------------------ */
 .pagination {
+  margin-top: auto;
+  padding-top: 28px;
   text-align: center;
-  margin-top: 28px;
 }
 
 .pagination button {
@@ -121,6 +143,16 @@
   color: #94a3b8;
   font-size: 12px;
   margin-top: 8px;
+}
+
+.btn-outline.small {
+  height: 38px;
+  padding: 8px 14px;
+  border: 1px solid #1db79f;
+  background: #ffffff;
+  color: #0f9f8d;
+  border-radius: 8px;
+  font-weight: 700;
 }
 
 /* ------------------------------
@@ -231,15 +263,15 @@
   }
 
   .community-actions {
-    width: 100%;
-    flex-direction: column;
-  }
+  display: flex;
+  align-items: center;
+  gap: 10px;
+}
 
   .community-actions input {
     width: 100%;
     height: 42px;
   }
-  
 }
 
 /* =========================

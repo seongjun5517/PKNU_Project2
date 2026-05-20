@@ -78,7 +78,6 @@ function ResultPage() {
                                     }}
           ><div className='circle-chart-inner'><span>{percent}%</span></div></div>
           <h3 className="risk-low" style={{ color: riskColor.main }}>위험도 : {riskColor.label}</h3>
-          <p>※ 위험도는 낮을수록 위험이 낮습니다.</p>
         </div>
 
         <div className="card result-chart-card">
@@ -239,13 +238,6 @@ function ResultPage() {
                 </>
             )}
         </div>
-        </div>
-
-        <div className="card score-card">
-          <h3>종합 점수</h3>
-          <strong>{result.score}</strong><span>/100</span>
-          <div className="progress"><div style={{ width: `${result.score}%` }}></div></div>
-          <p>매우 좋아요! 건강 관리 습관이 잘 유지되고 있어요.</p>
         </div>
 
         <div className="card"><h3>주요 위험 요인</h3><ul className="dot-list"><li>운동 부족</li><li>스트레스 관리 부족</li><li>수면 시간 부족</li></ul></div>

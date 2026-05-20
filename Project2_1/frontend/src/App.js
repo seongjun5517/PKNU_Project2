@@ -19,24 +19,25 @@ import { AuthProvider } from './pages/user/AuthContext';
 
 const Home = () =>  {
     return (
-
-        <BrowserRouter>
-            {/* 상단 Header */}
-            <Navbar />
-            {/* Home 페이지*/}
-            <HomeRoutes />
-            {/* goole 인증 페이지*/}
-            <AuthRoutes />
-            {/* 데이터 입력 페이지 */}
-            <AnalysisRoutes />
-            {/* 커뮤니티 페이지 */}
-            <CommunityRoutes />
-            {/* 마이페이지 */}
-            <MyPageRoutes />
-            {/* footer 관련 페이지 */}
-            <PolicyRoutes />
-            <Footer />
-        </BrowserRouter>
+        <div className="app">
+            <BrowserRouter>
+                {/* 상단 Header */}
+                <Navbar />
+                {/* Home 페이지*/}
+                <HomeRoutes />
+                {/* goole 인증 페이지*/}
+                <AuthRoutes />
+                {/* 데이터 입력 페이지 */}
+                <AnalysisRoutes />
+                {/* 커뮤니티 페이지 */}
+                <CommunityRoutes />
+                {/* 마이페이지 */}
+                <MyPageRoutes />
+                {/* footer 관련 페이지 */}
+                <PolicyRoutes />
+                <Footer />
+            </BrowserRouter>
+        </div>
     );
 }
 
