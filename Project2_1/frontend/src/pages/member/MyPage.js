@@ -2,10 +2,10 @@ import '../../styles/pages/MyPage.css';
 import { useState, useEffect } from 'react';
 import { useNavigate } from 'react-router-dom';
 import { useAuth } from '../user/AuthContext';
-// [추가] 백엔드 수정 API 함수 호출 명세
-import { setMemberUpdate } from '../../springApi/memberSpringBootApi'; 
+
 // MyPage.js 상단 import에 추가
 import { getDataView } from '../../springApi/modeldataSpringBootApi';
+import { getMemberView, setMemberUpdate } from '../../springApi/memberSpringBootApi'; 
 
 function MyPage() {
     const navigate = useNavigate();
@@ -28,23 +28,50 @@ function MyPage() {
 
 
     useEffect(() => {
-        if (!user) return;
+    //     if (!user) return;
 
-        const memId = user.mem_id || user.id;  // ✅ ID로 수정
-        getDataView(memId)
-            .then((response) => {
-                if (!response?.data || response.data.length === 0) {
-                    setRecords([]);
-                    return;
-                }
-                const sorted = [...response.data]
-                    .sort((a, b) => new Date(b.CHECK_DATE) - new Date(a.CHECK_DATE))
-                    .slice(0, 3);
-                setRecords(sorted);
-            })
-            .catch(() => setRecords([]))
-            .finally(() => setRecordLoading(false));
-    }, [user]);
+    //     const memId = user.mem_id || user.id;  // ✅ ID로 수정
+    //     getDataView(memId)
+    //         .then((response) => {
+    //             if (!response?.data || response.data.length === 0) {
+    //                 setRecords([]);
+    //                 return;
+    //             }
+    //             const sorted = [...response.data]
+    //                 .sort((a, b) => new Date(b.CHECK_DATE) - new Date(a.CHECK_DATE))
+    //                 .slice(0, 3);
+    //             setRecords(sorted);
+    //         })
+    //         .catch(() => setRecords([]))
+    //         .finally(() => setRecordLoading(false));
+    // }, [user]);
+    // if (!user) return;
+
+    const mem_id = user.mem_id || user.id;
+
+    // 로컬스토리지 기본값 먼저 세팅 (빠른 렌더링)
+    setEditForm({
+        mem_id: mem_id || "",
+        mem_name: user.mem_name || user.name || "",
+        mem_phone: "",
+        mem_nickname: ""
+    });
+
+    // DB에서 전화번호 + 닉네임 조회
+    getMemberView(mem_id)
+        .then((res) => {
+            const data = res.data;
+            setEditForm((prev) => ({
+                ...prev,
+                mem_phone: data.mem_phone || "",
+                mem_nickname: data.mem_nickname || ""
+            }));
+        })
+        .catch((err) => {
+            console.error("❌ 회원 상세 조회 실패:", err);
+        });
+
+}, [user]);
 
     const handleRecordDetail = () => {
         navigate('/result');
@@ -75,10 +102,10 @@ function MyPage() {
             .then((res) => {
                 // [핵심 교정] 화면 전체의 네비게이션 바 및 프로필 뷰 동기화를 위한 객체 재정비
                 const updatedSessionUser = {
-                    id: editForm.mem_id,
-                    name: editForm.mem_name,
-                    phone: editForm.mem_phone,
-                    nickname: editForm.mem_nickname,
+                    // id: editForm.mem_id,
+                    // name: editForm.mem_name,
+                    // phone: editForm.mem_phone,
+                    // nickname: editForm.mem_nickname,
                     
                     // 호환성을 위한 원본 데이터 맵 유지
                     mem_id: editForm.mem_id,
@@ -144,12 +171,6 @@ function MyPage() {
                 알림 설정
             </button>
 
-            <button
-                className={activeMenu === '회원 정보' ? 'active' : ''}
-                onClick={() => setActiveMenu('회원 정보')}
-            >
-                회원 정보
-            </button>
             </aside>
 
             <section className="mypage-content">
