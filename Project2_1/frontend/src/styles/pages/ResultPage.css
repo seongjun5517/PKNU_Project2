@@ -34,9 +34,17 @@
     color: var(--risk-main);
 }
 
+.risk-card {
+  height: 100%;
+  align-self: stretch;
 
+  display: flex;
+  flex-direction: column;
+  align-items: center;
 
-
+  /* 오른쪽 카드가 늘어날 때 내부 내용도 세로 중앙 정렬 */
+  justify-content: center;
+}
 
 .risk-card p { text-align: center; color: #64748b; }
 .score-card strong { font-size: 48px; }
