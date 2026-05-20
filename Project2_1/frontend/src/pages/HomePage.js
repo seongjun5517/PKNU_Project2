@@ -13,6 +13,7 @@ import { useAuth } from './user/AuthContext';
 function HomePage() {
     const navigate = useNavigate();
     const [slideIndex, setSlideIndex] = useState(0);
+    
 
     // 그래프 및 디버깅 상태
     const [chartData, setChartData] = useState([]);
@@ -23,6 +24,9 @@ function HomePage() {
     const authInstance = useAuth();
     const user = authInstance ? authInstance.user : null;
     const memId = user ? user.mem_name : "방문자";
+    const loginId = user ? user.mem_id : "방문자";
+    
+    
 
     useEffect(() => {
         // [핵심 교정] 비로그인 사용자는 Spring Boot 서버 호출을 전면 차단하고 unauthenticated 상태로 즉시 반환
@@ -35,7 +39,7 @@ function HomePage() {
         setLoading(true);
         console.log(`🚀 [DB진단] Spring Boot API 호출 시작 (조회 ID: ${memId})`);
         
-        getDataView(memId)
+        getDataView(loginId)
         .then((response) => {
             // 1. 응답 자체 혹은 데이터 필드 검증
             if (!response || !response.data) {
