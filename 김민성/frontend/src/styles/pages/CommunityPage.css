@@ -239,4 +239,98 @@
     width: 100%;
     height: 42px;
   }
+  
 }
+
+/* =========================
+   게시글 수정 / 작성 페이지
+  ========================= */
+
+  .write-card {
+
+      max-width: 700px;
+
+      margin: 0 auto;
+
+      padding: 40px;
+  }
+
+  /* form 그룹 */
+
+  .form-group {
+
+      display: flex;
+
+      flex-direction: column;
+
+      margin-bottom: 30px;
+  }
+
+  /* label */
+
+  .form-group label {
+
+      font-size: 18px;
+
+      font-weight: 600;
+
+      margin-bottom: 12px;
+  }
+
+  /* input */
+
+  .form-group input {
+
+      width: 100%;
+
+      padding: 12px;
+
+      border: 1px solid #cccccc;
+
+      border-radius: 8px;
+
+      font-size: 16px;
+  }
+
+  /* textarea */
+
+  .form-group textarea {
+
+      width: 100%;
+
+      padding: 15px;
+
+      border: 1px solid #cccccc;
+
+      border-radius: 8px;
+
+      font-size: 16px;
+
+      resize: none;
+  }
+
+  /* select */
+
+  .form-group select {
+
+      width: 200px;
+
+      padding: 10px;
+
+      border: 1px solid #cccccc;
+
+      border-radius: 8px;
+
+      font-size: 15px;
+  }
+
+  /* 버튼 영역 */
+
+  .write-button-group {
+
+      display: flex;
+
+      gap: 10px;
+
+      margin-top: 20px;
+  }

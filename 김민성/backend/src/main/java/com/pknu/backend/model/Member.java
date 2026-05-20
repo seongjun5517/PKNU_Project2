@@ -48,4 +48,6 @@ public class Member {
     @Column(nullable = false)
     private String mem_nickname;
 
+    
+   
 }

@@ -1,5 +1,5 @@
 import React, { useState, useEffect } from 'react'; // useEffect 추가
-import { useNavigate } from 'react-router-dom';
+import { useNavigate, useSearchParams } from 'react-router-dom';
 
 import '../../styles/pages/CommunityPage.css';
 
@@ -7,6 +7,8 @@ import { getCommunityList } from "../../springApi/communitySpringBootApi";
 
 function CommunityPage() {
   const navigate = useNavigate();
+  const [searchParams] = useSearchParams();
+  const mem_id = searchParams.get("mem_id");
 
   // 카테고리 버튼 목록
   const categories = ['전체 게시글', '건강 정보', '식단 이야기', '운동 공유', '질문 & 답변', '자유 게시판'];
@@ -25,26 +27,30 @@ function CommunityPage() {
     const fetchPosts = async () => {
       try {
         setIsLoading(true);
-        const response = await getCommunityList();
+        const response = await getCommunityList(mem_id);
         
         // 백엔드 응답 구조(response.data)에 따라 넣어줍니다.
         // Spring 백엔드가 보통 객체나 배열을 넘겨주므로 response.data를 확인해 보세요.
         setPosts(response.data || []); 
-      } catch (error) {
+      } 
+      
+      catch (error) {
         console.error("게시글 목록을 불러오는 중 오류 발생:", error);
         alert("데이터를 로드하는 데 실패했습니다.");
-      } finally {
+      } 
+      
+      finally {
         setIsLoading(false);
       }
     };
 
     fetchPosts();
-  }, []); // 빈 배열을 넣어 처음 렌더링될 때 딱 한 번만 실행되도록 합니다.
+  }, [mem_id]); // 빈 배열을 넣어 처음 렌더링될 때 딱 한 번만 실행되도록 합니다.
 
   // 카테고리 필터링
   const filteredPosts = selectedCategory === '전체 게시글'
     ? posts
-    : posts.filter((post) => post.category === selectedCategory);
+    : posts.filter((post) => post.com_category === selectedCategory);
 
   // 페이지네이션 계산
   const postsPerPage = 5;
@@ -123,9 +129,9 @@ function CommunityPage() {
                   // 만약 백엔드 DB의 PK(아이디) 컬럼명이 id가 아니라 com_id라면 post.com_id로 변경해야 합니다.
                   <tr key={post.com_id || post.id} onClick={() => navigate(`/community/${post.com_id || post.id}`)} className="clickable-row">
                     <td>{post.com_title}</td>
-                    <td>{post.mem_id}</td> {/* 백엔드 필드명에 맞게 조정 필요 */}
-                    <td>{post.com_created}</td>     {/* 백엔드 필드명에 맞게 조정 필요 */}
-                    <td>{post.com_view}</td>   {/* 백엔드 필드명에 맞게 조정 필요 */}
+                    <td>{post.mem_nickname || post.mem_id}</td> 
+                    <td>{post.com_created}</td>    
+                    <td>{post.com_view}</td>   
                   </tr>
                 ))
               ) : (

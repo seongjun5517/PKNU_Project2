@@ -107,6 +107,22 @@ function MyPage() {
                 내 정보
             </button>
 
+            <button 
+                className = {activeMenu === '내 게시글 조회' ? 'active' : ''}
+                onClick={() => {setActiveMenu('내 게시글 조회');
+                window.location.href =`/community?mem_id=${user.mem_id}`;}}>
+
+            내 게시글 조회
+
+          </button>
+
+          <button 
+            className={activeMenu === '회원 정보' ? 'active' : ''}
+            onClick={() => setActiveMenu('회원 정보')}>
+                
+            회원 정보
+          </button>
+
             <button
                 className={activeMenu === '분석 기록' ? 'active' : ''}
                 onClick={() => setActiveMenu('분석 기록')}

@@ -3,25 +3,25 @@
 ------------------------------------------------------------
 
 -- 사용자 계정 생성 + 접속권한 설정
--- Alter session set "_ORACLE_SCRIPT" = true;
+Alter session set "_ORACLE_SCRIPT" = true;
 
 ------------------------------------------------------------
 -- 1. 계정 생성
 ------------------------------------------------------------
 
--- CREATE USER project IDENTIFIED BY 1234;
+CREATE USER project IDENTIFIED BY 1234;
 
 ------------------------------------------------------------
 -- 2. 권한 부여
 ------------------------------------------------------------
 
--- GRANT CONNECT, RESOURCE TO project;
+GRANT CONNECT, RESOURCE TO project;
 
 ------------------------------------------------------------
 -- 3. 저장 공간 할당
 ------------------------------------------------------------
 
--- ALTER USER project QUOTA UNLIMITED ON USERS;
+ALTER USER project QUOTA UNLIMITED ON USERS;
 
 ------------------------------------------------------------
 -- 기존 테이블 삭제
@@ -120,6 +120,7 @@ CREATE TABLE COMMUNITY_TEST (
     MEM_ID          VARCHAR2(50) NOT NULL,
     COM_TITLE       VARCHAR2(200),
     COM_CONTENT     CLOB,
+    COM_CATEGORY            VARCHAR2(50),
     COM_VIEW        NUMBER DEFAULT 0,
     COM_LIKE        NUMBER DEFAULT 0,
     COM_CREATED     DATE DEFAULT SYSDATE,
@@ -139,7 +140,7 @@ CREATE TABLE COMMENT_TEST (
     MEM_ID              VARCHAR2(50) NOT NULL,
     COMMENT_CREATED     DATE DEFAULT SYSDATE,
     COMMENT_CONTENT     VARCHAR2(1000),
-
+    
     -------------------------------------------------
     -- 복합 기본키
     -------------------------------------------------
@@ -169,17 +170,18 @@ CREATE TABLE COMMENT_TEST (
 -- MEMBER_TEST 샘플 데이터
 ------------------------------------------------------------
 
-INSERT INTO MEMBER_TEST VALUES ('user1', '010-1111-1111', '홍길동');
-INSERT INTO MEMBER_TEST VALUES ('user2', '010-2222-2222', '이순신');
-INSERT INTO MEMBER_TEST VALUES ('user3', '010-3333-3333', '강감찬');
-INSERT INTO MEMBER_TEST VALUES ('user4', '010-3333-3333', '신사임당');
-INSERT INTO MEMBER_TEST VALUES ('user5', '010-3333-3333', '강감찬1');
+INSERT INTO MEMBER_TEST VALUES ('user1', '010-1111-1111', '홍길동', '남신');
+INSERT INTO MEMBER_TEST VALUES ('user2', '010-2222-2222', '이순신', '장군');
+INSERT INTO MEMBER_TEST VALUES ('user3', '010-3333-3333', '강감찬', '용감한 남신');
+INSERT INTO MEMBER_TEST VALUES ('user4', '010-3333-3333', '신사임당', '여신');
+INSERT INTO MEMBER_TEST VALUES ('user5', '010-3333-3333', '강감찬1', '용감한 남자');
+INSERT INTO MEMBER_TEST VALUES ('user6', '010-3333-3333', '강감찬2', '닉네임');
 
 ------------------------------------------------------------
 -- COMMUNITY_TEST 샘플 데이터
 ------------------------------------------------------------
 
-INSERT INTO COMMUNITY_TEST (MEM_ID, COM_TITLE, COM_CONTENT) VALUES ('user1', '첫 번째 게시글', '게시글 내용입니다.');
+INSERT INTO COMMUNITY_TEST (MEM_ID, COM_TITLE, COM_CONTENT, COM_CATEGORY) VALUES ('user1', '첫 번째 게시글', '게시글 내용입니다.', '테스트');
 
 ------------------------------------------------------------
 -- COMMENT_TEST 샘플 데이터
@@ -207,7 +209,4 @@ SELECT * FROM COMMENT_TEST;
 --------------------------------------------------------------
 COMMIT;
 
---ALTER TABLE MEMBER_TEST DROP COLUMN MEM_ADD;
---ALTER TABLE MEMBER_TEST DROP COLUMN MEM_CREATED;
---ALTER TABLE MEMBER_TEST DROP COLUMN MEM_MAIL;
 

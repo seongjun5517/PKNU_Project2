@@ -32,7 +32,7 @@ public class CommunityService {
 
     /**
      * 상세 조회
-     */
+    */
     public Community getCommunityView(
             Integer com_id) {
 
@@ -59,8 +59,8 @@ public class CommunityService {
     public Community setCommunityInsert(
             Community community) {
 
-        community.setCom_view(10);
-        community.setCom_like(20);
+        community.setCom_view(0);
+        community.setCom_like(0);
 
         return this.communityRepository.save(community);
     }
@@ -129,15 +129,21 @@ public class CommunityService {
         return null;
     }
 
-    /**
-     * Paging 처리
-    */
-    public Page<Community> getCommunityListPaging(int page, int size) {
-
+/**
+ * Paging 처리
+*/
+public Page<Community>getCommunityListPaging(int page,int size, String mem_id){
         log.info("게시판 Paging 조회");
 
         Pageable pageable = PageRequest.of(page, size);
 
+        log.info("mem_id = {}",mem_id);
+
+        // 내 게시글 조회
+        if(mem_id != null){return this.communityRepository.findByMemId(mem_id, pageable);
+        }
+
+        // 전체 조회
         return this.communityRepository.findAll(pageable);
     }
 }
