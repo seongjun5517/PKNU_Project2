@@ -51,7 +51,7 @@ function MyPage() {
             className={activeMenu === '회원 정보' ? 'active' : ''}
             onClick={() => setActiveMenu('회원 정보')}
           >
-            회원 정보
+            회원 정보 수정
           </button>
         </aside>
 

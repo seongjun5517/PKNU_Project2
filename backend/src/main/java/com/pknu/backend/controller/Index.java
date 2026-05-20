@@ -58,6 +58,7 @@ public class Index {
         sb.append("<tr><th>제 목</th> <th>바로가기 링크</th> </tr>");
         sb.append("<tr><td>회원 목록 바로가기</td> <td><a href='/member/list'>회원 전체 목록 페이지</a></td><tr/>");
         sb.append("<tr><td>데이터 목록 바로가기</td> <td><a href='/data/list'>데이터 전체 목록 페이지</a></td><tr/>");
+        sb.append("<tr><td>예측모델 조회</td> <td><a href='/modeldata'>예측모델 조회</a></td><tr/>");
         sb.append("</table>");
 
         // 버퍼(캐시) 메모리에 저장된 문자열을 하나의 전체 문자열로 반환

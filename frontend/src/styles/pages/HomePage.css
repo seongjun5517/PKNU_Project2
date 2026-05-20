@@ -8,6 +8,25 @@
   display: grid;
   grid-template-columns: 1.05fr 0.95fr;
   gap: 24px;
+
+  /* 같은 줄 카드 높이에 맞춰 늘어나게 */
+  align-items: stretch;
+}
+
+/* 그래프 카드 */
+.chart-card {
+  display: flex;
+  flex-direction: column;
+  height: 100%;
+}
+
+/* 그래프 영역을 남은 공간만큼 늘림 */
+.dynamic-chart-container {
+  width: 100%;
+  flex: 1;
+  min-height: 430px;
+  margin-top: 15px;
+  position: relative;
 }
 
 .card-title-row {

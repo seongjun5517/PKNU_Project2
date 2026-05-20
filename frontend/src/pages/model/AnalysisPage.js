@@ -1,6 +1,7 @@
 import '../../styles/pages/AnalysisPage.css';
 import { useNavigate } from 'react-router-dom';
-import { useState } from 'react';
+import React, { useState } from 'react';
+import { getHeartPredict } from "../../flaskApi/predict";
 
 function AnalysisPage() {
   const navigate = useNavigate();
@@ -28,9 +29,10 @@ function AnalysisPage() {
     income: '중상'
   });
 
-  const handleChange = (e) => {
-    const { name, value } = e.target;
-    setFormData({ ...formData, [name]: value });
+  const handleChange = (index, value) => {
+    const update = [...formData];
+    update[index] = parseFloat(value);
+    setFormData(update);
   };
 
   const handleSubmit = (e) => {
@@ -38,12 +40,28 @@ function AnalysisPage() {
     navigate('/result', {
       state: {
         result: {
-          risk: 12.8,
-          score: 86,
-          formData: formData
+          risk: 12.0,
+            formData: formData
+    }
+  }
+});
+        // const loginId = seesionStorage.getItem("mem_id");
+        const loginId = "user5";
+
+        const requestData = {
+            features : formData,
+            mem_id : loginId
         }
-      }
-    });
+
+        getHeartPredict(requestData)
+            .then((res) => {
+                alert("예측 성공 : " + res.data.probability);
+                navigate("/predict/result", { state: { result: res.data.probability } });
+            })
+            .catch((err) => {
+                console.error("예측중 오류 발생 : ", err);
+            });
+
   };
 
   return (
@@ -98,7 +116,7 @@ function InputRow({ label, name, value, unit, onChange }) {
   return (
     <div className="form-row input-row">
       <label>{label} :</label>
-      <input name={name} value={value} onChange={onChange} />
+      <input name={name} value={value} onChange={onChange} required />
       <span>{unit}</span>
     </div>
   );
@@ -109,7 +127,7 @@ function RadioGroup({ name, value, options, onChange }) {
     <div className="radio-group">
       {options.map((option) => (
         <label key={option}>
-          <input type="radio" name={name} value={option} checked={value === option} onChange={onChange} />
+          <input type="radio" name={name} value={option} checked={value === option} onChange={onChange} required />
           {option}
         </label>
       ))}

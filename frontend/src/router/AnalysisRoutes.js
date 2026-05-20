@@ -1,5 +1,6 @@
 import { Routes,Route } from 'react-router-dom';
 
+import PrivateRoute from './PrivateRoute';
 import AnalysisPage from '../pages/model/AnalysisPage';
 import ResultPage from '../pages/member/ResultPage';
 
@@ -7,7 +8,7 @@ import ResultPage from '../pages/member/ResultPage';
 function AnalysisRoutes() {
   return (
     <Routes>
-      <Route path="/analysis" element={<AnalysisPage />} />
+      <Route path="/analysis" element={<PrivateRoute><AnalysisPage /></PrivateRoute>} />
       <Route path="/result" element={<ResultPage />} />
     </Routes>
   );

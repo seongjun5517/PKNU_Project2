@@ -8,10 +8,8 @@ import { getDataView } from "../springApi/modeldataSpringBootApi";
 import slideRunner from '../assets/slide-runner.svg';
 import slideChart from '../assets/slide-chart.svg';
 import slideCommunity from '../assets/slide-community.svg';
-
 import runningImg from '../assets/run.png';
 import foodImg from '../assets/food.png';
-
 
 function HomePage() {
   const navigate = useNavigate();
@@ -106,11 +104,11 @@ function HomePage() {
     }
     setSlideIndex((prev) => (prev === slides.length - 1 ? 0 : prev + 1));
   };
-
+  
   return (
     <main className="page home-page">
       <section className="home-grid">
-        <div className="card chart-card" style={{ display: "flex", flexDirection: "column" }}>
+        <div className="card chart-card">
           <div className="card-title-row" style={{ display: "flex", justifyContent: "space-between", alignItems: "center" }}>
             <h3>오늘의 심근경색 발생 예측 ({memId}님)</h3>
             <button 
@@ -124,7 +122,7 @@ function HomePage() {
           </div>
 
           {/* 그래프 및 디버깅 결과 메시지 레이어 */}
-          <div className="dynamic-chart-container" style={{ width: "100%", height: "230px", marginTop: "15px", position: "relative" }}>
+          <div className="dynamic-chart-container">
             {loading ? (
               <div style={{ textAlign: "center", paddingTop: "80px", color: "#666" }}>데이터를 로딩 중입니다...</div>
             ) : dbStatus === "error" ? (
@@ -139,11 +137,24 @@ function HomePage() {
               </div>
             ) : (
               <ResponsiveContainer width="100%" height="100%">
-                <LineChart data={chartData} margin={{ top: 5, right: 20, left: -20, bottom: 5 }}>
+                <LineChart 
+                  data={chartData}
+                  margin={{ top: 10, right: 20, left: -20, bottom: 0 }}
+                >
                   <CartesianGrid strokeDasharray="3 3" stroke="#e0e0e0" />
-                  <XAxis dataKey="CHECK_DATE" tick={{ fontSize: 10 }} />
-                  <YAxis domain={[0, 'auto']} tick={{ fontSize: 10 }} />
+
+                  <XAxis 
+                    dataKey="CHECK_DATE"
+                    tick={{ fontSize: 10 }} 
+                  />
+
+                  <YAxis 
+                    domain={[0, 'auto']}
+                    tick={{ fontSize: 10 }}
+                  />
+
                   <Tooltip wrapperStyle={{ pointerEvents: "none" }} />
+                  
                   <Line
                     type="monotone"
                     dataKey="PREDICT"
@@ -159,7 +170,7 @@ function HomePage() {
           </div>
         </div>
 
-        {/* 오른쪽 상단: 심근경색 관련 카드 */}
+        {/* 오른쪽 상단: 기사 카드 */}
         <div className="card article-card">
           <div className="card-title-row">
             <h3>심혈관 및 심근경색에 대한 정보</h3>
@@ -197,8 +208,9 @@ function HomePage() {
               />
               <p>혈관 건강을 지키는 5가지 핵심 식단 전략</p>
             </button>
-</div>
+          </div>
         </div>
+        
 
         {/* 왼쪽 하단: 커뮤니티 인기글 */}
         <div className="card community-preview-card">
