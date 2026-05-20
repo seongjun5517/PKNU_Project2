@@ -158,11 +158,10 @@ function MyPage() {
                         <h2>{user?.mem_name || user?.name || '홍길동'}</h2>
                         <p>{user?.mem_id || user?.id || 'hong@example.com'}</p>
 
-                        <button
-                        className="btn-outline mint"
-                        onClick={() => setActiveMenu('회원 정보')}
-                        >
-                        정보 수정
+                        <button className="btn-outline mint"
+                                onClick={() => setActiveMenu('회원 정보')}>
+
+                            정보 수정
                         </button>
                     </div>
                     </div>
@@ -176,7 +175,7 @@ function MyPage() {
                         <span>{record.date}</span>
                         <strong>{record.risk}</strong>
                         <button className="btn-outline mint" onClick={handleRecordDetail}>
-                        상세보기
+                            상세보기
                         </button>
                     </div>
                     ))}
@@ -194,7 +193,7 @@ function MyPage() {
                     <span>{record.date}</span>
                     <strong>{record.risk}</strong>
                     <button className="btn-outline mint" onClick={handleRecordDetail}>
-                    상세보기
+                        상세보기
                     </button>
                     </div>
                 ))}
@@ -214,8 +213,7 @@ function MyPage() {
 
                 <button
                     className="btn-primary small"
-                    onClick={() => alert('알림 설정이 저장되었습니다.')}
-                >
+                    onClick={() => alert('알림 설정이 저장되었습니다.')}>
                     저장하기
                 </button>
                 </div>
