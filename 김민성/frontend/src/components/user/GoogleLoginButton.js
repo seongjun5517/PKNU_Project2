@@ -47,7 +47,7 @@ const GoogleLoginButton = () => {
             if (response.data) {
                 // DB에 정보가 있으면 로그인 시켜주고 
                 login(login_data); 
-                alert(`로그인 성공: ${login_data.name}님 환영합니다.`);
+                alert(`로그인 성공: ${login_data.mem_name}님 환영합니다.`);
                 navigate("/"); 
             } 
             
