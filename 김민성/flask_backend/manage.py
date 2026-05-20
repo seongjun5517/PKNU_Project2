@@ -41,7 +41,7 @@ def getheartPred():
     except Exception as e :
         print(f"저장 오류 :{e}")
 
-    return jsonify({"prediction " : result})
+    return jsonify({"probability" : result})
 
 if __name__ == "__main__":
     app.run(debug=True)

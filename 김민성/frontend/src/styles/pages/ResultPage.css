@@ -1,8 +1,43 @@
 /* Result */
 .result-grid { display: grid; grid-template-columns: .8fr 1.4fr; gap: 24px; }
-.circle-chart { width: 190px; height: 190px; border-radius: 50%; border: 18px solid #9de0d8; border-top-color: #0f9f8d; margin: 30px auto; display: flex; align-items: center; justify-content: center; }
-.circle-chart span { font-size: 40px; font-weight: 800; color: #0f9f8d; }
-.risk-low { text-align: center; color: #0f9f8d; }
+
+
+.circle-chart {
+    width: 190px;
+    height: 190px;
+    border-radius: 50%;
+    background: conic-gradient(var(--risk-main) var(--risk-deg), var(--risk-light) var(--risk-deg));
+    margin: 30px auto;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+}
+
+.circle-chart-inner {
+    width: 140px;
+    height: 140px;
+    border-radius: 50%;
+    background: white;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+}
+
+.circle-chart-inner span {
+    font-size: 36px;
+    font-weight: 800;
+    color: var(--risk-main);
+}
+
+.risk-low {
+    text-align: center;
+    color: var(--risk-main);
+}
+
+
+
+
+
 .risk-card p { text-align: center; color: #64748b; }
 .score-card strong { font-size: 48px; }
 .progress { height: 10px; background: #e5eeee; border-radius: 999px; overflow: hidden; margin: 16px 0; }
