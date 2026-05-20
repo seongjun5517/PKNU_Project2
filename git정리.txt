@@ -1,8 +1,0 @@
-git switch total
-git pull origin total
-git merge [본인 브랜치]
-git add .
-git commit
-----> 이상한 커맨드 창 뜨면 조금 기다린후 :wq를 입력하면 나와짐
-그 후
-git push
