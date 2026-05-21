@@ -15,9 +15,11 @@ function CommunityPage() {
 
   const categories = ['전체 게시글', '건강 정보', '식단 이야기', '운동 공유', '질문 & 답변', '자유 게시판'];
 
+  const [sortType, setSortType] = useState("latest");
+
   const [selectedCategory, setSelectedCategory] = useState('전체 게시글');
   const [currentPage, setCurrentPage] = useState(1);
-  const [viewMode, setViewMode] = useState('all');
+  const [viewMode] = useState('all');
 
   const [searchKeyword, setSearchKeyword] = useState('');
   const [appliedKeyword, setAppliedKeyword] = useState('');
@@ -69,7 +71,43 @@ function CommunityPage() {
   const totalPages = Math.max(1, Math.ceil(filteredPosts.length / postsPerPage));
   const pageNumbers = Array.from({ length: totalPages }, (_, i) => i + 1);
   const startIndex = (currentPage - 1) * postsPerPage;
-  const currentPosts = filteredPosts.slice(startIndex, startIndex + postsPerPage);
+  const sortedPosts = [...filteredPosts].sort(
+
+        (a, b) => {
+
+        // 최신순
+        if(sortType === "latest"){
+
+            return new Date(
+                b.com_created
+            )
+            -
+            new Date(
+                a.com_created
+            );
+        }
+
+        // 좋아요순
+        else if(
+            sortType === "like"
+        ){
+            return b.com_like -
+                   a.com_like;
+        }
+
+        // 조회수순
+        else if(
+            sortType === "view"
+        ){
+
+            return b.com_view -
+                   a.com_view;
+        }
+
+        return 0;
+  });
+
+  const currentPosts = sortedPosts.slice(startIndex, startIndex + postsPerPage);
 
   const handleCategoryClick = (category) => {
     setSelectedCategory(category);
@@ -136,16 +174,30 @@ function CommunityPage() {
               <button className="btn-primary small" onClick={handleSearchSubmit}>
                 확인
               </button>
-              <button
-                className="btn-primary small"
-                onClick={() => {
+
+              <button className="btn-primary small"
+                      onClick={() => setSortType("latest")}>
+                  최신순
+              </button>
+
+              <button className="btn-primary small"
+                      onClick={() => setSortType("like")}>
+                  좋아요순
+              </button>
+
+              <button className="btn-primary small"
+                      onClick={() => setSortType("view")}>
+                  조회수순
+              </button>
+
+              <button className="btn-primary small"
+                      onClick={() => {
+
                   if (!user) {
                     alert("로그인 후 이용 가능합니다.");
                     return;
                   }
-                  navigate('/community/write');
-                }}
-              >
+                    navigate('/community/write');}}>
                 글 작성하기
             </button>
             </div>

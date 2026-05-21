@@ -145,7 +145,7 @@ public class CommunityService {
             }
 
             // 전체 조회
-            return this.communityRepository.findAll(pageable);
+            return this.communityRepository.findAllPaging(pageable);
         }
 
     /**
