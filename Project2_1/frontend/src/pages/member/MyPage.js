@@ -36,7 +36,7 @@ function MyPage() {
 
     useEffect(() => {
 
-        const memId = user.mem_id || user.id;  // ✅ ID로 수정
+        const memId = user?.mem_id || user?.id;  // ✅ ID로 수정
         getDataView(memId)
             .then((response) => {
                 if (!response?.data || response.data.length === 0) {
@@ -55,12 +55,12 @@ function MyPage() {
             
     if (!user) return;
 
-    const mem_id = user.mem_id || user.id;
+    const mem_id = user?.mem_id || user?.id;
 
     // 로컬스토리지 기본값 먼저 세팅 (빠른 렌더링)
     setEditForm({
         mem_id: mem_id || "",
-        mem_name: user.mem_name || user.name || "",
+        mem_name: user?.mem_name || user?.name || "",
         mem_phone: "",
         mem_nickname: ""
     });
@@ -86,7 +86,7 @@ useEffect(() => {
 
     console.log("유저 정보:", user);
 
-    axios.get(`http://localhost:8080/community/board/my/${user.mem_id}`).then((res) => {
+    axios.get(`http://localhost:8080/community/board/my/${user?.mem_id}`).then((res) => {
 
             console.log("게시글 데이터:", res.data);
 
@@ -205,7 +205,7 @@ useEffect(() => {
             // 내 문의만 필터링
             const myList = response.data.filter(
 
-                    (item) => item.mem_id === user.mem_id);
+                    (item) => item.mem_id === user?.mem_id);
 
             setMyInquiryList(
                 myList
@@ -230,11 +230,11 @@ useEffect(() => {
         loadMyInquiry();
     }
 
-    }, [activeMenu, user.mem_id]);
+    }, [activeMenu, user?.mem_id]);
 
     const handleAnalysis = async () => {
     try {
-        const checkres = await checkTodayPredict(user.mem_id);
+        const checkres = await checkTodayPredict(user?.mem_id);
         
         if (checkres.data === true) {
             alert("오늘은 이미 예측을 완료했습니다.\n예측은 하루에 한 번만 가능합니다.");
