@@ -4,24 +4,63 @@ import { useLocation  } from 'react-router-dom';
 import { useAuth } from '../user/AuthContext';
 import { getDataView } from "../../springApi/modeldataSpringBootApi"; 
 import { LineChart, Line, XAxis, YAxis, CartesianGrid, Tooltip, ResponsiveContainer } from "recharts";
+import { calcHeartAgeFromSelectedData } from '../../assets/heartagecalc/Heartagelogic';
+import { NON_SMOKER, SMOKER } from '../../assets/heartagecalc/Heartagedata';
 
 
 function ResultPage() {
-  const { user } = useAuth() || {}; // [수정] 수정 완료 후 전역 세션 갱신을 위해 login 함수 구독
-  const location = useLocation();
-  const result = location.state?.result || {};
-  const [probability, setProbability] = useState(result.probability || 0);
-  const percent = (probability * 100).toFixed(2);
-  const fillDeg = Math.round(probability * 360);
+    const { user } = useAuth() || {}; // [수정] 수정 완료 후 전역 세션 갱신을 위해 login 함수 구독
+    const location = useLocation();
+    const result = location.state?.result || {};
+    const [probability, setProbability] = useState(result.probability || 0);
+    const percent = (probability * 100).toFixed(2);
+    const fillDeg = Math.round(probability * 360);
+    const [heartAge, setHeartAge] = useState(null);
 
-  const getRiskColor = (prob) => {
-      if (prob < 0.1) return { main: "#0f9f8d", light: "#e0f7f4", label: "낮음" };
-      if (prob < 0.3) return { main: "#f59e0b", light: "#fde68a", label: "보통" };
-      return          { main: "#ef4444", light: "#fca5a5", label: "높음" };
-  };
+    const getRiskColor = (prob) => {
+        if (prob < 0.1) return { main: "#0f9f8d", light: "#e0f7f4", label: "낮음" };
+        if (prob < 0.3) return { main: "#f59e0b", light: "#fde68a", label: "보통" };
+        return          { main: "#ef4444", light: "#fca5a5", label: "높음" };
+    };
 
-  const riskColor = getRiskColor(probability);
-  // 상태 관리
+    const getCombinedRisk = (di1_dg, di2_dg, de1_dg, ge_gba1c, he_chol) => {
+    // 코멘트들을 담을 빈 배열 생성
+    const comments = [];
+
+    // 1. 고혈압 체크
+    if (di1_dg === 0) comments.push("심근경색의 주요 원인 중 하나인 고혈압 없으셔서, 현재 상태는 아주 좋습니다.");
+    if (di1_dg === 1) comments.push("고혈압은 심근경색의 주요 원인이라 각별한 주의가 필요합니다. 지금부터 철저히 관리하셔야 합니다.");
+
+    // 2. 이상지질혈증 체크
+    if (di2_dg === 0) comments.push("심근경색의 주요 원인 중 하나인 이상지질혈증이 없으셔서, 현재 상태는 아주 좋습니다.");
+    if (di2_dg === 1) comments.push("이상지질혈증은 심근경색의 주요 원인이라 각별한 주의가 필요합니다. 지금부터 철저히 관리하셔야 합니다.");
+
+    // 3. 당뇨병 유무 체크
+    if (de1_dg === 0) comments.push("심근경색의 주요 원인 중 하나인 당뇨병이 없으셔서, 현재 상태는 아주 좋습니다.");
+    if (de1_dg === 1) comments.push("당뇨병은 심근경색의 주요 원인이라 각별한 주의가 필요합니다. 지금부터 철저히 관리하셔야 합니다.");
+
+    // 4. 당화혈색소 수치 체크
+    if (ge_gba1c < 5.7) comments.push("당화혈색소 수치 정상입니다. 지금 상태 아주 좋습니다.");
+    else if (ge_gba1c < 6.4) comments.push("당화혈색소가 당뇨 전단계 수준입니다. 지금부터 식단과 운동 관리가 필요합니다.");
+    else if (ge_gba1c >= 6.5) comments.push("당화혈색소 수치가 당뇨 기준을 넘었습니다. 적극적인 치료와 관리가 시급합니다.");
+
+    // 5. 총 콜레스테롤 수치 체크
+    if (he_chol < 200) comments.push("총 콜레스테롤 수치 정상입니다. 지금 상태 아주 좋습니다.");
+    else if (he_chol <= 239) comments.push("총콜레스테롤이 경계 수치입니다. 지금부터 식단과 운동 관리가 필요합니다.");
+    else if (he_chol >= 240) comments.push("총콜레스테롤 수치가 고지혈증 기준을 넘었습니다. 적극적인 치료와 약물 관리가 필요할 수 있습니다.");
+
+    // 만약 아무 조건에도 안 걸려서 배열이 비어있다면 기본 문구 반환
+    if (comments.length === 0) {
+        return ["분석할 수 있는 건강 데이터가 부족합니다."];
+    }
+
+    // 조건에 맞는 문구들이 담긴 배열을 그대로 리턴합니다.
+    return comments;
+};
+
+
+    const riskColor = getRiskColor(probability);
+    // 상태 관리
     const [chartData, setChartData] = useState([]);
     const [selectedData, setSelectedData] = useState(null); 
     const [loading, setLoading] = useState(true);
@@ -54,11 +93,14 @@ function ResultPage() {
 
     // 구조적 예외 처리를 추가한 클릭 핸들러
     const handlePointClick = (payload) => {
-        if (payload?.payload) {
-        console.log("클릭된 데이터:", payload.payload);
-        setSelectedData(payload.payload);
-        }
-    };
+            if (payload?.payload) {
+                const data = payload.payload;
+                setSelectedData(data);
+                const heartResult = calcHeartAgeFromSelectedData(data, NON_SMOKER, SMOKER);
+                setHeartAge(heartResult);
+            }
+        };
+
 
     // 0 또는 1로 들어오는 진단 값을 '정상/질환' 텍스트로 치환하는 유틸 함수
     const renderDiseaseStatus = (val) => {
@@ -66,23 +108,70 @@ function ResultPage() {
         return Number(val) === 1 ? "⚠️ 질환/이상" : "✅ 정상";
     };
 
-  return (
+    return (
     <main className="page result-page">
-      <section className="result-grid">
+        <section className="result-grid">
         <div className="card risk-card">
-          <h3>오늘의 심근경색 발생 확률</h3>
-          <div className="circle-chart" style={{
+            <h3>오늘의 심근경색 발생 확률</h3>
+            <div className="circle-chart" style={{
                                         "--risk-main": riskColor.main,
                                         "--risk-light": riskColor.light,
                                         "--risk-deg": `${fillDeg}deg`
                                     }}
-          ><div className='circle-chart-inner'><span>{percent}%</span></div></div>
-          <h3 className="risk-low" style={{ color: riskColor.main }}>위험도 : {riskColor.label}</h3>
+            ><div className='circle-chart-inner'><span>{percent}%</span></div></div>
+            <h3 className="risk-low" style={{ color: riskColor.main }}>위험도 : {riskColor.label}</h3>
+            <div>
+                <p style={{ fontWeight: "bold", marginBottom: "10px" }}>심장 나이 계산</p>
+                <p style={{ padding: "10px", border: "1px solid #dee2e6", backgroundColor: "#fafafa" }}>
+                    {heartAge? `${heartAge.heartAge}세 (실제보다 ${Math.abs(heartAge.diff)}세 ${heartAge.diff > 0 ? "더 많음" : "더 젊음"})`: "계산 불가 (30~79세만 지원)"}
+                </p>
+            </div>
+
+            <div>
+                <p style={{ fontWeight: "bold", marginBottom: "10px" }}>👍정상 범위 및 수치</p>
+                <table style={{ width: "100%", borderCollapse: "collapse", textAlign: "left", fontSize: "13px" }}>
+                    <thead>
+                        <tr style={{ backgroundColor: "#f1f3f5" }}>
+                            <th style={{ padding: "10px", border: "1px solid #dee2e6", width: "30%" }}>데이터 항목</th>
+                            <th style={{ padding: "10px", border: "1px solid #dee2e6", width: "30%" }}>정상 수치</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        <tr>
+                            <td style={{ padding: "10px", border: "1px solid #dee2e6", backgroundColor: "#fafafa" }}>공복혈당</td>
+                            <td style={{ padding: "10px", border: "1px solid #dee2e6" }}>70 ~ 99mg/dL</td>
+                        </tr>
+                        <tr>
+                            <td style={{ padding: "10px", border: "1px solid #dee2e6", backgroundColor: "#fafafa" }}>당화혈색소</td>
+                            <td style={{ padding: "10px", border: "1px solid #dee2e6" }}>5.7% 미만</td>
+                        </tr>
+                        <tr>
+                            <td style={{ padding: "10px", border: "1px solid #dee2e6", backgroundColor: "#fafafa" }}>총콜레스테롤</td>
+                            <td style={{ padding: "10px", border: "1px solid #dee2e6" }}>200mg/dL 미만</td>
+                        </tr>
+                        <tr>
+                            <td style={{ padding: "10px", border: "1px solid #dee2e6", backgroundColor: "#fafafa" }}>중성지방</td>
+                            <td style={{ padding: "10px", border: "1px solid #dee2e6" }}>150mg/dL 미만</td>
+                        </tr>
+                        <tr>
+                            <td style={{ padding: "10px", border: "1px solid #dee2e6", backgroundColor: "#fafafa" }}>체질량지수</td>
+                            <td style={{ padding: "10px", border: "1px solid #dee2e6" }}>18.5 ~ 22.9</td>
+                        </tr>
+                        <tr>
+                            <td style={{ padding: "10px", border: "1px solid #dee2e6", backgroundColor: "#fafafa" }}>허리둘레</td>
+                            <td style={{ padding: "10px", border: "1px solid #dee2e6" }}>남성: 90cm / 여성: 85cm</td>
+                        </tr>
+                        <tr>
+                            <td></td>
+                        </tr>
+                    </tbody>
+                </table>
+            </div>
         </div>
 
         <div className="card result-chart-card">
-          <h3>분석 추이 그래프</h3>
-          <div style={{ width: "95%", margin: "0 auto", padding: "20px", fontFamily: "sans-serif" }}>
+            <h3>분석 추이 그래프</h3>
+            <div style={{ width: "95%", margin: "0 auto", padding: "20px", fontFamily: "sans-serif" }}>
             <div style={{ display: "flex", justifyContent: "space-between", alignItems: "center", marginBottom: "20px" }}>
                 <h3>{user.mem_name} 님의 분석 그래프 보기</h3>
             </div>
@@ -138,7 +227,7 @@ function ResultPage() {
                                     <p style={{ margin: 0 }}><strong>🎯 머신러닝 예측 확률 (PREDICT):</strong> <span style={{color: "#007bff", fontWeight: "bold"}}>{selectedData.PREDICT}</span></p>
                                 </div>
 
-                                <p style={{ fontWeight: "bold", marginBottom: "10px" }}>⚙️ 확률 산출 근거 전체 데이터 목록</p>
+                                <p style={{ fontWeight: "bold", marginBottom: "10px" }}>📊확률 산출 근거 전체 데이터 목록</p>
                                 <table style={{ width: "100%", borderCollapse: "collapse", textAlign: "left", fontSize: "13px" }}>
                                     <thead>
                                         <tr style={{ backgroundColor: "#f1f3f5" }}>
@@ -186,10 +275,10 @@ function ResultPage() {
                                         </tr>
                                         {/* Row 6 */}
                                         <tr>
-                                            <td style={{ padding: "10px", border: "1px solid #dee2e6", backgroundColor: "#fafafa" }}>수축기혈압 (HE_HP)</td>
-                                            <td style={{ padding: "10px", border: "1px solid #dee2e6" }}>{selectedData.HE_HP} mmHg</td>
-                                            <td style={{ padding: "10px", border: "1px solid #dee2e6", backgroundColor: "#fafafa" }}>유산소 운동 실천 (PA_AEROBIC)</td>
-                                            <td style={{ padding: "10px", border: "1px solid #dee2e6" }}>{selectedData.PA_AEROBIC} 분</td>
+                                            <td style={{ padding: "10px", border: "1px solid #dee2e6", backgroundColor: "#fafafa" }}>고혈압 유병여부 (HE_HP)</td>
+                                            <td style={{ padding: "10px", border: "1px solid #dee2e6" }}>{selectedData.HE_HP}(코드식)</td>
+                                            <td style={{ padding: "10px", border: "1px solid #dee2e6", backgroundColor: "#fafafa" }}>유산소 운동 실천 여부 (PA_AEROBIC)</td>
+                                            <td style={{ padding: "10px", border: "1px solid #dee2e6" }}>{selectedData.PA_AEROBIC}(코드식)</td>
                                         </tr>
                                         {/* Row 7 */}
                                         <tr>
@@ -237,24 +326,40 @@ function ResultPage() {
                     </div>
                 </>
             )}
+            </div>
         </div>
+        
+        </section>
+        <div className="card">
+            <h3>해석 (그래프의 점을 클릭하면 해석이 나타납니다.)</h3>
+            <div>
+                {selectedData ? (
+                    <div className="risk-comment-container">
+                        <p>현재 위험도는 {riskColor.label} 입니다. </p>
+                    {getCombinedRisk(
+                        selectedData.DI1_DG,
+                        selectedData.DI2_DG,
+                        selectedData.DE1_DG,
+                        selectedData.HE_HBA1C,
+                        selectedData.HE_CHOL
+                    ).map((comment, index) => (
+                        // 문자열 배열이므로 text를 그대로 출력하되, 고유한 key를 줍니다.
+                        <p key={index} style={{ marginBottom: '8px', lineHeight: '1.5' }}>
+                        • {comment}
+                        </p>
+                    ))}
+                    </div>
+                ) : (
+                    <p></p>
+                )}
+                </div>
         </div>
 
-        <div className="card"><h3>주요 위험 요인</h3><ul className="dot-list"><li>운동 부족</li><li>스트레스 관리 부족</li><li>수면 시간 부족</li></ul></div>
-        <div className="card"><h3>위험도 해석</h3><p>현재 위험도는 낮은 편입니다. 건강한 생활습관을 유지하여 더 좋은 결과를 만들어가세요.</p></div>
+        
 
-        <div className="card recommend-card">
-          <h3>추천 음식</h3>
-          <div className="icon-list"><div>🐟<span>연어</span></div><div>🥜<span>견과류</span></div><div>🫒<span>올리브 오일</span></div><div>🥗<span>채소</span></div><div>🍓<span>베리류</span></div></div>
-        </div>
-
-        <div className="card recommend-card">
-          <h3>추천 습관</h3>
-          <div className="icon-list"><div>🏃<span>규칙적인 운동</span></div><div>🚭<span>금연하기</span></div><div>🚰<span>체중 관리</span></div><div>🌙<span>충분한 수면</span></div><div>🧘<span>스트레스 관리</span></div></div>
-        </div>
-      </section>
+        
     </main>
-  );
+    );
 }
 
 export default ResultPage;
