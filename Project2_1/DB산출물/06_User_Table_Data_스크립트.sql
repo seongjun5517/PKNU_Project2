@@ -424,6 +424,58 @@ SELECT * FROM COMMUNITY_TEST;
 SELECT * FROM COMMENT_TEST;
 SELECT * FROM INQUIRY_TEST;
 
+
+
+------------------------------------------------------------
+-- 연쇄삭제 처리
+------------------------------------------------------------
+------------------------------------------------------------
+-- 1. DATA_TEST 외래키 수정
+------------------------------------------------------------
+ALTER TABLE DATA_TEST DROP CONSTRAINT FK_DATA_MEMBER;
+
+ALTER TABLE DATA_TEST 
+ADD CONSTRAINT FK_DATA_MEMBER 
+FOREIGN KEY (MEM_ID) 
+REFERENCES MEMBER_TEST(MEM_ID) ON DELETE CASCADE;
+
+------------------------------------------------------------
+-- 2. COMMUNITY_TEST 외래키 수정
+------------------------------------------------------------
+ALTER TABLE COMMUNITY_TEST DROP CONSTRAINT FK_COMMUNITY_MEMBER;
+
+ALTER TABLE COMMUNITY_TEST 
+ADD CONSTRAINT FK_COMMUNITY_MEMBER 
+FOREIGN KEY (MEM_ID) 
+REFERENCES MEMBER_TEST(MEM_ID) ON DELETE CASCADE;
+
+------------------------------------------------------------
+-- 3. COMMENT_TEST 외래키 수정 (2개)
+------------------------------------------------------------
+ALTER TABLE COMMENT_TEST DROP CONSTRAINT FK_COMMENT_COMMUNITY;
+
+ALTER TABLE COMMENT_TEST 
+ADD CONSTRAINT FK_COMMENT_COMMUNITY 
+FOREIGN KEY (COM_ID) 
+REFERENCES COMMUNITY_TEST(COM_ID) ON DELETE CASCADE;
+
+ALTER TABLE COMMENT_TEST DROP CONSTRAINT FK_COMMENT_MEMBER;
+
+ALTER TABLE COMMENT_TEST 
+ADD CONSTRAINT FK_COMMENT_MEMBER 
+FOREIGN KEY (MEM_ID) 
+REFERENCES MEMBER_TEST(MEM_ID) ON DELETE CASCADE;
+
+------------------------------------------------------------
+-- 4. INQUIRY_TEST 외래키 수정
+------------------------------------------------------------
+ALTER TABLE INQUIRY_TEST DROP CONSTRAINT FK_INQUIRY_MEMBER;
+
+ALTER TABLE INQUIRY_TEST 
+ADD CONSTRAINT FK_INQUIRY_MEMBER 
+FOREIGN KEY (MEM_ID) 
+REFERENCES MEMBER_TEST(MEM_ID) ON DELETE CASCADE;
+
 ------------------------------------------------------------
 -- 저장
 ------------------------------------------------------------
