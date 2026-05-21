@@ -7,12 +7,12 @@ import { checkTodayPredict  } from "../../springApi/modeldataSpringBootApi";
 
 // MyPage.js 상단 import에 추가
 import { getDataView } from '../../springApi/modeldataSpringBootApi';
-import { getMemberView, setMemberUpdate } from '../../springApi/memberSpringBootApi';
+import { getMemberView, setMemberDelete, setMemberUpdate } from '../../springApi/memberSpringBootApi';
 import {getInquiryList} from "../../springApi/inquirySpringBootApi"; 
 
 function MyPage() {
     const navigate = useNavigate();
-    const { user, login } = useAuth() || {}; // [수정] 수정 완료 후 전역 세션 갱신을 위해 login 함수 구독
+    const { user, login, logout } = useAuth() || {}; // [수정] 수정 완료 후 전역 세션 갱신을 위해 login 함수 구독
 
     
 
@@ -270,6 +270,25 @@ useEffect(() => {
 
     const inquiryTotalPages = Math.ceil(myInquiryList.length /itemsPerPage);
 
+
+    const handleDelete = async () => {
+    if (!window.confirm("정말로 탈퇴하시겠습니까?")) {
+        return;
+    }
+
+    try {
+        await setMemberDelete(user?.mem_id);
+        alert("회원 탈퇴가 완료되었습니다.");
+        logout();
+        navigate("/");
+    }
+
+    catch (error) {
+        console.log(error);
+        alert("회원 탈퇴에 실패했습니다.");
+    }
+};
+
     return (
         <main className="page mypage">
         <section className="mypage-layout">
@@ -324,6 +343,12 @@ useEffect(() => {
                                 onClick={() => setActiveMenu('회원 정보')}>
 
                             정보 수정
+                        </button>
+                        <button className="btn-outline mint"
+                                onClick={handleDelete}
+                                style={{marginLeft:"10px"}}>
+
+                            회원 탈퇴
                         </button>
                     </div>
                     </div>
