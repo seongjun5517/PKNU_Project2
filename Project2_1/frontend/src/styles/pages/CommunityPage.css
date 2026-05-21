@@ -411,9 +411,6 @@
   transition: all 0.2s ease;
 }
 
-.comment-submit-btn:hover {
-  background: #0f9f8d;
-}
 
 .comment-list {
   display: flex;
