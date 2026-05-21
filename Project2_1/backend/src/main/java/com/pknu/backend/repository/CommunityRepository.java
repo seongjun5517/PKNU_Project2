@@ -55,4 +55,28 @@ public interface CommunityRepository extends JpaRepository<Community, Integer> {
             )
 
     List<Community> myBoard(@Param("mem_id") String mem_id);
+
+
+    /* 전체 게시글에서 최신날짜로 정렬 */
+    @Query(value = """
+    SELECT *
+    FROM community_test
+
+    ORDER BY com_created DESC
+
+    """,
+
+    countQuery =
+
+    """
+    SELECT COUNT(*)
+    FROM community_test
+    """,
+
+    nativeQuery = true
+)
+
+    Page<Community> findAllPaging(
+        Pageable pageable
+    );
 }
