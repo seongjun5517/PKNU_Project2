@@ -20,3 +20,28 @@ button { cursor: pointer; font-family: inherit; }
 .text-button { border: none; background: transparent; color: #0f9f8d; font-weight: 700; }
 .error-text { margin: 6px 0 0; color: #ef4444; font-size: 13px; }
 .info-message { margin: 14px 0 0; color: #0f766e; font-size: 13px; line-height: 1.5; }
+
+/* 기본 버튼 hover */
+.btn-primary:hover {
+    background: linear-gradient(135deg, #17a090, #0d8a7a);
+    opacity: 0.92;
+}
+
+/* outline 버튼 hover */
+.btn-outline:hover {
+    background-color: #f0fafa;
+    border-color: #1db79f;
+    color: #0f9f8d;
+}
+
+/* mint 버튼 hover */
+.btn-outline.mint:hover {
+    background-color: #e6f7f5;
+    border-color: #0f9f8d;
+    color: #0f9f8d;
+}
+
+/* text 버튼 hover */
+.text-button:hover {
+    opacity: 0.75;
+}
