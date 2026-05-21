@@ -6,9 +6,11 @@ import { getDataView } from "../../springApi/modeldataSpringBootApi";
 import { LineChart, Line, XAxis, YAxis, CartesianGrid, Tooltip, ResponsiveContainer } from "recharts";
 import { calcHeartAgeFromSelectedData } from '../../assets/heartagecalc/Heartagelogic';
 import { NON_SMOKER, SMOKER } from '../../assets/heartagecalc/Heartagedata';
+import { useNavigate } from 'react-router-dom';
 
 
 function ResultPage() {
+    const navigate = useNavigate();
     const { user } = useAuth() || {}; // [수정] 수정 완료 후 전역 세션 갱신을 위해 login 함수 구독
     const location = useLocation();
     const result = location.state?.result || {};
@@ -26,6 +28,7 @@ function ResultPage() {
     const getCombinedRisk = (di1_dg, di2_dg, de1_dg, ge_gba1c, he_chol) => {
     // 코멘트들을 담을 빈 배열 생성
     const comments = [];
+    
 
     // 1. 고혈압 체크
     if (di1_dg === 0) comments.push("심근경색의 주요 원인 중 하나인 고혈압 없으셔서, 현재 상태는 아주 좋습니다.");
@@ -108,6 +111,10 @@ function ResultPage() {
         return Number(val) === 1 ? "⚠️ 질환/이상" : "✅ 정상";
     };
 
+    const handleAnalysis = () => {
+        navigate("/analysis");
+    }
+
     return (
     <main className="page result-page">
         <section className="result-grid">
@@ -172,8 +179,10 @@ function ResultPage() {
         <div className="card result-chart-card">
             <div style={{ display: "flex", justifyContent: "space-between", alignItems: "center" }}>
                 <h3 style={{ margin: 0 }}>분석 추이 그래프</h3>
-                <button>123</button>
-            </div>
+                <button  onClick={handleAnalysis} 
+                        style={{borderColor : "#1db79f", color: "#0f9f8d", height : "50px", width : "150px", borderRadius : "10px", background : "#f8f9fa"} }
+                         >예측하기</button>
+            </div> 
             
             <div style={{ width: "95%", margin: "0 auto", padding: "20px", fontFamily: "sans-serif" }}>
             <div style={{ display: "flex", justifyContent: "space-between", alignItems: "center", marginBottom: "20px" }}>

@@ -53,10 +53,8 @@ const MemberInsertPage = () => {
         setMemberInsert(member)
             // 응답 결과에 따른 처리
             .then((res) => {                
-                alert(res.status);
                 login(member); 
-                alert(`로그인 성공: ${member.mem_name}님 환영합니다.`);
-                alert("회원 가입되었습니다");
+                alert(`로그인 및 회원가입 성공: ${member.mem_name}님 환영합니다.`);
 
                 // 입력 후 전체목록 페이지로 이동
                 navigate("/");
