@@ -64,7 +64,7 @@ public class CommunityController {
 
     // 내 게시글 조회
     if(mem_id != null){
-            return ResponseEntity.ok(this.communityRepository.findByMemId(mem_id,pageable).getContent()
+            return ResponseEntity.ok(this.communityRepository.findByMemId(mem_id, pageable).getContent()
         );
     }
 

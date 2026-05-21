@@ -18,7 +18,7 @@ public interface CommunityRepository
     Page<Community> findByMemId(
 
             @Param("mem_id")
-            String mem_id,
+            String memId,
             Pageable pageable
     );
 
@@ -48,12 +48,12 @@ public interface CommunityRepository
     @Query(value = """
                     SELECT * 
                     FROM community_test 
-                    WHERE MEM_ID = :mem_id",
+                    WHERE MEM_ID = :memId,
 
                     """, 
 
                     nativeQuery = true
             )
 
-    List<Community> myBoard(@Param("mem_id") String mem_id);
+    List<Community> myBoard(@Param("mem_id") String memId);
 }

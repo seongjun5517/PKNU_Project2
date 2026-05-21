@@ -40,11 +40,13 @@ function MyPage() {
                     setRecords([]);
                     return;
                 }
+
                 const sorted = [...response.data]
                     .sort((a, b) => new Date(b.CHECK_DATE) - new Date(a.CHECK_DATE))
                     .slice(0, 3);
                 setRecords(sorted);
             })
+
             .catch(() => setRecords([]))
             .finally(() => setRecordLoading(false));
             
@@ -54,7 +56,7 @@ function MyPage() {
 
     // 로컬스토리지 기본값 먼저 세팅 (빠른 렌더링)
     setEditForm({
-        mem_id: mem_id || "",
+        mem_id: memId || "",
         mem_name: user.mem_name || user.name || "",
         mem_phone: "",
         mem_nickname: ""
