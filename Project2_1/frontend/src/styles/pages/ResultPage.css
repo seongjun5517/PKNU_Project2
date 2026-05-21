@@ -61,3 +61,12 @@
 .icon-list div { width: 88px; height: 88px; border-radius: 50%; background: #f1fbfa; display: flex; flex-direction: column; align-items: center; justify-content: center; gap: 6px; font-size: 26px; }
 .icon-list span { font-size: 12px; font-weight: 700; }
 
+.predict-button {
+    transition: background 0.2s, color 0.2s;
+}
+.predict-button:hover {
+    background: #e6f7f4 !important;
+    border-color: #0a8577 !important;
+    color: #0a8577 !important;
+    cursor: pointer;
+}

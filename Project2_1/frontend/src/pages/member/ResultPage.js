@@ -68,7 +68,7 @@ function ResultPage() {
     const [selectedData, setSelectedData] = useState(null); 
     const [loading, setLoading] = useState(true);
 
-    const memId = user.mem_id; 
+    const memId = user?.mem_id; 
 
     useEffect(() => {
         setLoading(true);
@@ -113,6 +113,7 @@ function ResultPage() {
 
     const handleAnalysis = () => {
         navigate("/analysis");
+        return;
     }
 
     return (
@@ -181,12 +182,13 @@ function ResultPage() {
                 <h3 style={{ margin: 0 }}>분석 추이 그래프</h3>
                 <button  onClick={handleAnalysis} 
                         style={{borderColor : "#1db79f", color: "#0f9f8d", height : "50px", width : "150px", borderRadius : "10px", background : "#f8f9fa"} }
+                        className="predict-button" 
                          >예측하기</button>
             </div> 
             
             <div style={{ width: "95%", margin: "0 auto", padding: "20px", fontFamily: "sans-serif" }}>
             <div style={{ display: "flex", justifyContent: "space-between", alignItems: "center", marginBottom: "20px" }}>
-                <h3>{user.mem_name} 님의 분석 그래프 보기</h3>
+                <h3>{user?.mem_name} 님의 분석 그래프 보기</h3>
             </div>
 
             {loading ? (

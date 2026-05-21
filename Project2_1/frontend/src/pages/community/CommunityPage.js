@@ -5,8 +5,11 @@ import '../../styles/pages/CommunityPage.css';
 
 import { getCommunityList } from "../../springApi/communitySpringBootApi"; 
 
+import { useAuth } from '../user/AuthContext';
+
 function CommunityPage() {
   const navigate = useNavigate();
+  const { user } = useAuth() || {};
   const [searchParams] = useSearchParams();
   const mem_id = searchParams.get("mem_id");
 
@@ -113,9 +116,18 @@ function CommunityPage() {
 
             <div className="community-actions">
               <input placeholder="검색어를 입력하세요" />
-              <button className="btn-primary small" onClick={() => navigate('/community/write')}>
+              <button
+                className="btn-primary small"
+                onClick={() => {
+                  if (!user) {
+                    alert("로그인 후 이용 가능합니다.");
+                    return;
+                  }
+                  navigate('/community/write');
+                }}
+              >
                 글 작성하기
-              </button>
+            </button>
             </div>
           </div>
 
@@ -178,7 +190,7 @@ function CommunityPage() {
 </div>
 
           <p className="page-helper-text">
-            현재 {currentPage}페이지 / 실제 게시글 페이지 수 {totalPages}페이지
+            현재 {currentPage} 페이지 / 총 페이지 수 {totalPages} 페이지
           </p>
         </section>
       </section>

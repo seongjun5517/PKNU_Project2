@@ -22,7 +22,7 @@ function CommunityWritePage() {
     );
 
   try{
-        const insertPost = {...post, mem_id : user_info.mem_id
+        const insertPost = {...post, mem_id : user_info?.mem_id
     };
 
     console.log(insertPost);

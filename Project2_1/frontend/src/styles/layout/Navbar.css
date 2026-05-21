@@ -9,3 +9,18 @@
 .auth-buttons { display: flex; align-items: center; gap: 10px; }
 .user-name { font-size: 13px; color: #475569; }
 
+/* 버튼 hover 효과 추가 */
+.btn-outline {
+    transition: background-color 0.2s, color 0.2s, border-color 0.2s;
+}
+.btn-outline:hover {
+    background-color: #0e9e8d;
+    color: #fff;
+    border-color: #0e9e8d;
+    cursor: pointer;
+}
+.btn-outline.mint:hover {
+    background-color: #0a8577;
+    border-color: #0a8577;
+    color: #fff;
+}
