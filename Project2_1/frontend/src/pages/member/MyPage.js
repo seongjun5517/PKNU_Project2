@@ -172,6 +172,21 @@ useEffect(() => {
     */
     const [inquiryLoading, setInquiryLoading] = useState(false);
 
+    /**
+     * 내 게시글 페이지
+    */
+    const [boardPage, setBoardPage] = useState(1);
+
+    /**
+     * 내 문의사항 페이지
+    */
+    const [inquiryPage, setInquiryPage] = useState(1);
+
+    /**
+     * 페이지당 개수
+    */
+    const itemsPerPage = 5;
+
     useEffect(() => {
 
     /**
@@ -214,6 +229,28 @@ useEffect(() => {
 
     }, [activeMenu, user.mem_id]);
 
+    /**
+     * 내 게시글 paging
+    */
+    const boardLastIndex = boardPage * itemsPerPage;
+
+    const boardFirstIndex =  boardLastIndex - itemsPerPage;
+
+    const currentBoardList = boardList.slice( boardFirstIndex, boardLastIndex);
+
+    const boardTotalPages = Math.ceil( boardList.length /itemsPerPage);
+
+    /**
+     * 내 문의사항 paging
+    */
+    const inquiryLastIndex =inquiryPage * itemsPerPage;
+
+    const inquiryFirstIndex =inquiryLastIndex - itemsPerPage;
+
+    const currentInquiryList =myInquiryList.slice( inquiryFirstIndex,inquiryLastIndex);
+
+    const inquiryTotalPages = Math.ceil(myInquiryList.length /itemsPerPage);
+
     return (
         <main className="page mypage">
         <section className="mypage-layout">
@@ -228,11 +265,9 @@ useEffect(() => {
             <button 
                 className = {activeMenu === '내 게시글 조회' ? 'active' : ''}
                 onClick={() => {setActiveMenu('내 게시글 조회');}}>
-
-            내 게시글 조회
-
+                내 게시글 조회
             </button>
-
+            
             <button 
                 className={activeMenu === '내 문의사항 조회' ? 'active' : ''}
                 onClick={() => setActiveMenu('내 문의사항 조회')}>
@@ -299,7 +334,24 @@ useEffect(() => {
 
             {activeMenu === '내 게시글 조회' && (
             <div className="card mypage-full-card">
-                        <h3>내 게시글</h3>
+                <div className="title-row">
+                    <h3>
+                        내 게시글
+                    </h3>
+
+                    <button className="write-btn"
+                            onClick={() => navigate('/community/write')}
+                            style={{borderColor: "#1db79f",
+                                    color: "#0f9f8d",
+                                    height: "50px",
+                                    width: "150px",
+                                    borderRadius: "10px",
+                                    background: "#f8f9fa"}}>
+
+                        게시글 작성하기
+                    </button>
+
+                </div>
                         <p>
                             지금까지 내가 작성한 게시글입니다
                         </p>
@@ -319,10 +371,9 @@ useEffect(() => {
             <div className="board-header">
                 <span>제목</span>
                 <span>시간</span>
-                <span></span>
             </div>
 
-            {boardList.map((board, index) => (
+            {currentBoardList.map((board, index) => (
 
                 <div className="record-row large" key={index}>
 
@@ -342,12 +393,32 @@ useEffect(() => {
                 </div>
 
                     ))}
-                </>
+                </>             
             }
+            <div className="pagination">
+                <button onClick={() =>setBoardPage(boardPage <= 1 ? boardTotalPages: boardPage - 1)}>
+                    〈
+                </button>
+
+            {Array.from({length:boardTotalPages},
+
+                (_, i) => (
+                <button
+                    key={i + 1}
+                    className={ boardPage === i + 1? "active": ""}
+                    onClick={() =>  setBoardPage(i + 1)}>
+                    {i + 1}
+                </button>
+            ))}
+
+            <button onClick={() => setBoardPage(boardPage >= boardTotalPages ? 1: boardPage + 1)}>
+                〉
+            </button>
+
+        </div>
 
         </div>
     )}
-
             {activeMenu === '분석 기록' && (
                 <div className="card mypage-full-card">
                     <h3>분석 기록</h3>
@@ -373,62 +444,110 @@ useEffect(() => {
 
             {activeMenu === '내 문의사항 조회' && (
             <div className="card mypage-full-card">
-                <h3>
-                    내 문의사항
-                </h3>
-                <p>
-                    내가 작성한 문의사항 목록입니다.
-                </p>
-                {inquiryLoading ? (
-                        <p>
-                            불러오는 중...
-                        </p>
+                <div className="title-row">
+                    <h3>
+                        내 문의사항
+                    </h3>
 
-                    ) : myInquiryList.length > 0 ? (
+                <button className="write-btn" onClick={() =>navigate('/customer-center')}
 
-                        <table className="post-table">
-                            <thead>
-                                <tr>
-                                    <th>제목</th>
-                                    <th>문의내용</th>
-                                    <th>작성일</th>
-                                </tr>
-                            </thead>
+                style={{borderColor: "#1db79f",
+                        color: "#0f9f8d",
+                        height: "50px",
+                        width: "150px",
+                        borderRadius: "10px",
+                        background: "#f8f9fa"}}>
 
-                            <tbody>
-                                {myInquiryList.map(
+                문의사항 작성하기
+            </button>
 
-                                    (item) => (
+        </div>
+        <p>
+            내가 작성한 문의사항 목록입니다.
+        </p>
 
-                                    <tr key={item.inq_id}>
-                                        <td>
-                                            {item.inq_title}
-                                        </td>
+        {inquiryLoading ? (
 
-                                        <td>
-                                            {item.inq_content}
-                                        </td>
+            <p>
+                불러오는 중...
+            </p>
 
-                                        <td>
-                                            {item.inq_created?.split("T")[0]}
-                                        </td>
+        ) : currentInquiryList.length > 0 ? (
 
-                                    </tr>
-                                ))}
+            <>
+                <table className="post-table">
+                    <thead>
+                        <tr>
+                            <th>제목</th>
+                            <th>문의내용</th>
+                            <th>작성일</th>
+                        </tr>
 
-                            </tbody>
+                    </thead>
 
-                        </table>
+                    <tbody>
 
-                    ) : (
+                        {currentInquiryList.map(
 
-                        <p>
-                            작성한 문의사항이 없습니다.
-                        </p>
-                    )}
+                            (item) => (
+
+                            <tr key={item.inq_id}>
+
+                                <td>
+                                    {item.inq_title}
+                                </td>
+
+                                <td>
+                                    {item.inq_content}
+                                </td>
+
+                                <td>
+                                    {item.inq_created?.split("T")[0]}
+                                </td>
+
+                            </tr>
+                        ))}
+
+                    </tbody>
+
+                </table>
+
+                {/* pagination */}
+
+                <div className="pagination">
+                    {/* 이전 */}
+                    <button onClick={() => setInquiryPage(inquiryPage <= 1 ? inquiryTotalPages : inquiryPage - 1)}>
+                        〈
+                    </button>
+
+                    {/* 페이지 번호 */}
+                    {Array.from( { length:inquiryTotalPages},
+                        (_, i) => (
+                        <button key={i + 1}
+                                className={ inquiryPage ===i + 1 ? "active" : ""}
+                                onClick={() => setInquiryPage(i + 1)}>
+                            {i + 1}
+                        </button>
+                    ))}
+
+                    {/* 다음 */}
+                    <button onClick={() => setInquiryPage(inquiryPage >= inquiryTotalPages  ? 1 : inquiryPage + 1)}>
+                        〉
+                    </button>
 
                 </div>
-            )}
+
+            </>
+
+        ) : (
+
+            <p>
+                작성한 문의사항이 없습니다.
+            </p>
+        )}
+
+    </div>
+)}
 
             {activeMenu === '회원 정보' && (
                 <div className="card mypage-full-card">
@@ -474,7 +593,7 @@ useEffect(() => {
             )}
             </section>
         </section>
-        </main>
+     </main>
   );
 }
 

@@ -126,3 +126,15 @@
 .board-date {
     color: #666;
 }
+
+.mypage-title-row {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+}
+
+.title-row {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+}
