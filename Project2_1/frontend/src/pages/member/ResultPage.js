@@ -2,7 +2,7 @@ import React, { useState, useEffect } from 'react';
 import '../../styles/pages/ResultPage.css';
 import { useLocation  } from 'react-router-dom';
 import { useAuth } from '../user/AuthContext';
-import { getDataView } from "../../springApi/modeldataSpringBootApi"; 
+import { getDataView, checkTodayPredict } from "../../springApi/modeldataSpringBootApi"; 
 import { LineChart, Line, XAxis, YAxis, CartesianGrid, Tooltip, ResponsiveContainer } from "recharts";
 import { calcHeartAgeFromSelectedData } from '../../assets/heartagecalc/Heartagelogic';
 import { NON_SMOKER, SMOKER } from '../../assets/heartagecalc/Heartagedata';
@@ -18,6 +18,7 @@ function ResultPage() {
     const percent = (probability * 100).toFixed(2);
     const fillDeg = Math.round(probability * 360);
     const [heartAge, setHeartAge] = useState(null);
+    const [hasPredictedToday, setHasPredictedToday] = useState(false);
 
     const getRiskColor = (prob) => {
         if (prob < 0.1) return { main: "#0f9f8d", light: "#e0f7f4", label: "낮음" };
@@ -65,33 +66,46 @@ function ResultPage() {
     const riskColor = getRiskColor(probability);
     // 상태 관리
     const [chartData, setChartData] = useState([]);
-    const [selectedData, setSelectedData] = useState(null); 
+    const [selectedData, setSelectedData] = useState(null);
     const [loading, setLoading] = useState(true);
 
     const memId = user?.mem_id; 
 
     useEffect(() => {
-        setLoading(true);
-        
-        getDataView(memId)
-            .then((response) => {
-                const sortedData = response.data.sort((a, b) => {
-                    return new Date(a.CHECK_DATE) - new Date(b.CHECK_DATE);
-                });
-                setChartData(sortedData);
+    setLoading(true);
 
-                if (sortedData.length > 0) {
-                    const latest = sortedData[sortedData.length - 1];
-                    // PREDICT가 0~1 사이 소수이면 그대로, 퍼센트 숫자면 /100 처리
-                    setProbability(latest.PREDICT);
-                }
+    // 오늘 예측 여부 확인
+    const checkPredict = async () => {
+        try {
+            const checkres = await checkTodayPredict(user.mem_id);
+            setHasPredictedToday(checkres.data === true);
+        } catch (error) {
+            console.error("예측 여부 확인 실패:", error);
+            setHasPredictedToday(false);
+        }
+    };
 
-                setLoading(false);
-            })
-            .catch((error) => {
-                console.error("데이터 로딩 실패:", error);
-                setLoading(false);
+    checkPredict();
+
+    getDataView(memId)
+        .then((response) => {
+            const sortedData = response.data.sort((a, b) => {
+                return new Date(a.CHECK_DATE) - new Date(b.CHECK_DATE);
             });
+            setChartData(sortedData);
+
+            if (sortedData.length > 0) {
+                const latest = sortedData[sortedData.length - 1];
+                setProbability(latest.PREDICT);
+            }
+
+            setLoading(false);
+        })
+        .catch((error) => {
+            console.error("데이터 로딩 실패:", error);
+            setLoading(false);
+        });
+
     }, [memId]);
 
     // 구조적 예외 처리를 추가한 클릭 핸들러
@@ -126,8 +140,8 @@ function ResultPage() {
                                         "--risk-light": riskColor.light,
                                         "--risk-deg": `${fillDeg}deg`
                                     }}
-            ><div className='circle-chart-inner'><span>{percent}%</span></div></div>
-            <h3 className="risk-low" style={{ color: riskColor.main }}>위험도 : {riskColor.label}</h3>
+            ><div className='circle-chart-inner'><span>{hasPredictedToday ? `${percent}%` : '???'}</span></div></div>
+            <h3 className="risk-low" style={{ color: riskColor.main }}>{hasPredictedToday ? `위험도 : ${riskColor.label}` : '오늘의 위험도 예측해주세요!'}</h3>
             <div>
                 <p style={{ fontWeight: "bold", marginBottom: "10px" }}>심장 나이 계산</p>
                 <p style={{ padding: "10px", border: "1px solid #dee2e6", backgroundColor: "#fafafa" }}>
@@ -191,7 +205,7 @@ function ResultPage() {
             {loading ? (
                 <div>데이터를 불러오는 중입니다...</div>
             ) : chartData.length === 0 ? (
-                <div>조회된 데이터가 없습니다. (데이터 배열이 비어있음)</div>
+                <div>조회된 데이터가 없습니다. (데이터가 비어있음)</div>
             ) : (
                 <>
                     {/* 그래프 영역 */}

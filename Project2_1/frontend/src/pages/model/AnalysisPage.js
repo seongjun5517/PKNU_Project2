@@ -119,7 +119,7 @@ function InputRow({ label, name, value, unit, onChange }) {
     return (
         <div className="form-row input-row">
             <label>{label} :</label>
-            <input  type="number" step="any" name={name} value={value} onChange={onChange} required />
+            <input  type="number" step="any" name={name} value={value === 0 ? '' : value} onChange={onChange} required />
             <span>{unit}</span>
         </div>
     );

@@ -7,9 +7,7 @@
 .home-grid {
   display: grid;
   grid-template-columns: 1.05fr 0.95fr;
-  gap: 24px;
-
-  /* 같은 줄 카드 높이에 맞춰 늘어나게 */
+  gap: 10px;
   align-items: stretch;
 }
 
@@ -24,8 +22,8 @@
 .dynamic-chart-container {
   width: 100%;
   flex: 1;
-  min-height: 430px;
-  margin-top: 15px;
+  min-height: 280px;
+  margin-top: 8px;
   position: relative;
 }
 
@@ -95,7 +93,6 @@
   text-align: left;
 }
 
-
 .article-link-card:hover h4,
 .article-link-card:hover p {
   color: #0f9f8d;
@@ -107,7 +104,7 @@
 }
 
 .article-main-img {
-  height: 250px;
+  height: 160px;
   width: 100%;
   margin: 8px 0 10px;
   border-radius: 12px;
@@ -147,14 +144,12 @@
 
 .article-thumb-img {
   width: 100%;
-  height: 130px;
+  height: 90px;
   border-radius: 12px;
   display: block;
-
   object-fit: contain;
   object-position: center;
   background-color: #ffffff;
-
 }
 
 .article-link-card p {
@@ -192,7 +187,7 @@
 ------------------------------ */
 .community-preview-card,
 .slide-card {
-  min-height: 340px;
+  min-height: 260px;
 }
 
 .post-preview-list {
@@ -205,8 +200,8 @@
   display: grid;
   grid-template-columns: 112px 1fr 78px;
   gap: 10px;
-  min-height: 58px;
-  padding: 12px 0;
+  min-height: 44px;
+  padding: 8px 0;
   align-items: center;
   border-bottom: 1px solid #edf5f5;
   cursor: pointer;
@@ -244,19 +239,17 @@
 
 /* ------------------------------
    슬라이드 카드
-   - 이미지가 카드 밖으로 넘어가지 않도록 slide-visual-box 내부에 고정
-   - 글자 줄바꿈은 단어 기준으로 유지
 ------------------------------ */
 .slide-card {
-  height: 340px;
-  padding: 24px 28px;
+  height: 260px;
+  padding: 16px 20px;
   overflow: hidden;
 }
 
 .slide-wrapper {
   position: relative;
   width: 100%;
-  height: 270px;
+  height: 200px;
   display: flex;
   align-items: center;
 }
@@ -292,9 +285,9 @@
 }
 
 .slide-text-area h2 {
-  margin: 0 0 22px;
+  margin: 0 0 12px;
   color: #1f2937;
-  font-size: 30px;
+  font-size: 22px;
   font-weight: 800;
   line-height: 1.32;
   letter-spacing: -0.8px;
@@ -311,7 +304,7 @@
 .slide-visual-box {
   width: 100%;
   max-width: 260px;
-  height: 220px;
+  height: 160px;
   margin-left: auto;
   border-radius: 22px;
   background: #effbf9;
@@ -416,4 +409,3 @@
     height: 130px;
   }
 }
-

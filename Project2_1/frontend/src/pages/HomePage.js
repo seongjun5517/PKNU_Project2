@@ -10,6 +10,7 @@ import slideChart from '../assets/slide-chart.svg';
 import slideCommunity from '../assets/slide-community.svg';
 import runningImg from '../assets/run.png';
 import foodImg from '../assets/food.png';
+import heart1 from '../assets/heart1.jpg';
 
 import { useAuth } from './user/AuthContext';
 import {getCommunityTopList} from "../springApi/communitySpringBootApi";
@@ -27,6 +28,8 @@ function HomePage() {
     const user = authInstance ? authInstance.user : null;
     const memId = user ? user.mem_name : "방문자";
     const loginId = user ? user.mem_id : "방문자";
+    const [articleIndex, setArticleIndex] = useState(0);
+    const [isArticleHover, setIsArticleHover] = useState(false);
 
     // 실제 데이터 반영
     const [communityPosts, setCommunityPosts] = useState([]);
@@ -85,6 +88,7 @@ function HomePage() {
         });
         
     }, [memId, user, loginId]);
+    
 
     useEffect(() => {const loadTopPosts = async() => {
 
@@ -109,6 +113,44 @@ function HomePage() {
         lifestyle: 'https://kormedi.com/1342441/',
         food: 'https://yuyu.co.kr/blog/b248f9bf-2f30-470b-858b-524d242a4204/'
     };
+
+    const articles = [
+    {
+        url: articleLinks.more,
+        img: heart1,
+        title: "급성심근경색이란?",
+        desc: "심근경색의 원인과 증상, 응급 대처법",
+        objectPosition: "center center"
+        
+    },
+    {
+        url: articleLinks.lifestyle,
+        img: runningImg,
+        title: "혈관 건강을 지키는 7가지 생활습관",
+        desc: "매일 실천할 수 있는 건강 루틴",
+        objectPosition: "left center" 
+        
+    },
+    {
+        url: articleLinks.food,
+        img: foodImg,
+        title: "혈관 건강을 지키는 5가지 핵심 식단 전략",
+        desc: "심혈관 질환 예방에 좋은 음식",
+        objectPosition: "center center"
+        
+    }
+];
+
+    // 자동 슬라이드 useEffect 추가
+    useEffect(() => {
+        if (isArticleHover) return;
+        const interval = setInterval(() => {
+            setArticleIndex((prev) => (prev + 1) % articles.length);
+        }, 3000);
+        return () => clearInterval(interval);
+    }, [isArticleHover, articles.length]);
+
+
 
     const openArticle = (url) => {
         window.open(url, '_blank', 'noopener,noreferrer');
@@ -220,45 +262,83 @@ function HomePage() {
             </div>
 
             {/* 오른쪽 상단: 기사 카드 */}
+            {/* 오른쪽 상단: 기사 카드 — 기존 div 전체 교체 */}
             <div className="card article-card">
-            <div className="card-title-row">
-                <h3>심혈관 및 심근경색에 대한 정보</h3>
-            </div>
-
-            <button type="button" className="article-link-card main-article-link" onClick={() => openArticle(articleLinks.more)}>
-                <div >
-                <img className="article-main-img" src="https://cdn.bosa.co.kr/news/photo/202303/2193835_226001_417.jpg" alt="article"/>
+                <div className="card-title-row">
+                    <h3>심혈관 및 심근경색에 대한 정보</h3>
                 </div>
-          </button>
 
-            <div className="article-small-list">
-            <button
-              type="button"
-              className="article-link-card"
-              onClick={() => openArticle(articleLinks.lifestyle)}
-            >
-            <img
-              className="article-thumb-img"
-              src={runningImg}
-              alt="혈관 건강을 지키는 7가지 생활습관"
-            />
-            <p>혈관 건강을 지키는 7가지 생활습관</p>
-            </button>
+                <div
+                    style={{ position: "relative", overflow: "hidden", borderRadius: "10px" }}
+                    onMouseEnter={() => setIsArticleHover(true)}
+                    onMouseLeave={() => setIsArticleHover(false)}
+                >
+                    {/* 슬라이드 트랙 */}
+                    <div style={{
+                        display: "flex",
+                        transform: `translateX(-${articleIndex * 100}%)`,
+                        transition: "transform 0.4s ease"
+                    }}>
+                        {articles.map((article, index) => (
+                            <button
+                                key={index}
+                                type="button"
+                                onClick={() => openArticle(article.url)}
+                                style={{
+                                    minWidth: "100%",
+                                    border: "none",
+                                    background: "none",
+                                    cursor: "pointer",
+                                    padding: 0,
+                                }}
+                            >
+                                <img
+                                    src={article.img}
+                                    alt={article.title}
+                                    style={{
+                                        width: "100%",
+                                        height: "80%",
+                                        objectFit: "cover",
+                                        objectPosition: article.objectPosition,
+                                        borderRadius: "8px",
+                                        display: "block"
+                                    }}
+                                />
+                                <p style={{ fontWeight: "500", margin: "8px 0 2px", fontSize: "14px", textAlign : 'center'}}>{article.title}</p>
+                                <p style={{ fontSize: "12px", color: "#888", margin: 0 ,textAlign : 'center'}}>{article.desc}</p>
+                            </button>
+                        ))}
+                    </div>
 
-            <button
-              type="button"
-              className="article-link-card"
-              onClick={() => openArticle(articleLinks.food)}
-            >
-              <img
-                className="article-thumb-img"
-                src={foodImg}
-                alt="혈관 건강을 지키는 5가지 핵심 식단 전략"
-              />
-              <p>혈관 건강을 지키는 5가지 핵심 식단 전략</p>
-            </button>
-          </div>
-        </div>
+                    {/* 좌우 화살표 */}
+                    <button
+                        type="button"
+                        onClick={() => setArticleIndex((prev) => (prev === 0 ? articles.length - 1 : prev - 1))}
+                        style={{ position: "absolute", left: "6px", top: "50%", background: "rgba(0,0,0,0.35)", color: "#fff", border: "none", borderRadius: "50%", width: "28px", height: "28px", cursor: "pointer", fontSize: "16px" }}
+                    >‹</button>
+                    <button
+                        type="button"
+                        onClick={() => setArticleIndex((prev) => (prev + 1) % articles.length)}
+                        style={{ position: "absolute", right: "6px", top: "50%", background: "rgba(0,0,0,0.35)", color: "#fff", border: "none", borderRadius: "50%", width: "28px", height: "28px", cursor: "pointer", fontSize: "16px" }}
+                    >›</button>
+                </div>
+
+                {/* 점 인디케이터 */}
+                <div style={{ display: "flex", justifyContent: "center", gap: "6px", marginTop: "10px" }}>
+                    {articles.map((_, i) => (
+                        <button
+                            key={i}
+                            type="button"
+                            onClick={() => setArticleIndex(i)}
+                            style={{
+                                width: "8px", height: "8px", borderRadius: "50%", border: "none", cursor: "pointer",
+                                background: articleIndex === i ? "#007bff" : "#ccc",
+                                padding: 0
+                            }}
+                        />
+                    ))}
+                </div>
+            </div>
 
             {/* 왼쪽 하단: 커뮤니티 인기글 */}
             <div className="card community-preview-card">
