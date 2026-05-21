@@ -9,8 +9,8 @@ import { LineChart, Line, XAxis, YAxis, CartesianGrid, Tooltip, ResponsiveContai
 function ResultPage() {
   const { user } = useAuth() || {}; // [수정] 수정 완료 후 전역 세션 갱신을 위해 login 함수 구독
   const location = useLocation();
-  const result = location.state?.result || { probability: 0 };
-  const probability = result.probability || 0;
+  const result = location.state?.result || {};
+  const [probability, setProbability] = useState(result.probability || 0);
   const percent = (probability * 100).toFixed(2);
   const fillDeg = Math.round(probability * 360);
 
@@ -28,7 +28,6 @@ function ResultPage() {
 
     const memId = user.mem_id; 
 
-    // 컴포넌트 마운트 시 데이터 로드
     useEffect(() => {
         setLoading(true);
         
@@ -38,6 +37,13 @@ function ResultPage() {
                     return new Date(a.CHECK_DATE) - new Date(b.CHECK_DATE);
                 });
                 setChartData(sortedData);
+
+                if (sortedData.length > 0) {
+                    const latest = sortedData[sortedData.length - 1];
+                    // PREDICT가 0~1 사이 소수이면 그대로, 퍼센트 숫자면 /100 처리
+                    setProbability(Number(latest.PREDICT));
+                }
+
                 setLoading(false);
             })
             .catch((error) => {
@@ -234,18 +240,14 @@ function ResultPage() {
         </div>
         </div>
 
-        <div className="card"><h3>주요 위험 요인</h3><ul className="dot-list"><li>운동 부족</li><li>스트레스 관리 부족</li><li>수면 시간 부족</li></ul></div>
-        <div className="card"><h3>위험도 해석</h3><p>현재 위험도는 낮은 편입니다. 건강한 생활습관을 유지하여 더 좋은 결과를 만들어가세요.</p></div>
 
-        <div className="card recommend-card">
-          <h3>추천 음식</h3>
-          <div className="icon-list"><div>🐟<span>연어</span></div><div>🥜<span>견과류</span></div><div>🫒<span>올리브 오일</span></div><div>🥗<span>채소</span></div><div>🍓<span>베리류</span></div></div>
+        <div className="card risk-desc-card">
+            <h3>위험도 해석</h3>
+            <p>현재 위험도는 낮은 편입니다. 
+                건강한 생활습관을 유지하여 더 좋은 결과를 만들어가세요.
+            </p>
         </div>
 
-        <div className="card recommend-card">
-          <h3>추천 습관</h3>
-          <div className="icon-list"><div>🏃<span>규칙적인 운동</span></div><div>🚭<span>금연하기</span></div><div>🚰<span>체중 관리</span></div><div>🌙<span>충분한 수면</span></div><div>🧘<span>스트레스 관리</span></div></div>
-        </div>
       </section>
     </main>
   );

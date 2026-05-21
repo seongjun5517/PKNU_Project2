@@ -1,4 +1,9 @@
-/* Result */
+/* =========================================================
+   ResultPage.css
+   - 분석 결과 페이지 전용 스타일
+========================================================= */
+
+/* 전체 결과 페이지 grid */
 .result-grid {
   display: grid;
   grid-template-columns: 0.75fr 1.45fr;
@@ -6,99 +11,72 @@
   align-items: stretch;
 }
 
-.circle-chart {
-    width: 190px;
-    height: 190px;
-    border: 18px solid #9de0d8;
-    border-radius: 50%;
-    background: #f1fbfa;
-    background: conic-gradient(var(--risk-main) var(--risk-deg), var(--risk-light) var(--risk-deg));
-    margin: 30px auto;
-    display: flex;
-    align-items: center;
-    justify-content: center;
-}
-
-
-/* .circle-chart span { font-size: 40px;
-    font-weight: 800;
-    color: #0f9f8d;
-} */
-
-.circle-chart-inner span {
-    font-size: 36px;
-    font-weight: 800;
-    color: var(--risk-main);
-}
-
-.risk-low {
-    text-align: center;
-    color: var(--risk-main);
-}
-
+/* 왼쪽 발생 확률 카드 */
 .risk-card {
   height: 100%;
-  align-self: stretch;
+  min-height: 100%;
 
   display: flex;
   flex-direction: column;
   align-items: center;
-
-  /* 오른쪽 카드가 늘어날 때 내부 내용도 세로 중앙 정렬 */
   justify-content: center;
 }
 
+/* 원형 확률 그래프 */
+.circle-chart {
+  width: 190px;
+  height: 190px;
+  border-radius: 50%;
+
+  background: conic-gradient(
+    from 0deg,
+    var(--risk-main) 0deg,
+    var(--risk-main) var(--risk-deg),
+    var(--risk-light) var(--risk-deg),
+    var(--risk-light) 360deg
+  );
+
+  margin: 30px auto;
+
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+/* 원형 그래프 안쪽 흰 원 */
+.circle-chart-inner {
+  width: 140px;
+  height: 140px;
+  border-radius: 50%;
+  background: #ffffff;
+
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+/* 확률 숫자 */
+.circle-chart-inner span {
+  color: var(--risk-main);
+  font-size: 36px;
+  font-weight: 800;
+}
+
+/* 위험도 텍스트 */
+.risk-low {
+  text-align: center;
+  color: var(--risk-main);
+  font-weight: 800;
+}
+
+/* 오른쪽 분석 그래프 카드 */
 .result-chart-card {
   height: auto;
   min-height: 100%;
 }
 
-.risk-card p { 
-    text-align: center;
-    color: #64748b;
+/* 위험도 해석 카드 */
+.risk-desc-card {
+  grid-column: 1 / -1;
+  min-height: 150px;
 }
-
-.progress { 
-    height: 10px;
-    background: #e5eeee;
-    border-radius: 999px;
-    overflow: hidden;
-    margin: 16px 0; 
-}
-
-.progress div { 
-    height: 100%;
-    background: linear-gradient(135deg,#1db79f,#3b82f6);
-}
-
-.dot-list { 
-    padding-left: 20px;
-    line-height: 2;
-}
-
-.icon-list { 
-    display: flex;
-    gap: 24px;
-    flex-wrap: wrap;
-    margin-top: 24px;
-}
-
-.icon-list div { 
-    width: 88px;
-    height: 88px;
-    border-radius: 50%;
-    background: #f1fbfa;
-    display: flex;
-    flex-direction: column;
-    align-items: center;
-    justify-content: center;
-    gap: 6px;
-    font-size: 26px;
-}
-
-.icon-list span { 
-    font-size: 12px;
-    font-weight: 700;
-}
-
-
