@@ -12,15 +12,20 @@ import org.springframework.stereotype.Repository;
 import com.pknu.backend.model.Community;
 
 @Repository
-public interface CommunityRepository
-        extends JpaRepository<Community, Integer> {
+public interface CommunityRepository extends JpaRepository<Community, Integer> {
 
-    Page<Community> findByMemId(
+    // Page<Community> findByMemId(
 
-            @Param("mem_id")
-            String mem_id,
-            Pageable pageable
-    );
+    //         @Param("mem_id")
+    //         String mem_id,
+    //         Pageable pageable
+    // );
+
+
+    @Query(value = "SELECT c FROM Community c WHERE c.mem_id = :mem_id")
+    Page<Community> findByMemId(@Param("mem_id") String mem_id, Pageable pageable);
+
+
 
     /**
      * 인기글 조회
@@ -43,12 +48,14 @@ public interface CommunityRepository
     )
 
     List<Community> findTopCommunityList();
+
+
     
     /* 마이페이지에서 내 게시글 조회 */
     @Query(value = """
                     SELECT * 
                     FROM community_test 
-                    WHERE MEM_ID = :mem_id",
+                    WHERE MEM_ID = :mem_id
 
                     """, 
 

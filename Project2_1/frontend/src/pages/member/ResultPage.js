@@ -170,7 +170,11 @@ function ResultPage() {
         </div>
 
         <div className="card result-chart-card">
-            <h3>분석 추이 그래프</h3>
+            <div style={{ display: "flex", justifyContent: "space-between", alignItems: "center" }}>
+                <h3 style={{ margin: 0 }}>분석 추이 그래프</h3>
+                <button>123</button>
+            </div>
+            
             <div style={{ width: "95%", margin: "0 auto", padding: "20px", fontFamily: "sans-serif" }}>
             <div style={{ display: "flex", justifyContent: "space-between", alignItems: "center", marginBottom: "20px" }}>
                 <h3>{user.mem_name} 님의 분석 그래프 보기</h3>
@@ -330,6 +334,7 @@ function ResultPage() {
         </div>
         
         </section>
+        <br/>
         <div className="card">
             <h3>해석 (그래프의 점을 클릭하면 해석이 나타납니다.)</h3>
             <div>

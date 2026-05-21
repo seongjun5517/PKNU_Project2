@@ -40,7 +40,7 @@ function Navbar() {
             return;
         }
         
-        navigate("/analysis");
+        navigate("/result");
     };
 
     return (
