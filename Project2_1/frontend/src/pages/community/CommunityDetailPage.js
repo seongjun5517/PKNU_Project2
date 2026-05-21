@@ -252,7 +252,7 @@ function CommunityDetailPage() {
       const comment = {
 
         comid : Number(postId),
-        memid : user_info.id,
+        memid : user_info.mem_id,
         commentcontent : commentContent
       };
 
@@ -282,6 +282,8 @@ function CommunityDetailPage() {
    * 댓글 수정
   */
   const updateComment = async() => {
+
+
 
     try{
 
@@ -486,26 +488,26 @@ function CommunityDetailPage() {
 
             </div>
 
-            {/* 오른쪽 버튼 */}
+
+
+            {/* 오른쪽 버튼 - 작성자만 표시 */}
             <div>
+              {user_info && user_info.mem_id === post.mem_id && (
+                <>
+                  <button
+                    className="btn-outline"
+                    onClick={() => navigate(`/community/edit/${postId}`)}
+                    style={{marginRight : "10px"}}>
+                    수정
+                  </button>
 
-              <button
-                className="btn-outline"
-                onClick={() => navigate(`/community/edit/${postId}`)}
-                style={{marginRight : "10px"}}>
-
-                수정
-
-              </button>
-
-              <button
-                className="btn-outline"
-                onClick={deletePost}>
-
-                삭제
-
-              </button>
-
+                  <button
+                    className="btn-outline"
+                    onClick={deletePost}>
+                    삭제
+                  </button>
+                </>
+              )}
             </div>
 
       </div>
