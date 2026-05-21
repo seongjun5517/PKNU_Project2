@@ -132,7 +132,17 @@
   display: flex;
   justify-content: flex-end; /* 가로축 기준 오른쪽 끝으로 정렬 */
   align-items: flex-start;   /* 세로축 기준 위쪽 끝으로 정렬 */
+}  
   
   
-  
+.mypage-title-row {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+}
+
+.title-row {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
 }

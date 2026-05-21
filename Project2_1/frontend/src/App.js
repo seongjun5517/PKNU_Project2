@@ -21,6 +21,7 @@ const Home = () =>  {
     return (
         <div className="app">
             <BrowserRouter>
+                
                 {/* 상단 Header */}
                 <Navbar />
                 {/* Home 페이지*/}
