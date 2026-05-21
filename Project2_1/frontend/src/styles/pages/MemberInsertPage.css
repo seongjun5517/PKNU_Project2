@@ -1,0 +1,159 @@
+/* =========================================================
+   RegisterPage.css
+   - 회원 관리 폼 전용 스타일 (MemberForm 구조 매핑)
+   - HomePage.css의 디자인 시스템(Teal 컬러셋 및 라운딩) 계승
+========================================================= */
+
+/* 외부 컨테이너 (상위 컴포넌트 div 영역) */
+.register-container {
+  width: 700px;
+  margin: 60px auto;
+  padding: 40px 32px;
+  background-color: #ffffff;
+  border-radius: 14px;
+  box-shadow: 0 10px 25px rgba(15, 118, 110, 0.06);
+}
+
+.register-container h3 {
+  margin: 0 0 16px 0;
+  color: #0f172a;
+  font-size: 24px;
+  font-weight: 800;
+  letter-spacing: -0.5px;
+}
+
+.register-container hr {
+  border: none;
+  height: 1px;
+  background-color: #edf5f5;
+  margin: 0 0 28px 0;
+}
+
+/* ------------------------------
+   MemberForm (<form>) 내부 구조
+------------------------------ */
+
+/* 각 입력 항목을 감싸는 div 구역 */
+.register-container form > div:not(:last-child) {
+  display: flex;
+  flex-direction: column;
+  gap: 8px;
+  margin-bottom: 22px;
+}
+
+/* 입력란 라벨 */
+.register-container form label {
+  color: #1f2937;
+  font-size: 14px;
+  font-weight: 700;
+}
+
+/* 텍스트 및 이메일 입력창 (input) */
+.register-container form input[type="text"],
+.register-container form input[type="email"] {
+  width: 100%;
+  height: 48px;
+  padding: 0 16px;
+  box-sizing: border-box;
+  border: 3px solid #d4eeee;
+  border-radius: 10px;
+  background-color: #ffffff;
+  color: #0f172a;
+  font-size: 15px;
+  font-weight: 500;
+  transition: border-color 0.2s ease, box-shadow 0.2s ease;
+}
+
+/* 포커스 상태 (수정 가능할 때만 적용) */
+.register-container form input:focus:not([readOnly]) {
+  outline: none;
+  border-color: #10bfae;
+  box-shadow: 0 0 0 3px rgba(16, 191, 174, 0.12);
+}
+
+/* 읽기 전용(readOnly) 상태의 입력창 제어 */
+.register-container form input[readOnly] {
+  color: #64748b;
+  border-color: #edf5f5;
+  cursor: not-allowed;
+}
+
+/* 폼 중간 구분선 */
+.register-container form hr {
+  margin: 28px 0;
+}
+
+/* ------------------------------
+   하단 버튼 영역 (최하단 div)
+------------------------------ */
+.register-container form > div:last-child {
+  display: flex;
+  align-items: center;
+  justify-content: flex-end;
+  gap: 12px;
+  margin-top: 24px;
+}
+
+/* 공통 버튼 디자인 */
+.register-container form button {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  height: 48px;
+  padding: 0 28px;
+  border: none;
+  border-radius: 10px;
+  font-size: 16px;
+  font-weight: 700;
+  cursor: pointer;
+  transition: background-color 0.2s ease, transform 0.1s ease;
+}
+
+/* 저장 버튼 (submit) */
+.register-container form button[type="submit"] {
+  background-color: #10bfae;
+  color: #ffffff;
+}
+
+.register-container form button[type="submit"]:hover {
+  background-color: #0f9f8d;
+  box-shadow: 0 4px 12px rgba(15, 159, 141, 0.2);
+}
+
+/* 취소 버튼 (button) */
+.register-container form button[type="button"] {
+  background-color: #e8f8f6;
+  color: #0f9f8d;
+}
+
+.register-container form button[type="button"]:hover {
+  background-color: #dff8f4;
+}
+
+.register-container form button:active {
+  transform: scale(0.98);
+}
+
+/* ------------------------------
+   모바일 반응형 레이아웃
+------------------------------ */
+@media (max-width: 600px) {
+  .register-container {
+    margin: 20px 16px;
+    padding: 28px 20px;
+  }
+
+  .register-container h3 {
+    font-size: 20px;
+  }
+
+  /* 모바일 환경에서 버튼을 세로로 정렬하고 너비를 꽉 채움 */
+  .register-container form > div:last-child {
+    flex-direction: column-reverse;
+    gap: 10px;
+  }
+
+  .register-container form button {
+    width: 100%;
+  }
+}

@@ -69,7 +69,7 @@ function Navbar() {
             <div className="auth-buttons">
             {user ? (
                 <>
-                <span className="user-name">{user.mem_name}님</span>
+                <span className="user-name">{user.mem_name||user.name}님</span>
                 <button className="btn-outline" onClick={handleLogout}>로그아웃</button>
                 <button className="btn-outline mint" onClick={handleMyPage}>마이페이지</button>
                 </>
