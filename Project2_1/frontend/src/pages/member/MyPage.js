@@ -56,7 +56,7 @@ function MyPage() {
 
     // 로컬스토리지 기본값 먼저 세팅 (빠른 렌더링)
     setEditForm({
-        mem_id: memId || "",
+        mem_id: mem_id || "",
         mem_name: user.mem_name || user.name || "",
         mem_phone: "",
         mem_nickname: ""

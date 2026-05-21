@@ -1,12 +1,19 @@
 import '../../styles/pages/PolicyPage.css';
 import { useState } from 'react';
 import {useNavigate} from "react-router-dom";
+import { setInquiryInsert } from '../../springApi/inquirySpringBootApi';
+import { useAuth } from '../user/AuthContext';
+
+
 
 function CustomerCenterPage() {
+  const { user } = useAuth();
+
+
   const [formData, setFormData] = useState({
-    title: '',
-    email: '',
-    content: ''
+    inq_title: '',
+    inq_content: '',
+    mem_id: user.mem_id
   });
 
   const navigate = useNavigate();
@@ -20,7 +27,7 @@ function CustomerCenterPage() {
     e.preventDefault();
     try{
         alert('문의가 접수되었습니다.');
-        setFormData({ title: '', email: '', content: '' });
+        setInquiryInsert(formData);
         navigate("/");
     }
 
@@ -46,13 +53,13 @@ return (
 
           <form className="customer-form" onSubmit={handleSubmit}>
             <label>문의 제목</label>
-            <input name="title" value={formData.title} onChange={handleChange} required />
+            <input name="inq_title" value={formData.inq_title} onChange={handleChange} required />
 
             <label>답변 받을 이메일</label>
-            <input name="email" type="email" value={formData.email} onChange={handleChange} required />
+            <input name="mem_id" type="email" value={formData.mem_id} onChange={handleChange} required />
 
             <label>문의 내용</label>
-            <textarea name="content" value={formData.content} onChange={handleChange} required />
+            <textarea name="inq_content" value={formData.inq_content} onChange={handleChange} required />
 
             <button className="btn-primary small" type="submit">문의 접수</button>
           </form>

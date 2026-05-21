@@ -14,22 +14,10 @@ import com.pknu.backend.model.Community;
 @Repository
 public interface CommunityRepository extends JpaRepository<Community, Integer> {
 
-    // Page<Community> findByMemId(
-
-    //         @Param("mem_id")
-    //         String mem_id,
-    //         Pageable pageable
-    // );
-
 
     @Query(value = "SELECT c FROM Community c WHERE c.mem_id = :mem_id")
     Page<Community> findByMemId(@Param("mem_id") String mem_id, Pageable pageable);
 
-
-            @Param("mem_id")
-            String memId,
-            Pageable pageable
-    );
 
     /**
      * 인기글 조회
@@ -59,12 +47,12 @@ public interface CommunityRepository extends JpaRepository<Community, Integer> {
     @Query(value = """
                     SELECT * 
                     FROM community_test 
-                    WHERE MEM_ID = :memId,
+                    WHERE MEM_ID = :mem_id
 
                     """, 
 
                     nativeQuery = true
             )
 
-    List<Community> myBoard(@Param("mem_id") String memId);
+    List<Community> myBoard(@Param("mem_id") String mem_id);
 }

@@ -85,7 +85,7 @@ function CommunityPage() {
     return '';
   }
 
-  return dateString.split('T')[0];
+    return dateString.split('T')[0];
   };
 
   return (
@@ -155,17 +155,27 @@ function CommunityPage() {
           </table>
 
           <div className="pagination">
-            {pageNumbers.map((page) => (
-              <button
-                key={page}
-                className={currentPage === page ? 'active' : ''}
-                onClick={() => handlePageClick(page)}
-              >
-                {page}
-              </button>
-            ))}
-            <button onClick={handleNextPage}>〉</button>
-          </div>
+
+        {/* 이전 페이지 */}
+        <button onClick={() =>setCurrentPage( currentPage <= 1? totalPages: currentPage - 1)}>
+          〈
+        </button>
+
+        {pageNumbers.map((page) => (
+          <button
+            key={page}
+            className={currentPage === page ? 'active' : ''}
+            onClick={() => handlePageClick(page)}
+          >
+            {page}
+          </button>
+        ))}
+
+        {/* 다음 페이지 */}
+        <button onClick={handleNextPage}>
+          〉
+      </button>
+</div>
 
           <p className="page-helper-text">
             현재 {currentPage}페이지 / 실제 게시글 페이지 수 {totalPages}페이지
