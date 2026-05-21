@@ -68,7 +68,7 @@ function ResultPage() {
     const [selectedData, setSelectedData] = useState(null); 
     const [loading, setLoading] = useState(true);
 
-    const memId = user.mem_id; 
+    const memId = user?.mem_id; 
 
     useEffect(() => {
         setLoading(true);
@@ -113,6 +113,7 @@ function ResultPage() {
 
     const handleAnalysis = () => {
         navigate("/analysis");
+        return;
     }
 
     return (
@@ -184,7 +185,7 @@ function ResultPage() {
             
             <div style={{ width: "95%", margin: "0 auto", padding: "20px", fontFamily: "sans-serif" }}>
             <div style={{ display: "flex", justifyContent: "space-between", alignItems: "center", marginBottom: "20px" }}>
-                <h3>{user.mem_name} 님의 분석 그래프 보기</h3>
+                <h3>{user?.mem_name} 님의 분석 그래프 보기</h3>
             </div>
 
             {loading ? (

@@ -13,7 +13,7 @@ function CustomerCenterPage() {
   const [formData, setFormData] = useState({
     inq_title: '',
     inq_content: '',
-    mem_id: user.mem_id
+    mem_id: user?.mem_id
   });
 
   const navigate = useNavigate();
@@ -56,7 +56,7 @@ return (
             <input name="inq_title" value={formData.inq_title} onChange={handleChange} required />
 
             <label>답변 받을 이메일</label>
-            <input name="mem_id" type="email" value={formData.mem_id} onChange={handleChange} required />
+            <input name="mem_id" type="email" value={formData.mem_id} onChange={handleChange} readOnly required />
 
             <label>문의 내용</label>
             <textarea name="inq_content" value={formData.inq_content} onChange={handleChange} required />

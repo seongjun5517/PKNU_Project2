@@ -417,226 +417,229 @@ function CommunityDetailPage() {
 
   return (
 
-    <main className="page community-detail-page">
+  <main className="page community-detail-page">
 
-      <section className="card detail-card">
+    <section className="card detail-card">
 
-        {/* 목록에서 카테고리를 post.category로 매핑했으니 그대로 유지 혹은 컬럼명에 맞게 변경 */}
+      {/* 카테고리 */}
+      <span className="category-badge detail-badge">
+        {post.com_category || '일반'}
+      </span>
 
-        <span className="category-badge detail-badge">
-          {post.com_category || '일반'}
+      {/* 제목 */}
+      <h2>
+        {post.com_title}
+      </h2>
+
+      {/* 메타 정보 */}
+      <div className="detail-meta">
+
+        <span>
+          작성자 : {post.mem_id}
         </span>
 
-        <h2>
-          {post.com_title}
-        </h2>
+        <span>
+          작성일 : {post.com_created}
+        </span>
 
-        <div className="detail-meta">
+        <span>
+          조회수 : {post.com_view}
+        </span>
 
-          <span>
-            작성자 : {post.mem_id}
-          </span>
+      </div>
 
-          <span>
-            작성일 : {post.com_created}
-          </span>
+      {/* 본문 */}
+      <div className="detail-content">
 
-          <span>
-            조회수 : {post.com_view}
-          </span>
+        <p>
+          {post.com_content || "내용이 없습니다."}
+        </p>
+
+      </div>
+
+      {/* 버튼 영역 */}
+      <div
+        className="detail-action-row"
+        style={{
+          display: "flex",
+          justifyContent: "space-between",
+          alignItems: "center"
+        }}
+      >
+
+        {/* 왼쪽 버튼 */}
+        <div>
+
+          <button
+            type="button"
+            className={liked ? 'like-button active' : 'like-button'}
+            onClick={handleLikeClick}
+          >
+            ♥ 좋아요 {likeCount}
+          </button>
+
+          <button
+            className="btn-outline"
+            onClick={() => navigate('/community')}
+            style={{ marginLeft: "10px" }}
+          >
+            목록으로
+          </button>
 
         </div>
 
-        <div className="detail-content">
+        {/* 오른쪽 버튼 */}
+        <div>
 
-          {/* 백엔드에서 글 내용 본문이 오는 필드명(예: com_content)으로 맞춰주세요 */}
+          {user_info && user_info.mem_id === post.mem_id && (
 
-          <p>
-
-            {post.com_content || "내용이 없습니다."}
-
-          </p>
-
-        </div>
-
-        <div className="detail-action-row"
-              style={{
-                        display : "flex",
-                        justifyContent : "space-between",
-                        alignItems : "center"
-                    }}>
-
-            {/* 왼쪽 버튼 */}
-            <div>
+            <>
               <button
-                type="button"
-                className={liked ? 'like-button active' : 'like-button'}
-                onClick={handleLikeClick}>
-
-                ♥ 좋아요 {likeCount}
-
+                className="btn-outline"
+                onClick={() => navigate(`/community/edit/${postId}`)}
+                style={{ marginRight: "10px" }}
+              >
+                수정
               </button>
 
               <button
                 className="btn-outline"
-                onClick={() => navigate('/community')}
-                style={{marginLeft : "10px"}}>
-
-                목록으로
-
+                onClick={deletePost}
+              >
+                삭제
               </button>
+            </>
+          )}
 
-            </div>
-
-
-
-            {/* 오른쪽 버튼 - 작성자만 표시 */}
-            <div>
-              {user_info && user_info.mem_id === post.mem_id && (
-                <>
-                  <button
-                    className="btn-outline"
-                    onClick={() => navigate(`/community/edit/${postId}`)}
-                    style={{marginRight : "10px"}}>
-                    수정
-                  </button>
-
-                  <button
-                    className="btn-outline"
-                    onClick={deletePost}>
-                    삭제
-                  </button>
-                </>
-              )}
-            </div>
+        </div>
 
       </div>
 
-        {/* =========================
-            댓글 영역
-        ========================= */}
+      {/* =========================
+          댓글 영역
+      ========================= */}
 
-        <hr style={{margin : "40px 0"}}/>
+      <hr style={{ margin: "40px 0" }} />
+
+      <div className="comment-section">
 
         <h3>
           댓글
         </h3>
 
         {/* 댓글 입력 */}
+        <div className="comment-input-box">
 
-        <div style={{marginBottom : "30px"}}>
-
-          <textarea rows="4"
-                    style={{width : "100%",
-                            padding : "15px"
-                          }}
-
-                    value={commentContent}
-                    onChange={(e) => 
-                    setCommentContent(
-                        e.target.value
-                    )
-                  }
+          <textarea
+            className="comment-textarea"
+            placeholder="댓글을 입력하세요."
+            value={commentContent}
+            onChange={(e) =>
+              setCommentContent(
+                e.target.value
+              )
+            }
           />
 
-          <br/>
+          <button
+            className="comment-submit-btn"
+            onClick={() => {
 
-          <button onClick={() => {
-
-              if(editComment){
+              if (editComment) {
                 updateComment();
               }
 
-              else{
+              else {
                 insertComment();
               }
             }}
-
-            style={{marginTop : "10px",
-                    padding : "10px 20px"}}>
-
-            {editComment ? "댓글 수정": "댓글 등록"}
-
+          >
+            {editComment ? "댓글 수정" : "댓글 등록"}
           </button>
 
         </div>
 
         {/* 댓글 목록 */}
+        <div className="comment-list">
 
-        {commentList.map( (comment, idx) => (
+          {commentList.length === 0 && (
 
-              <div key={idx}
-                   style={{
-                              border : "1px solid #cccccc",
-                              padding : "15px",
-                              marginBottom : "15px",
-                              borderRadius : "10px"
-                          }}>
-                <h4>
-                  작성자 :
-                  {" "}
+            <div
+              style={{
+                textAlign: "center",
+                color: "#94a3b8",
+                padding: "30px 0"
+              }}
+            >
+              등록된 댓글이 없습니다.
+            </div>
+          )}
+
+          {commentList.map((comment, idx) => (
+
+            <div
+              key={idx}
+              className="comment-item"
+            >
+
+              {/* 댓글 헤더 */}
+              <div className="comment-header">
+
+                <span className="comment-writer">
                   {comment.memid}
+                </span>
 
-                </h4>
-
-                <p>
-
-                  {comment.commentcontent}
-
-                </p>
-
-                <small>
-
+                <span className="comment-date">
                   {comment.commentcreated}
-
-                </small>
-
-                <br/>
-
-                {user_info?.id === comment.memid && (
-
-                    <>
-                      <button onClick={() => {
-
-                          setEditComment(comment);
-                          setCommentContent(
-                            comment.commentcontent
-                          );
-                        }}
-
-                        style={{
-                                  marginTop : "10px",
-                                  marginRight : "10px"
-                              }}>
-
-                        수정
-
-                      </button>
-
-                      <button onClick={() =>
-                          deleteComment(comment)}
-
-                        style={{
-                                  marginTop : "10px",
-                                  marginRight : "10px"
-                              }}>
-
-                        삭제
-
-                      </button>
-
-                    </>
-                  )
-                }
+                </span>
 
               </div>
-            ))
-        }
 
-      </section>
+              {/* 댓글 내용 */}
+              <div className="comment-content">
+                {comment.commentcontent}
+              </div>
 
-    </main>
-  );
+              {/* 댓글 버튼 */}
+              {user_info?.mem_id === comment.memid && (
+
+                <div className="comment-actions">
+
+                  <button
+                    onClick={() => {
+
+                      setEditComment(comment);
+
+                      setCommentContent(
+                        comment.commentcontent
+                      );
+                    }}
+                  >
+                    수정
+                  </button>
+
+                  <button
+                    onClick={() =>
+                      deleteComment(comment)
+                    }
+                  >
+                    삭제
+                  </button>
+
+                </div>
+              )}
+
+            </div>
+          ))}
+
+        </div>
+
+      </div>
+
+    </section>
+
+  </main>
+);
 }
 
 export default CommunityDetailPage;

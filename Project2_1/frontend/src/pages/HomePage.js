@@ -143,6 +143,17 @@ function HomePage() {
 
     }, [isHover, slides.length]);
 
+    const handleDetailView = () => {
+
+        if(!user){
+            alert("로그인이 필요한 서비스입니다 ");
+            return ;
+        }
+
+        navigate("/result");
+        
+    }
+
     return (
         <main className="page home-page">
         <section className="home-grid">
@@ -152,7 +163,7 @@ function HomePage() {
                 <button 
                     type="button" 
                     className="text-button" 
-                    onClick={() => navigate(user ? '/result' : '/login')} 
+                    onClick={handleDetailView} 
                     style={{ fontSize: '13px', color: '#007bff', background: 'none', border: 'none', cursor: 'pointer' }}
                 >
                     자세히 보기 〉
