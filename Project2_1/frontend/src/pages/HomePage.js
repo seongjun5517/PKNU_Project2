@@ -146,7 +146,7 @@ function HomePage() {
     return (
         <main className="page home-page">
         <section className="home-grid">
-            <div className="card chart-card" style={{ display: "flex", flexDirection: "column" }}>
+            <div className="card chart-card" style={{ display: "flex", flexDirection: "column"  }}>
             <div className="card-title-row" style={{ display: "flex", justifyContent: "space-between", alignItems: "center" }}>
                 <h3>오늘의 심근경색 발생 예측 ({memId}님)</h3>
                 <button 
@@ -188,10 +188,10 @@ function HomePage() {
                     <ResponsiveContainer width="100%" height="100%">
                         <LineChart
                          data={chartData}
-                         margin={{ top: 5, right: 20, left: -20, bottom: 5 }}>
+                         >
                         <CartesianGrid strokeDasharray="3 3" stroke="#e0e0e0" />
-                        <XAxis dataKey="CHECK_DATE" tick={{ fontSize: 10 }} />
-                        <YAxis domain={[0, 'auto']} tick={{ fontSize: 10 }} />
+                        <XAxis dataKey="CHECK_DATE" tick={{ fontSize: "15px" , fontWeight : "bold"}} />
+                        <YAxis domain={[0, 'auto']} tick={{ fontSize: "15px" , fontWeight : "bold"}} />
                         <Tooltip wrapperStyle={{ pointerEvents: "none" }} />
                         <Line
                             type="monotone"

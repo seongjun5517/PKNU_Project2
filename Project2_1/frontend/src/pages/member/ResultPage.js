@@ -108,7 +108,7 @@ function ResultPage() {
     // 0 또는 1로 들어오는 진단 값을 '정상/질환' 텍스트로 치환하는 유틸 함수
     const renderDiseaseStatus = (val) => {
         if (val === undefined || val === null) return "-";
-        return Number(val) === 1 ? "⚠️ 질환/이상" : "✅ 정상";
+        return Number(val) === 1 ? "질환/이상" : "정상";
     };
 
     const handleAnalysis = () => {
@@ -135,7 +135,7 @@ function ResultPage() {
             </div>
 
             <div>
-                <p style={{ fontWeight: "bold", marginBottom: "10px" }}>👍정상 범위 및 수치</p>
+                <p style={{ fontWeight: "bold", marginBottom: "10px" }}>정상 범위 및 수치</p>
                 <table style={{ width: "100%", borderCollapse: "collapse", textAlign: "left", fontSize: "13px" }}>
                     <thead>
                         <tr style={{ backgroundColor: "#f1f3f5" }}>
@@ -179,9 +179,7 @@ function ResultPage() {
         <div className="card result-chart-card">
             <div style={{ display: "flex", justifyContent: "space-between", alignItems: "center" }}>
                 <h3 style={{ margin: 0 }}>분석 추이 그래프</h3>
-                <button  onClick={handleAnalysis} 
-                        style={{borderColor : "#1db79f", color: "#0f9f8d", height : "50px", width : "150px", borderRadius : "10px", background : "#f8f9fa"} }
-                         >예측하기</button>
+                <button className="btn-outline mint" onClick={handleAnalysis} >예측하기</button>
             </div> 
             
             <div style={{ width: "95%", margin: "0 auto", padding: "20px", fontFamily: "sans-serif" }}>
@@ -223,24 +221,24 @@ function ResultPage() {
                             </LineChart>
                         </ResponsiveContainer>
                     </div>
-                    <p style={{ fontSize: "13px", color: "#666", marginTop: "5px" }}>📊 그래프 위의 🔵 점을 클릭하시면 하단에 해당 시점의 산출 원본 데이터가 표시됩니다.</p>
+                    <p style={{ fontSize: "13px", color: "#666", marginTop: "5px" }}>그래프 위의 🔵 점을 클릭하시면 하단에 해당 시점의 산출 원본 데이터가 표시됩니다.</p>
 
                     <hr style={{ margin: "30px 0", border: "0", borderTop: "1px solid #ddd" }} />
 
                     {/* 하단 상세 데이터 영역 (25개 전체 데이터 표 표시) */}
                     <div style={{ padding: "20px", border: "1px solid #e2e8f0", borderRadius: "8px", backgroundColor: "#fff" }}>
                         <h4 style={{ marginTop: 0, color: "#333", borderBottom: "2px solid #007bff", paddingBottom: "8px" }}>
-                            📋 선택된 시점의 예측 결과 및 산출 데이터 (Raw Data 25개 전체 변수)
+                            선택된 시점의 예측 결과 및 산출 데이터 (Raw Data 25개 전체 변수)
                         </h4>
 
                         {selectedData ? (
                             <div>
                                 <div style={{ display: "flex", gap: "30px", marginBottom: "20px", backgroundColor: "#ebf8ff", padding: "15px", borderRadius: "6px" }}>
-                                    <p style={{ margin: 0 }}><strong>📅 검사 일자 (CHECK_DATE):</strong> {selectedData.CHECK_DATE}</p>
-                                    <p style={{ margin: 0 }}><strong>🎯 머신러닝 예측 확률 (PREDICT):</strong> <span style={{color: "#007bff", fontWeight: "bold"}}>{selectedData.PREDICT}</span></p>
+                                    <p style={{ margin: 0 }}><strong>검사 일자 (CHECK_DATE):</strong> {selectedData.CHECK_DATE}</p>
+                                    <p style={{ margin: 0 }}><strong>머신러닝 예측 확률 (PREDICT):</strong> <span style={{color: "#007bff", fontWeight: "bold"}}>{selectedData.PREDICT}</span></p>
                                 </div>
 
-                                <p style={{ fontWeight: "bold", marginBottom: "10px" }}>📊확률 산출 근거 전체 데이터 목록</p>
+                                <p style={{ fontWeight: "bold", marginBottom: "10px" }}>확률 산출 근거 전체 데이터 목록</p>
                                 <table style={{ width: "100%", borderCollapse: "collapse", textAlign: "left", fontSize: "13px" }}>
                                     <thead>
                                         <tr style={{ backgroundColor: "#f1f3f5" }}>
@@ -332,8 +330,8 @@ function ResultPage() {
                                 </table>
                             </div>
                         ) : (
-                            <p style={{ color: "#999", fontStyle: "italic", textAlign: "center", padding: "20px 0" }}>
-                                💡 위의 그래프에서 분석 결과인 파란색 점을 클릭하면 이 자리에 세부 원본 데이터 표가 나타납니다.
+                            <p style={{ color: "#999",  textAlign: "center", padding: "20px 0" }}>
+                                위의 그래프에서 분석 결과인 파란색 점을 클릭하면 이 자리에 세부 원본 데이터 표가 나타납니다.
                             </p>
                         )}
                     </div>

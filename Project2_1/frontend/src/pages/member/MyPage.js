@@ -3,6 +3,7 @@ import { useState, useEffect } from 'react';
 import { useNavigate } from 'react-router-dom';
 import { useAuth } from '../user/AuthContext';
 import axios from 'axios';
+import { checkTodayPredict, getTodayPredict  } from "../../springApi/modeldataSpringBootApi";
 
 // MyPage.js 상단 import에 추가
 import { getDataView } from '../../springApi/modeldataSpringBootApi';
@@ -12,6 +13,8 @@ import {getInquiryList} from "../../springApi/inquirySpringBootApi";
 function MyPage() {
     const navigate = useNavigate();
     const { user, login } = useAuth() || {}; // [수정] 수정 완료 후 전역 세션 갱신을 위해 login 함수 구독
+
+    
 
     // 마이페이지 왼쪽 버튼 클릭 상태 관리
     const [activeMenu, setActiveMenu] = useState('내 정보');
@@ -214,6 +217,23 @@ useEffect(() => {
 
     }, [activeMenu, user.mem_id]);
 
+    const handleAnalysis = async () => {
+    try {
+        const checkres = await checkTodayPredict(user.mem_id);
+        
+        if (checkres.data === true) {
+            alert("오늘은 이미 예측을 완료했습니다.\n예측은 하루에 한 번만 가능합니다.");
+            return; // alert 후 현재 페이지 그대로 유지
+        }
+        
+        navigate("/analysis");
+        
+    } catch (error) {
+        console.error("예측 여부 확인 실패:", error);
+        alert("예측 여부 확인 중 오류가 발생했습니다.");
+    }
+};
+
     return (
         <main className="page mypage">
         <section className="mypage-layout">
@@ -277,11 +297,15 @@ useEffect(() => {
                     
 
                 <div className="card record-card">
-                    <h3>최근 분석 기록</h3>
-                    {recordLoading ? (
-                        <p style={{ color: '#888', fontSize: '14px' }}>불러오는 중...</p>
-                    ) : records.length === 0 ? (
-                        <p style={{ color: '#888', fontSize: '14px' }}>분석 기록이 없습니다.</p>
+                    <h3 style={{ display: "flex", justifyContent: "space-between", alignItems: "center" }}>
+                        최근 분석 기록{records.length === 0 ? (<button className="btn-outline mint" onClick={handleAnalysis}>예측하러가기</button>
+                        ) : (
+                            <button className="btn-outline mint" onClick={handleAnalysis}>예측하기</button>
+                        )}
+                    </h3>
+                    
+                    {recordLoading ? (<p style={{ color: '#888', fontSize: '14px' }}>불러오는 중...</p>) : records.length === 0 ? (
+                        <p style={{ color: '#888', fontSize: '14px' }}>분석 기록이 없습니다.</p>                        
                     ) : (
                         records.map((record, index) => (
                             <div className="record-row" key={index}>
@@ -350,13 +374,16 @@ useEffect(() => {
 
             {activeMenu === '분석 기록' && (
                 <div className="card mypage-full-card">
-                    <h3>분석 기록</h3>
+                    <h3 style={{ display: "flex", justifyContent: "space-between", alignItems: "center" }}>분석 기록
+                        <button  onClick={handleAnalysis} className="btn-outline mint">예측하기</button>
+                    </h3>
                     <p>지금까지 진행한 심근경색 발생 확률 예측 기록입니다.</p>
 
                     {recordLoading ? (
                         <p style={{ color: '#888', fontSize: '14px' }}>불러오는 중...</p>
                     ) : records.length === 0 ? (
-                        <p style={{ color: '#888', fontSize: '14px' }}>분석 기록이 없습니다.</p>
+                        <p style={{ color: '#888', fontSize: '14px' }}>분석 기록이 없습니다.
+                        <button  onClick={handleAnalysis} className="btn-outline mint">예측하기</button></p>
                     ) : (
                         records.map((record, index) => (
                             <div className="record-row large" key={index}>
