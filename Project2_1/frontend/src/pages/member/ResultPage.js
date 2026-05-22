@@ -246,7 +246,7 @@ function ResultPage() {
                             <div>
                                 <div style={{ display: "flex", gap: "30px", marginBottom: "20px", backgroundColor: "#ebf8ff", padding: "15px", borderRadius: "6px" }}>
                                     <p style={{ margin: 0 }}><strong>검사 일자 (CHECK_DATE):</strong> {selectedData.CHECK_DATE}</p>
-                                    <p style={{ margin: 0 }}><strong>머신러닝 예측 확률 (PREDICT):</strong> <span style={{color: "#007bff", fontWeight: "bold"}}>{selectedData.PREDICT}</span></p>
+                                    <p style={{ margin: 0 }}><strong>머신러닝 예측 확률 (PREDICT):</strong> <span style={{color: "#007bff", fontWeight: "bold"}}>{selectedData.PREDICT*100}%</span></p>
                                 </div>
 
                                 <p style={{ fontWeight: "bold", marginBottom: "10px" }}>확률 산출 근거 전체 데이터 목록</p>

@@ -4,11 +4,8 @@ import {useNavigate} from "react-router-dom";
 import { setInquiryInsert } from '../../springApi/inquirySpringBootApi';
 import { useAuth } from '../user/AuthContext';
 
-
-
 function CustomerCenterPage() {
   const { user } = useAuth();
-
 
   const [formData, setFormData] = useState({
     inq_title: '',
