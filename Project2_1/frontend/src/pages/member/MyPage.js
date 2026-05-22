@@ -473,7 +473,7 @@ useEffect(() => {
                         <p style={{ color: '#888', fontSize: '14px' }}>불러오는 중...</p>
                     ) : records.length === 0 ? (
                         <p style={{ color: '#888', fontSize: '14px' }}>분석 기록이 없습니다.
-                        <button  onClick={handleAnalysis} className="btn-outline mint">예측하기</button></p>
+                        </p>
                     ) : (
                         records.map((record, index) => (
                             <div className="record-row large" key={index}>
