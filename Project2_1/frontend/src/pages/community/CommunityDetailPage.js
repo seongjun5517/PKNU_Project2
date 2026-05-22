@@ -40,8 +40,9 @@ function CommunityDetailPage() {
 
   /**
    * 수정중 댓글
-   */
+  */
   const [editComment, setEditComment] = useState(null);
+
 
   // 1. 페이지 로드 시 해당 게시글 상세 데이터 가져오기
   useEffect(() => {
@@ -283,8 +284,6 @@ function CommunityDetailPage() {
   */
   const updateComment = async() => {
 
-
-
     try{
 
       const comment = {
@@ -319,7 +318,7 @@ function CommunityDetailPage() {
 
   /**
    * 댓글 삭제
-   */
+  */
   const deleteComment = async(comment) => {
 
     try{
@@ -404,7 +403,7 @@ function CommunityDetailPage() {
 
           <button
             className="btn-outline"
-            onClick={() => navigate('/community')}>
+            onClick={() => navigate(-1)}>
 
             목록
           </button>
@@ -473,16 +472,14 @@ function CommunityDetailPage() {
           <button
             type="button"
             className={liked ? 'like-button active' : 'like-button'}
-            onClick={handleLikeClick}
-          >
+            onClick={handleLikeClick}>
             ♥ 좋아요 {likeCount}
           </button>
 
           <button
             className="btn-outline"
             onClick={() => navigate('/community')}
-            style={{ marginLeft: "10px" }}
-          >
+            style={{ marginLeft: "10px" }}>
             목록으로
           </button>
 
@@ -497,15 +494,13 @@ function CommunityDetailPage() {
               <button
                 className="btn-outline"
                 onClick={() => navigate(`/community/edit/${postId}`)}
-                style={{ marginRight: "10px" }}
-              >
+                style={{ marginRight: "10px" }}>
                 수정
               </button>
 
               <button
                 className="btn-outline"
-                onClick={deletePost}
-              >
+                onClick={deletePost}>
                 삭제
               </button>
             </>
