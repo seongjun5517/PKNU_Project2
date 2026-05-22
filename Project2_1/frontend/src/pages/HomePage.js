@@ -8,9 +8,9 @@ import { getDataView } from "../springApi/modeldataSpringBootApi";
 import slideRunner from '../assets/slide-runner.svg';
 import slideChart from '../assets/slide-chart.svg';
 import slideCommunity from '../assets/slide-community.svg';
-import runningImg from '../assets/run.png';
-import foodImg from '../assets/food.png';
-import heart1 from '../assets/heart1.jpg';
+import runningImg from '../assets/run_resized.png';
+import foodImg from '../assets/food_resized.png';
+import heart1 from '../assets/heart1_resized.png';
 
 import { useAuth } from './user/AuthContext';
 import {getCommunityTopList} from "../springApi/communitySpringBootApi";
@@ -128,7 +128,7 @@ function HomePage() {
         img: runningImg,
         title: "혈관 건강을 지키는 7가지 생활습관",
         desc: "매일 실천할 수 있는 건강 루틴",
-        objectPosition: "left center" 
+        // objectPosition: "left center" 
         
     },
     {
