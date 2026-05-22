@@ -15,10 +15,10 @@ function CommunityPage() {
 
   const categories = ['전체 게시글', '건강 정보', '식단 이야기', '운동 공유', '질문 & 답변', '자유 게시판'];
 
-  const [sortType, setSortType] = useState("latest");
+  const [sortType, setSortType] = useState(localStorage.getItem("communitySort") || "latest");
 
   const [selectedCategory, setSelectedCategory] = useState('전체 게시글');
-  const [currentPage, setCurrentPage] = useState(1);
+  const [currentPage, setCurrentPage] = useState(Number(localStorage.getItem("communityPage")) || 1);
   const [viewMode] = useState('all');
 
   const [searchKeyword, setSearchKeyword] = useState('');
@@ -107,6 +107,16 @@ function CommunityPage() {
         return 0;
   });
 
+  /**
+   * 페이지 저장
+  */
+  useEffect(() => {localStorage.setItem("communityPage",currentPage);}, [currentPage]);
+
+  /**
+   * 정렬 저장
+  */
+  useEffect(() => {localStorage.setItem("communitySort",sortType );}, [sortType]);
+
   const currentPosts = sortedPosts.slice(startIndex, startIndex + postsPerPage);
 
   const handleCategoryClick = (category) => {
@@ -172,7 +182,7 @@ function CommunityPage() {
                 onKeyDown={handleSearchKeyDown}
               />
               <button className="btn-primary small" onClick={handleSearchSubmit}>
-                확인
+                  확인
               </button>
 
               <button className="btn-primary small"
@@ -210,6 +220,7 @@ function CommunityPage() {
                 <th>작성자</th>
                 <th>작성일</th>
                 <th>조회수</th>
+                <th>좋아요수</th>
               </tr>
             </thead>
 
@@ -229,6 +240,7 @@ function CommunityPage() {
                     <td>{post.mem_nickname || post.mem_id}</td>
                     <td>{formatDate(post.com_created)}</td>
                     <td>{post.com_view}</td>
+                    <td>{post.com_like}</td>
                   </tr>
                 ))
               ) : (
