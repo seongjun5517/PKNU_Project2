@@ -94,7 +94,7 @@ const MemberForm = ({member, handleChange, handleCancel, handleSubmit, mode}) =>
             {/* 회원 이메일 입력 폼 정의 */}
             <div>
                 <label>회원 전화번호 : </label>
-                <input type="text" name="mem_phone" value={member.mem_phone || ""}
+                <input type="number" name="mem_phone" value={member.mem_phone || ""}
                         onChange={handleChange}
                         readOnly={isReadOnly("mem_phone")} />
             </div>
