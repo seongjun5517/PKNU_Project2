@@ -19,51 +19,8 @@ function ResultPage() {
     const fillDeg = Math.round(probability * 360);
     const [heartAge, setHeartAge] = useState(null);
     const [hasPredictedToday, setHasPredictedToday] = useState(false);
-
-    const getRiskColor = (prob) => {
-        if (prob < 0.1) return { main: "#0f9f8d", light: "#e0f7f4", label: "낮음" };
-        if (prob < 0.3) return { main: "#f59e0b", light: "#fde68a", label: "보통" };
-        return          { main: "#ef4444", light: "#fca5a5", label: "높음" };
-    };
-
-    const getCombinedRisk = (di1_dg, di2_dg, de1_dg, ge_gba1c, he_chol) => {
-    // 코멘트들을 담을 빈 배열 생성
-    const comments = [];
     
-
-    // 1. 고혈압 체크
-    if (di1_dg === 0) comments.push("심근경색의 주요 원인 중 하나인 고혈압 없으셔서, 현재 상태는 아주 좋습니다.");
-    if (di1_dg === 1) comments.push("고혈압은 심근경색의 주요 원인이라 각별한 주의가 필요합니다. 지금부터 철저히 관리하셔야 합니다.");
-
-    // 2. 이상지질혈증 체크
-    if (di2_dg === 0) comments.push("심근경색의 주요 원인 중 하나인 이상지질혈증이 없으셔서, 현재 상태는 아주 좋습니다.");
-    if (di2_dg === 1) comments.push("이상지질혈증은 심근경색의 주요 원인이라 각별한 주의가 필요합니다. 지금부터 철저히 관리하셔야 합니다.");
-
-    // 3. 당뇨병 유무 체크
-    if (de1_dg === 0) comments.push("심근경색의 주요 원인 중 하나인 당뇨병이 없으셔서, 현재 상태는 아주 좋습니다.");
-    if (de1_dg === 1) comments.push("당뇨병은 심근경색의 주요 원인이라 각별한 주의가 필요합니다. 지금부터 철저히 관리하셔야 합니다.");
-
-    // 4. 당화혈색소 수치 체크
-    if (ge_gba1c < 5.7) comments.push("당화혈색소 수치 정상입니다. 지금 상태 아주 좋습니다.");
-    else if (ge_gba1c < 6.4) comments.push("당화혈색소가 당뇨 전단계 수준입니다. 지금부터 식단과 운동 관리가 필요합니다.");
-    else if (ge_gba1c >= 6.5) comments.push("당화혈색소 수치가 당뇨 기준을 넘었습니다. 적극적인 치료와 관리가 시급합니다.");
-
-    // 5. 총 콜레스테롤 수치 체크
-    if (he_chol < 200) comments.push("총 콜레스테롤 수치 정상입니다. 지금 상태 아주 좋습니다.");
-    else if (he_chol <= 239) comments.push("총콜레스테롤이 경계 수치입니다. 지금부터 식단과 운동 관리가 필요합니다.");
-    else if (he_chol >= 240) comments.push("총콜레스테롤 수치가 고지혈증 기준을 넘었습니다. 적극적인 치료와 약물 관리가 필요할 수 있습니다.");
-
-    // 만약 아무 조건에도 안 걸려서 배열이 비어있다면 기본 문구 반환
-    if (comments.length === 0) {
-        return ["분석할 수 있는 건강 데이터가 부족합니다."];
-    }
-
-    // 조건에 맞는 문구들이 담긴 배열을 그대로 리턴합니다.
-    return comments;
-};
-
-
-    const riskColor = getRiskColor(probability);
+    
     // 상태 관리
     const [chartData, setChartData] = useState([]);
     const [selectedData, setSelectedData] = useState(null);
@@ -71,40 +28,77 @@ function ResultPage() {
 
     const memId = user?.mem_id; 
 
-    useEffect(() => {
-    setLoading(true);
-
-    // 오늘 예측 여부 확인
-    const checkPredict = async () => {
-        try {
-            const checkres = await checkTodayPredict(user.mem_id);
-            setHasPredictedToday(checkres.data === true);
-        } catch (error) {
-            console.error("예측 여부 확인 실패:", error);
-            setHasPredictedToday(false);
-        }
+    const getRiskColor = (prob) => {
+        if (prob < 0.1) return { main: "#0f9f8d", light: "#e0f7f4", label: "낮음" };
+        if (prob < 0.3) return { main: "#f59e0b", light: "#fde68a", label: "보통" };
+        return          { main: "#ef4444", light: "#fca5a5", label: "높음" };
     };
 
-    checkPredict();
+    const riskColor = getRiskColor(probability);
 
-    getDataView(memId)
-        .then((response) => {
-            const sortedData = response.data.sort((a, b) => {
-                return new Date(a.CHECK_DATE) - new Date(b.CHECK_DATE);
-            });
-            setChartData(sortedData);
+    const getCombinedRisk = (di1_dg, di2_dg, de1_dg, ge_gba1c, he_chol) => {
+        // 코멘트들을 담을 빈 배열 생성
+        const comments = [];
+        
+        // 1. 고혈압 체크
+        if (di1_dg === 0) comments.push("심근경색의 주요 원인 중 하나인 고혈압 없으셔서, 현재 상태는 아주 좋습니다.");
+        if (di1_dg === 1) comments.push("고혈압은 심근경색의 주요 원인이라 각별한 주의가 필요합니다. 지금부터 철저히 관리하셔야 합니다.");
 
-            if (sortedData.length > 0) {
-                const latest = sortedData[sortedData.length - 1];
-                setProbability(latest.PREDICT);
+        // 2. 이상지질혈증 체크
+        if (di2_dg === 0) comments.push("심근경색의 주요 원인 중 하나인 이상지질혈증이 없으셔서, 현재 상태는 아주 좋습니다.");
+        if (di2_dg === 1) comments.push("이상지질혈증은 심근경색의 주요 원인이라 각별한 주의가 필요합니다. 지금부터 철저히 관리하셔야 합니다.");
+
+        // 3. 당뇨병 유무 체크
+        if (de1_dg === 0) comments.push("심근경색의 주요 원인 중 하나인 당뇨병이 없으셔서, 현재 상태는 아주 좋습니다.");
+        if (de1_dg === 1) comments.push("당뇨병은 심근경색의 주요 원인이라 각별한 주의가 필요합니다. 지금부터 철저히 관리하셔야 합니다.");
+
+        // 4. 당화혈색소 수치 체크
+        if (ge_gba1c < 5.7) comments.push("당화혈색소 수치 정상입니다. 지금 상태 아주 좋습니다.");
+        else if (ge_gba1c < 6.4) comments.push("당화혈색소가 당뇨 전단계 수준입니다. 지금부터 식단과 운동 관리가 필요합니다.");
+        else if (ge_gba1c >= 6.5) comments.push("당화혈색소 수치가 당뇨 기준을 넘었습니다. 적극적인 치료와 관리가 시급합니다.");
+
+        // 5. 총 콜레스테롤 수치 체크
+        if (he_chol < 200) comments.push("총 콜레스테롤 수치 정상입니다. 지금 상태 아주 좋습니다.");
+        else if (he_chol <= 239) comments.push("총콜레스테롤이 경계 수치입니다. 지금부터 식단과 운동 관리가 필요합니다.");
+        else if (he_chol >= 240) comments.push("총콜레스테롤 수치가 고지혈증 기준을 넘었습니다. 적극적인 치료와 약물 관리가 필요할 수 있습니다.");
+
+        // 조건에 맞는 문구들이 담긴 배열을 그대로 리턴합니다.
+        return comments;
+    };
+
+
+    
+
+    useEffect(() => {
+        setLoading(true);
+        // 오늘 예측 여부 확인
+        const checkPredict = async () => {
+            try {
+                const checkres = await checkTodayPredict(memId);
+                setHasPredictedToday(checkres.data === true);
+            } catch (error) {
+                console.error("예측 여부 확인 실패:", error);
+                setHasPredictedToday(false);
             }
+        };
+        checkPredict();
+        
+        getDataView(memId)
+            .then((response) => {
+                const sortedData = response.data.sort((a, b) => {
+                    return new Date(a.CHECK_DATE) - new Date(b.CHECK_DATE);
+                });
+                setChartData(sortedData);
 
-            setLoading(false);
-        })
-        .catch((error) => {
-            console.error("데이터 로딩 실패:", error);
-            setLoading(false);
-        });
+                if (sortedData.length > 0) {
+                    const latest = sortedData[sortedData.length - 1];
+                    setProbability(latest.PREDICT);
+                }setLoading(false);
+            })
+            .catch((error) => {
+                console.error("데이터 로딩 실패:", error);
+                setLoading(false);
+            });
 
     }, [memId]);
 
