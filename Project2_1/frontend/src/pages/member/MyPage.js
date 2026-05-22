@@ -252,23 +252,37 @@ useEffect(() => {
      * 내 게시글 paging
     */
     const boardLastIndex = boardPage * itemsPerPage;
-
     const boardFirstIndex =  boardLastIndex - itemsPerPage;
-
     const currentBoardList = boardList.slice( boardFirstIndex, boardLastIndex);
-
     const boardTotalPages = Math.ceil( boardList.length /itemsPerPage);
+
+    /**
+     * 내 문의사항 최신순 정렬
+    */
+    const sortedInquiryList = [...myInquiryList].sort(
+
+        (a, b) => {
+
+            // 날짜 최신순
+            const dateCompare = new Date(b.inq_created) - new Date(a.inq_created);
+
+            if(dateCompare !== 0){
+
+                return dateCompare;
+            }
+
+            // 같은 날짜면 ID 최신순
+            return b.inq_id - a.inq_id;
+        }
+    );
 
     /**
      * 내 문의사항 paging
     */
-    const inquiryLastIndex =inquiryPage * itemsPerPage;
-
-    const inquiryFirstIndex =inquiryLastIndex - itemsPerPage;
-
-    const currentInquiryList =myInquiryList.slice( inquiryFirstIndex,inquiryLastIndex);
-
-    const inquiryTotalPages = Math.ceil(myInquiryList.length /itemsPerPage);
+    const inquiryLastIndex = inquiryPage * itemsPerPage;
+    const inquiryFirstIndex = inquiryLastIndex - itemsPerPage;
+    const currentInquiryList = sortedInquiryList.slice(inquiryFirstIndex,inquiryLastIndex);
+    const inquiryTotalPages = Math.ceil(sortedInquiryList.length /itemsPerPage);
 
 
     const handleDelete = async () => {

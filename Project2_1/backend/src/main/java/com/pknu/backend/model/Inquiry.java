@@ -46,6 +46,6 @@ public class Inquiry {
     /**
      * 작성일
     */
-    @Column(name = "INQ_CREATED", insertable = false, updatable = false)
+    @Column(name = "INQ_CREATED", insertable = false, updatable=false)
     private Date inq_created;
 }

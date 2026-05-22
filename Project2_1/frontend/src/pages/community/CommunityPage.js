@@ -13,7 +13,7 @@ function CommunityPage() {
   const [searchParams] = useSearchParams();
   const mem_id = searchParams.get("mem_id");
 
-  const categories = ['전체 게시글', '건강 정보', '식단 이야기', '운동 공유', '질문 & 답변', '자유 게시판'];
+  const categories = ['전체 게시글', '건강 정보', '식단 이야기', '운동 공유', '자유 게시판'];
 
   const [sortType, setSortType] = useState(localStorage.getItem("communitySort") || "latest");
 
@@ -46,7 +46,7 @@ function CommunityPage() {
 
   const getPostWriter = (post) => post.mem_id || post.writer || post.userId || '';
   const getPostTitle = (post) => post.com_title || post.title || '';
-  const getPostCategory = (post) => post.com_category || post.category || '';
+  const getPostCategory = ((post) => post.com_category || post.category || '');
 
   const modeFilteredPosts =
     viewMode === 'mine'
@@ -54,9 +54,9 @@ function CommunityPage() {
       : posts;
 
   const categoryFilteredPosts =
-    selectedCategory === '전체 게시글' || viewMode === 'mine'
+     selectedCategory === '전체 게시글' || viewMode === 'mine'
       ? modeFilteredPosts
-      : modeFilteredPosts.filter((post) => getPostCategory(post) === selectedCategory);
+      : modeFilteredPosts.filter((post) => getPostCategory(post).trim() === selectedCategory.trim());
 
   const filteredPosts = categoryFilteredPosts.filter((post) => {
     const title = getPostTitle(post);
@@ -119,8 +119,8 @@ function CommunityPage() {
 
   const currentPosts = sortedPosts.slice(startIndex, startIndex + postsPerPage);
 
-  const handleCategoryClick = (category) => {
-    setSelectedCategory(category);
+  const handleCategoryClick = (com_category) => {
+    setSelectedCategory(com_category);
     setCurrentPage(1);
   };
 
@@ -158,13 +158,13 @@ function CommunityPage() {
         {/* 왼쪽 카테고리 메뉴 */}
         <aside className="card community-sidebar">
           <h3>카테고리</h3>
-          {categories.map((category) => (
+          {categories.map((com_category) => (
             <button
-              key={category}
-              className={selectedCategory === category ? 'active' : ''}
-              onClick={() => handleCategoryClick(category)}
+              key={com_category}
+              className={selectedCategory === com_category ? 'active' : ''}
+              onClick={() => handleCategoryClick(com_category)}
             >
-              {category}
+              {com_category}
             </button>
           ))}
         </aside>
