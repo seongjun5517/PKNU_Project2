@@ -50,6 +50,7 @@
 
 /* 텍스트 및 이메일 입력창 (input) */
 .register-container form input[type="text"],
+.register-container form input[type="number"],
 .register-container form input[type="email"] {
   width: 100%;
   height: 48px;
