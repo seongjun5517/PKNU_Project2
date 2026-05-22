@@ -38,11 +38,6 @@ function HomePage() {
             setDbStatus("unauthenticated");
             setLoading(false);
             return;
-
-
-
-            
-
         }
 
         setLoading(true);
