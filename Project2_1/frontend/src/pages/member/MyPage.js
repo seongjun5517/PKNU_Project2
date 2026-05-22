@@ -9,6 +9,7 @@ import { checkTodayPredict  } from "../../springApi/modeldataSpringBootApi";
 import { getDataView } from '../../springApi/modeldataSpringBootApi';
 import { getMemberView, setMemberDelete, setMemberUpdate } from '../../springApi/memberSpringBootApi';
 import {getInquiryList} from "../../springApi/inquirySpringBootApi"; 
+import {setAnalysisDelete} from "../../springApi/modeldataSpringBootApi"; 
 
 function MyPage() {
     const navigate = useNavigate();
@@ -46,7 +47,6 @@ function MyPage() {
 
                 const sorted = [...response.data]
                     .sort((a, b) => new Date(b.CHECK_DATE) - new Date(a.CHECK_DATE))
-                    .slice(0, 3);
                 setRecords(sorted);
             })
 
@@ -108,8 +108,8 @@ useEffect(() => {
 
 }, [user]);
 
-    const handleRecordDetail = () => {
-        navigate('/result');
+    const handleRecordDetail = (record) => {
+        navigate('/result/detail', { state: { record } });
     };
 
     // [추가] 입력 박스 값 변경 핸들러
@@ -300,9 +300,24 @@ useEffect(() => {
     catch (error) {
         console.log(error);
         alert("회원 탈퇴에 실패했습니다.");
+        }
+    };
+
+    const handleDeleteAnalysis = async (dataId) => {
+    if (!window.confirm("이 분석 기록을 삭제하시겠습니까?")) return;
+
+    try {
+        await setAnalysisDelete(dataId);
+        // 성공 시 프론트 상태에서도 제거
+        setRecords((prev) => prev.filter((r) => r.DATA_ID !== dataId));
+        alert("삭제되었습니다.");
+    } catch (error) {
+        console.error("삭제 실패:", error);
+        alert("삭제에 실패했습니다.");
     }
 };
 
+    
     return (
         <main className="page mypage">
         <section className="mypage-layout">
@@ -380,13 +395,11 @@ useEffect(() => {
                     {recordLoading ? (<p style={{ color: '#888', fontSize: '14px' }}>불러오는 중...</p>) : records.length === 0 ? (
                         <p style={{ color: '#888', fontSize: '14px' }}>분석 기록이 없습니다.</p>                        
                     ) : (
-                        records.map((record, index) => (
+                        records.slice(0, 3).map((record, index) => (
                             <div className="record-row" key={index}>
                                 <span>{record.CHECK_DATE}</span>
                                 <strong>{(record.PREDICT * 100).toFixed(1)}% </strong>
-                                <button className="btn-outline mint" onClick={handleRecordDetail}>
-                                    상세보기
-                                </button>
+                                <button className="btn-outline mint" onClick={() => handleRecordDetail(record)}>상세보기</button>
                             </div>
                         ))
                     )}
@@ -478,29 +491,38 @@ useEffect(() => {
     )}
             {activeMenu === '분석 기록' && (
                 <div className="card mypage-full-card">
-                    <h3 style={{ display: "flex", justifyContent: "space-between", alignItems: "center" }}>분석 기록
-                        <button  onClick={handleAnalysis} className="btn-outline mint">예측하기</button>
+                    <h3 style={{ display: "flex", justifyContent: "space-between", alignItems: "center" }}>
+                        분석 기록
+                        <button onClick={handleAnalysis} className="btn-outline mint">예측하기</button>
                     </h3>
                     <p>지금까지 진행한 심근경색 발생 확률 예측 기록입니다.</p>
 
                     {recordLoading ? (
                         <p style={{ color: '#888', fontSize: '14px' }}>불러오는 중...</p>
                     ) : records.length === 0 ? (
-                        <p style={{ color: '#888', fontSize: '14px' }}>분석 기록이 없습니다.
-                        </p>
+                        <p style={{ color: '#888', fontSize: '14px' }}>분석 기록이 없습니다.</p>
                     ) : (
                         records.map((record, index) => (
-                            <div className="record-row large" key={index}>
+                            <div className="record-row large" key={index}
+                                style={{ display: "flex", alignItems: "center", justifyContent: "space-between" }}>
                                 <span>{record.CHECK_DATE}</span>
                                 <strong>{(record.PREDICT * 100).toFixed(1)}%</strong>
-                                <button className="btn-outline mint" onClick={handleRecordDetail}>
-                                    상세보기
-                                </button>
+                                <div style={{ display: "flex", gap: "8px" }}>
+                                    <button className="btn-outline mint"
+                                        onClick={() => handleRecordDetail(record)}>
+                                        상세보기
+                                    </button>
+                                    <button className="btn-outline"
+                                        onClick={() => handleDeleteAnalysis(record.DATA_ID)}
+                                        style={{ color: "#ef4444", borderColor: "#ef4444" }}>
+                                        삭제
+                                    </button>
+                                </div>
                             </div>
                         ))
                     )}
                 </div>
-    )}
+            )}
 
             {activeMenu === '내 문의사항 조회' && (
             <div className="card mypage-full-card">
