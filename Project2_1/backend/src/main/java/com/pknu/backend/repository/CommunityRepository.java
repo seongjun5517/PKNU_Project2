@@ -48,6 +48,7 @@ public interface CommunityRepository extends JpaRepository<Community, Integer> {
                     SELECT * 
                     FROM community_test 
                     WHERE MEM_ID = :mem_id
+                    ORDER BY com_created DESC
 
                     """, 
 

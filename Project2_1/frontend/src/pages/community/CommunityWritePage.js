@@ -51,7 +51,6 @@ function CommunityWritePage() {
             <option>건강 정보</option>
             <option>식단 이야기</option>
             <option>운동 공유</option>
-            <option>질문 & 답변</option>
             <option>자유 게시판</option>
           </select>
 

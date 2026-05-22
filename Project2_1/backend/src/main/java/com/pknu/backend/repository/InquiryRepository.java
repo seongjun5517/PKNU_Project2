@@ -14,15 +14,19 @@ public interface InquiryRepository
     extends JpaRepository<Inquiry, Integer>{
 
     /**
-     * 내 문의사항 조회
+     * 내 문의사항 조회 최근 순으로 정렬
     */
     @Query(value = """
 
         SELECT *
         FROM inquiry_test
+
         WHERE TRIM(mem_id) =
-              TRIM(:mem_id)
-        ORDER BY inq_created DESC
+            TRIM(:mem_id)
+
+        ORDER BY
+            inq_created DESC,
+            inq_id DESC
 
         """,
 
@@ -31,8 +35,9 @@ public interface InquiryRepository
         """
         SELECT COUNT(*)
         FROM inquiry_test
+
         WHERE TRIM(mem_id) =
-              TRIM(:mem_id)
+            TRIM(:mem_id)
 
         """,
 
