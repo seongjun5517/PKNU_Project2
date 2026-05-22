@@ -36,7 +36,6 @@ public class Model {
     private double HE_GLU;
     private double HE_HBA1C;
     private double HE_CHOL;
-    private double HE_TG;
     private double HE_BMI;
     private double HE_WC;
     private double BS1_1;

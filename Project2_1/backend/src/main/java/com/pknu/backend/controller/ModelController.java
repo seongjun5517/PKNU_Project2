@@ -4,6 +4,7 @@ package com.pknu.backend.controller;
 import java.util.List;
 
 import org.springframework.http.ResponseEntity;
+import org.springframework.web.bind.annotation.DeleteMapping;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.RequestMapping;
@@ -43,5 +44,12 @@ public class ModelController {
         log.info("오늘 예측값 조회 mem_id = {}", mem_id);
         Double predict = this.modelservice.getTodayPredict(mem_id);
         return ResponseEntity.ok(predict);
+    }
+
+    @DeleteMapping("/delete/{data_id}")
+    public ResponseEntity<Void> setAnalysisDelete(@PathVariable("data_id") Integer data_id) {
+
+        this.modelservice.setAnalysisDelete(data_id);
+        return ResponseEntity.noContent().build();
     }
 }

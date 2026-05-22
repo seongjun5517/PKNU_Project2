@@ -36,4 +36,15 @@ public class ModelService {
     public Double getTodayPredict(String mem_id) {
         return modelRepository.findTodayPredictByMemId(mem_id);
     }
+
+    public String setAnalysisDelete(Integer data_id) {
+
+        if (this.modelRepository.existsById(data_id)) {
+            
+            this.modelRepository.deleteById(data_id);
+            return "분석기록 성공";
+        }
+
+        return "삭제할 분석기록 없음";
+    }
 }

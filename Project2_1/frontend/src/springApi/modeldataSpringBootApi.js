@@ -8,3 +8,7 @@ export const checkTodayPredict = (memId) =>
 
 export const getTodayPredict = (memId) =>
     springApi.get(`/modeldata/today/${memId}`);
+
+export const setAnalysisDelete = (data_id) =>
+    springApi.delete(`/modeldata/delete/${data_id}`);
+

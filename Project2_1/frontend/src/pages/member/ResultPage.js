@@ -172,10 +172,6 @@ function ResultPage() {
                             <td style={{ padding: "10px", border: "1px solid #dee2e6" }}>200mg/dL 미만</td>
                         </tr>
                         <tr>
-                            <td style={{ padding: "10px", border: "1px solid #dee2e6", backgroundColor: "#fafafa" }}>중성지방</td>
-                            <td style={{ padding: "10px", border: "1px solid #dee2e6" }}>150mg/dL 미만</td>
-                        </tr>
-                        <tr>
                             <td style={{ padding: "10px", border: "1px solid #dee2e6", backgroundColor: "#fafafa" }}>체질량지수</td>
                             <td style={{ padding: "10px", border: "1px solid #dee2e6" }}>18.5 ~ 22.9</td>
                         </tr>
@@ -289,22 +285,22 @@ function ResultPage() {
                                         <tr>
                                             <td style={{ padding: "10px", border: "1px solid #dee2e6", backgroundColor: "#fafafa" }}>총콜레스테롤 (HE_CHOL)</td>
                                             <td style={{ padding: "10px", border: "1px solid #dee2e6" }}>{selectedData.HE_CHOL} mg/dL</td>
-                                            <td style={{ padding: "10px", border: "1px solid #dee2e6", backgroundColor: "#fafafa" }}>중성지방 (HE_TG)</td>
-                                            <td style={{ padding: "10px", border: "1px solid #dee2e6" }}>{selectedData.HE_TG} mg/dL</td>
+                                            <td style={{ padding: "10px", border: "1px solid #dee2e6", backgroundColor: "#fafafa" }}>비만도 (HE_BMI)</td>
+                                            <td style={{ padding: "10px", border: "1px solid #dee2e6" }}>{selectedData.HE_BMI}</td>
                                         </tr>
                                         {/* Row 5 */}
                                         <tr>
-                                            <td style={{ padding: "10px", border: "1px solid #dee2e6", backgroundColor: "#fafafa" }}>비만도 (HE_BMI)</td>
-                                            <td style={{ padding: "10px", border: "1px solid #dee2e6" }}>{selectedData.HE_BMI}</td>
                                             <td style={{ padding: "10px", border: "1px solid #dee2e6", backgroundColor: "#fafafa" }}>허리둘레 (HE_WC)</td>
                                             <td style={{ padding: "10px", border: "1px solid #dee2e6" }}>{selectedData.HE_WC} cm</td>
+                                            <td style={{ padding: "10px", border: "1px solid #dee2e6", backgroundColor: "#fafafa" }}>고혈압 유병여부 (HE_HP)</td>
+                                            <td style={{ padding: "10px", border: "1px solid #dee2e6" }}>{selectedData.HE_HP}(코드식)</td>
                                         </tr>
                                         {/* Row 6 */}
                                         <tr>
-                                            <td style={{ padding: "10px", border: "1px solid #dee2e6", backgroundColor: "#fafafa" }}>고혈압 유병여부 (HE_HP)</td>
-                                            <td style={{ padding: "10px", border: "1px solid #dee2e6" }}>{selectedData.HE_HP}(코드식)</td>
                                             <td style={{ padding: "10px", border: "1px solid #dee2e6", backgroundColor: "#fafafa" }}>유산소 운동 실천 여부 (PA_AEROBIC)</td>
                                             <td style={{ padding: "10px", border: "1px solid #dee2e6" }}>{selectedData.PA_AEROBIC}(코드식)</td>
+                                            <td style={{ padding: "10px", border: "1px solid #dee2e6", backgroundColor: "#fafafa" }}>주간 평균 수면 시간 (BE8_1)</td>
+                                            <td style={{ padding: "10px", border: "1px solid #dee2e6" }}>{selectedData.BE8_1} 시간</td>
                                         </tr>
                                         {/* Row 7 */}
                                         <tr>
@@ -329,17 +325,15 @@ function ResultPage() {
                                         </tr>
                                         {/* Row 10 */}
                                         <tr>
-                                            <td style={{ padding: "10px", border: "1px solid #dee2e6", backgroundColor: "#fafafa" }}>주간 평균 수면 시간 (BE8_1)</td>
-                                            <td style={{ padding: "10px", border: "1px solid #dee2e6" }}>{selectedData.BE8_1} 시간</td>
-                                            <td style={{ padding: "10px", border: "1px solid #dee2e6", backgroundColor: "#fafafa" }}>일생동안의 흡연 상태 (BS1_1)</td>
-                                            <td style={{ padding: "10px", border: "1px solid #dee2e6" }}>{selectedData.BS1_1} (코드식)</td>
-                                        </tr>
-                                        {/* Row 11 */}
-                                        <tr>
                                             <td style={{ padding: "10px", border: "1px solid #dee2e6", backgroundColor: "#fafafa" }}>1년간 음주 빈도 (BD1_11)</td>
                                             <td style={{ padding: "10px", border: "1px solid #dee2e6" }}>{selectedData.BD1_11} (코드식)</td>
                                             <td style={{ padding: "10px", border: "1px solid #dee2e6", backgroundColor: "#fafafa" }}>한번에 마시는 음주량 (BD2_1)</td>
                                             <td style={{ padding: "10px", border: "1px solid #dee2e6" }}>{selectedData.BD2_1} (코드식)</td>
+                                        </tr>
+                                        {/* Row 11 */}
+                                        <tr>
+                                            <td style={{ padding: "10px", border: "1px solid #dee2e6", backgroundColor: "#fafafa" }}>일생동안의 흡연 상태 (BS1_1)</td>
+                                            <td style={{ padding: "10px", border: "1px solid #dee2e6" }}>{selectedData.BS1_1} (코드식)</td>
                                         </tr>
                                     </tbody>
                                 </table>
