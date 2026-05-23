@@ -15,8 +15,6 @@ function MyPage() {
     const navigate = useNavigate();
     const { user, login, logout } = useAuth() || {}; // [수정] 수정 완료 후 전역 세션 갱신을 위해 login 함수 구독
 
-    
-
     // 마이페이지 왼쪽 버튼 클릭 상태 관리
     const [activeMenu, setActiveMenu] = useState('내 정보');
 
@@ -155,6 +153,7 @@ useEffect(() => {
                 alert("회원 정보 수정이 정상적으로 완료되었습니다.");
                 setActiveMenu('내 정보'); // 수정 완료 후 대시보드로 복귀
             })
+
             .catch((err) => {
                 console.error("❌ [회원정보수정] API 통신 실패:", err);
                 if (err.response) {
@@ -231,6 +230,7 @@ useEffect(() => {
     }
 
     }, [activeMenu, user?.mem_id]);
+    
 
     const handleAnalysis = async () => {
     try {
@@ -243,7 +243,9 @@ useEffect(() => {
         
         navigate("/analysis");
         
-    } catch (error) {
+    } 
+    
+    catch (error) {
         console.error("예측 여부 확인 실패:", error);
         alert("예측 여부 확인 중 오류가 발생했습니다.");
     }
@@ -324,8 +326,7 @@ useEffect(() => {
             <aside className="card mypage-sidebar">
             <button
                 className={activeMenu === '내 정보' ? 'active' : ''}
-                onClick={() => setActiveMenu('내 정보')}
-            >
+                onClick={() => setActiveMenu('내 정보')}>
                 내 정보
             </button>
 
