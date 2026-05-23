@@ -141,6 +141,120 @@ Flask 서버는 머신러닝 예측을 전담합니다. React에서 전달받은
 | Java 버전             | 17                 |
 | API 통신 방식         | REST API, JSON     |
 
+### 개발환경 버전 정의
+
+아래 표는 프로젝트 저장소의 설정 파일과 의존성 트리를 기준으로 정리한 개발환경 정의입니다. 프론트엔드는 `package-lock.json`, 백엔드는 `build.gradle` 및 Gradle dependency tree, 실행 도구는 현재 로컬 개발 환경 기준으로 확인했습니다.
+
+### 프로그래밍 언어 및 런타임
+
+| 구분               | 이름         | 버전            | 확인 기준                |
+| ------------------ | ------------ | --------------- | ------------------------ |
+| Frontend Runtime   | Node.js      | `24.14.1`       | 로컬 `node -v`           |
+| Package Manager    | npm          | `11.11.0`       | 로컬 `npm.cmd -v`        |
+| Frontend Language  | JavaScript   | ECMAScript 기반 | React 프로젝트 소스      |
+| Backend Language   | Java         | `17`            | `build.gradle` toolchain |
+| Backend Local JDK  | Java Runtime | `17.0.18`       | 로컬 `java -version`     |
+| AI Server Language | Python       | `3.13.11`       | 로컬 `python --version`  |
+
+### Frontend 라이브러리 및 프레임워크
+
+| 라이브러리 / 프레임워크     |      선언 버전 | 실제 설치 버전 | 사용 목적                       |
+| --------------------------- | -------------: | -------------: | ------------------------------- |
+| React                       |      `^19.2.5` |       `19.2.5` | UI 컴포넌트 구현                |
+| React DOM                   |      `^19.2.5` |       `19.2.5` | React DOM 렌더링                |
+| React Router DOM            |      `^7.15.1` |       `7.15.1` | SPA 라우팅                      |
+| React Scripts               |        `5.0.1` |        `5.0.1` | Create React App 개발/빌드 도구 |
+| Axios                       |      `^1.16.0` |       `1.16.0` | HTTP API 통신                   |
+| Recharts                    |       `^3.8.1` |        `3.8.1` | 예측 이력 차트 시각화           |
+| @react-oauth/google         |      `^0.13.5` |       `0.13.5` | Google OAuth 로그인             |
+| React YouTube               |      `^10.1.0` |       `10.1.0` | YouTube 컴포넌트 연동           |
+| Web Vitals                  |       `^2.1.4` |        `2.1.4` | 웹 성능 측정                    |
+| @testing-library/dom        |      `^10.4.1` |       `10.4.1` | 프론트엔드 테스트 유틸          |
+| @testing-library/jest-dom   |       `^6.9.1` |        `6.9.1` | Jest DOM Matcher                |
+| @testing-library/react      |      `^16.3.2` |       `16.3.2` | React 컴포넌트 테스트           |
+| @testing-library/user-event |      `^13.5.0` |       `13.5.0` | 사용자 이벤트 테스트            |
+| http-proxy-middleware       | 직접 선언 없음 |        `2.0.9` | React 개발 서버 Proxy 설정      |
+
+참고: `setupProxy.js`에서 `http-proxy-middleware`를 직접 import하고 있으므로, 재현 가능한 설치를 위해 `package.json`의 dependencies에 명시하는 것을 권장합니다.
+
+### Backend 프레임워크 및 라이브러리
+
+| 라이브러리 / 프레임워크             |       버전 | 사용 목적                             |
+| ----------------------------------- | ---------: | ------------------------------------- |
+| Gradle Wrapper                      |    `9.4.1` | Java 프로젝트 빌드                    |
+| Spring Boot Gradle Plugin           |    `4.0.6` | Spring Boot 빌드 플러그인             |
+| Spring Dependency Management Plugin |    `1.1.7` | 의존성 버전 관리                      |
+| Spring Boot Starter                 |    `4.0.6` | Spring Boot 기본 구성                 |
+| Spring Boot Starter Web             |    `4.0.6` | REST API 및 내장 WAS 구성             |
+| Spring Boot Starter Data JPA        |    `4.0.6` | JPA 기반 DB 연동                      |
+| Spring Boot DevTools                |    `4.0.6` | 개발 중 자동 재시작                   |
+| Spring Boot Starter Test            |    `4.0.6` | 백엔드 테스트 구성                    |
+| Oracle JDBC Driver ojdbc11          | `21.1.0.0` | Oracle DB 연결                        |
+| Lombok                              |  `1.18.46` | Getter, Setter, 생성자 등 코드 간소화 |
+| JUnit Platform Launcher             |    `6.0.3` | JUnit 테스트 실행                     |
+
+### Backend 주요 Transitive Dependency
+
+| 라이브러리              |           버전 | 포함 경로 / 사용 목적             |
+| ----------------------- | -------------: | --------------------------------- |
+| Spring Framework        |        `7.0.7` | Spring Core, Context, Web, WebMVC |
+| Spring Data JPA         |        `4.0.5` | JPA Repository                    |
+| Spring Data Commons     |        `4.0.5` | Spring Data 공통 기능             |
+| Hibernate Core          | `7.2.12.Final` | ORM 구현체                        |
+| Tomcat Embed Core       |      `11.0.21` | Spring Boot 내장 WAS              |
+| HikariCP                |        `7.0.2` | DB Connection Pool                |
+| Jackson Databind        |        `3.1.2` | JSON 직렬화/역직렬화              |
+| Jakarta Persistence API |        `3.2.0` | JPA 표준 API                      |
+| Jakarta Transaction API |        `2.0.1` | 트랜잭션 API                      |
+| Logback Classic         |       `1.5.32` | 로깅 구현체                       |
+| SLF4J API               |       `2.0.17` | 로깅 추상화                       |
+| JUnit Jupiter           |        `6.0.3` | 테스트 프레임워크                 |
+| Mockito Core            |       `5.20.0` | 테스트 Mock 라이브러리            |
+| AssertJ Core            |       `3.27.7` | 테스트 Assertion 라이브러리       |
+
+### AI / Flask 서버 라이브러리
+
+현재 `flask_backend`에는 `requirements.txt`, `pyproject.toml`, `Pipfile`, `poetry.lock` 같은 Python 의존성 버전 고정 파일이 없습니다. 따라서 아래 항목은 코드에서 사용 중인 라이브러리이며, 저장소 기준으로 정확한 설치 버전은 미고정 상태입니다.
+
+| 라이브러리      | 저장소 내 버전 명시 여부 | 사용 위치               | 사용 목적                     |
+| --------------- | ------------------------ | ----------------------- | ----------------------------- |
+| Flask           | 미명시                   | `manage.py`             | AI 예측 API 서버              |
+| Flask-CORS      | 미명시                   | `manage.py`             | CORS 허용                     |
+| joblib          | 미명시                   | `pred/heart_predict.py` | 학습된 모델 파일 로드         |
+| numpy           | 미명시                   | `pred/heart_predict.py` | 입력 데이터 배열 처리         |
+| python-oracledb | 미명시                   | `db.py`                 | Flask 서버에서 Oracle DB 저장 |
+
+### 모델 개발 라이브러리
+
+모델 개발용 Jupyter Notebook에서 사용된 라이브러리입니다. 이 역시 별도 의존성 파일이 없어 저장소 기준 버전은 고정되어 있지 않습니다.
+
+| 라이브러리   | 저장소 내 버전 명시 여부 | 사용 목적               |
+| ------------ | ------------------------ | ----------------------- |
+| pandas       | 미명시                   | 데이터 로드 및 전처리   |
+| matplotlib   | 미명시                   | 그래프 시각화           |
+| seaborn      | 미명시                   | 통계 시각화             |
+| scikit-learn | 미명시                   | 전처리, 모델 학습, 평가 |
+| xgboost      | 미명시                   | 비교 모델 학습          |
+
+### 버전 관리 개선 권장 사항
+
+Python 기반 Flask 서버와 모델 개발 환경은 현재 버전이 고정되어 있지 않으므로, 재현 가능한 개발환경을 위해 다음과 같은 `requirements.txt` 추가를 권장합니다.
+
+```text
+Flask==버전명
+Flask-Cors==버전명
+joblib==버전명
+numpy==버전명
+oracledb==버전명
+pandas==버전명
+matplotlib==버전명
+seaborn==버전명
+scikit-learn==버전명
+xgboost==버전명
+```
+
+포트폴리오 제출 시에는 “프론트엔드와 백엔드는 lock 파일 및 Gradle 의존성 트리 기준으로 버전이 확인되며, Python AI 서버는 requirements 파일 추가를 통해 재현성을 보완할 예정”이라고 설명할 수 있습니다.
+
 ### 개발 서버 구성
 
 | 서버        | 주소                     |
@@ -523,15 +637,15 @@ model
 
 ### 적용한 개발 방법론
 
-| 방법론 | 적용 내용 |
-|---|---|
-| 반복적 개발 | 회원, 예측, 커뮤니티, 댓글, 문의 기능을 순차적으로 구현하고 화면과 API를 반복적으로 연결 |
-| 점진적 통합 | React 화면, Spring Boot API, Flask 예측 API, Oracle DB를 단계적으로 연동 |
-| 기능 중심 개발 | 로그인, 예측, 결과 조회, 게시판, 댓글 등 사용자 기능 단위로 개발 범위 분리 |
-| API 중심 개발 | 프론트엔드와 백엔드 간 통신 규격을 REST API 중심으로 구성 |
-| 계층 분리 개발 | Controller, Service, Repository, Entity 계층을 분리하여 유지보수성 확보 |
-| 데이터 중심 개발 | DB 테이블 정의서, ERD, SQL 스크립트를 기반으로 Entity와 API 설계 |
-| 모델 연동형 개발 | Jupyter Notebook에서 개발한 머신러닝 모델을 Flask API 서버로 분리하여 웹 서비스에 통합 |
+| 방법론           | 적용 내용                                                                                |
+| ---------------- | ---------------------------------------------------------------------------------------- |
+| 반복적 개발      | 회원, 예측, 커뮤니티, 댓글, 문의 기능을 순차적으로 구현하고 화면과 API를 반복적으로 연결 |
+| 점진적 통합      | React 화면, Spring Boot API, Flask 예측 API, Oracle DB를 단계적으로 연동                 |
+| 기능 중심 개발   | 로그인, 예측, 결과 조회, 게시판, 댓글 등 사용자 기능 단위로 개발 범위 분리               |
+| API 중심 개발    | 프론트엔드와 백엔드 간 통신 규격을 REST API 중심으로 구성                                |
+| 계층 분리 개발   | Controller, Service, Repository, Entity 계층을 분리하여 유지보수성 확보                  |
+| 데이터 중심 개발 | DB 테이블 정의서, ERD, SQL 스크립트를 기반으로 Entity와 API 설계                         |
+| 모델 연동형 개발 | Jupyter Notebook에서 개발한 머신러닝 모델을 Flask API 서버로 분리하여 웹 서비스에 통합   |
 
 ### 개발 흐름
 
@@ -564,18 +678,18 @@ model
 
 ### 적용된 주요 패턴
 
-| 패턴 | 적용 위치 | 설명 |
-|---|---|---|
-| MVC Pattern | Spring Boot Backend | Controller가 요청을 받고, Service가 비즈니스 로직을 처리하며, Model/Entity가 데이터를 표현 |
-| Layered Architecture | Backend 전체 | Controller, Service, Repository, Entity 계층을 분리하여 역할과 책임을 명확히 구분 |
-| Repository Pattern | Spring Data JPA | DB 접근 로직을 Repository 인터페이스로 분리하여 데이터 접근 계층 추상화 |
-| Dependency Injection | Spring Boot | Service, Repository 객체를 직접 생성하지 않고 Spring Container가 주입 |
-| Singleton Bean Pattern | Spring Boot Bean | Controller, Service, Repository가 Spring Bean으로 관리되어 애플리케이션 내에서 재사용 |
-| RESTful API Pattern | Spring Boot, Flask | HTTP Method와 URL을 기준으로 자원 중심 API 구성 |
-| Component-Based Architecture | React Frontend | Navbar, Footer, LoginButton, Page 등 UI를 컴포넌트 단위로 분리 |
-| Routing Pattern | React Router | 기능별 페이지를 URL 경로에 매핑하여 SPA 구조 구성 |
-| Context Provider Pattern | React AuthContext | 로그인 사용자 상태를 전역에서 공유할 수 있도록 Context 구조 사용 |
-| Proxy Pattern | React 개발 환경 | `/spring`, `/flask` 경로를 각각 Spring Boot와 Flask 서버로 전달 |
+| 패턴                         | 적용 위치           | 설명                                                                                       |
+| ---------------------------- | ------------------- | ------------------------------------------------------------------------------------------ |
+| MVC Pattern                  | Spring Boot Backend | Controller가 요청을 받고, Service가 비즈니스 로직을 처리하며, Model/Entity가 데이터를 표현 |
+| Layered Architecture         | Backend 전체        | Controller, Service, Repository, Entity 계층을 분리하여 역할과 책임을 명확히 구분          |
+| Repository Pattern           | Spring Data JPA     | DB 접근 로직을 Repository 인터페이스로 분리하여 데이터 접근 계층 추상화                    |
+| Dependency Injection         | Spring Boot         | Service, Repository 객체를 직접 생성하지 않고 Spring Container가 주입                      |
+| Singleton Bean Pattern       | Spring Boot Bean    | Controller, Service, Repository가 Spring Bean으로 관리되어 애플리케이션 내에서 재사용      |
+| RESTful API Pattern          | Spring Boot, Flask  | HTTP Method와 URL을 기준으로 자원 중심 API 구성                                            |
+| Component-Based Architecture | React Frontend      | Navbar, Footer, LoginButton, Page 등 UI를 컴포넌트 단위로 분리                             |
+| Routing Pattern              | React Router        | 기능별 페이지를 URL 경로에 매핑하여 SPA 구조 구성                                          |
+| Context Provider Pattern     | React AuthContext   | 로그인 사용자 상태를 전역에서 공유할 수 있도록 Context 구조 사용                           |
+| Proxy Pattern                | React 개발 환경     | `/spring`, `/flask` 경로를 각각 Spring Boot와 Flask 서버로 전달                            |
 
 ### MVC Pattern 적용
 
@@ -642,12 +756,12 @@ private final MemberService memberService;
 
 HTTP Method를 기능에 맞게 구분하여 API를 설계했습니다.
 
-| Method | 사용 목적 |
-|---|---|
-| GET | 목록 조회, 상세 조회 |
-| POST | 등록, 예측 요청, 좋아요 처리 |
-| PUT | 수정 |
-| DELETE | 삭제 |
+| Method | 사용 목적                    |
+| ------ | ---------------------------- |
+| GET    | 목록 조회, 상세 조회         |
+| POST   | 등록, 예측 요청, 좋아요 처리 |
+| PUT    | 수정                         |
+| DELETE | 삭제                         |
 
 예시:
 
@@ -686,12 +800,12 @@ styles
 
 일반 서비스 API와 AI 예측 API를 하나의 서버에 모두 넣지 않고 Spring Boot와 Flask로 분리했습니다.
 
-| 서버 | 책임 |
-|---|---|
-| React | 사용자 화면, 입력, 결과 표시 |
+| 서버        | 책임                                     |
+| ----------- | ---------------------------------------- |
+| React       | 사용자 화면, 입력, 결과 표시             |
 | Spring Boot | 회원, 게시판, 댓글, 문의, 예측 이력 관리 |
-| Flask | 머신러닝 모델 로드 및 예측 수행 |
-| Oracle DB | 서비스 데이터 저장 |
+| Flask       | 머신러닝 모델 로드 및 예측 수행          |
+| Oracle DB   | 서비스 데이터 저장                       |
 
 이 구조는 AI 모델이 변경되더라도 Spring Boot의 일반 서비스 로직과 분리하여 관리할 수 있다는 장점이 있습니다.
 
@@ -712,7 +826,7 @@ styles
 - Spring Data JPA를 활용한 CRUD API 구현
 - 커뮤니티, 댓글, 문의 기능을 포함한 서비스형 웹 애플리케이션 구현
 - Oracle DB 기반의 테이블 설계 및 연동
-- Google/Kakao 소셜 로그인 연동 시도 및 구현
+- Google 소셜 로그인 연동 시도 및 구현
 
 ## 15. 문제 해결 경험
 
