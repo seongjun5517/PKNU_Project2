@@ -1,6 +1,6 @@
 // 기본 라이브러리 불러들이기
 import React, {useContext, useState} from "react";
-
+import "../../styles/pages/MemberInsertPage.css";
 // 링크 페이지 정보 라이브러리 불러들이기
 import {useNavigate} from "react-router-dom";
 
@@ -53,10 +53,8 @@ const MemberInsertPage = () => {
         setMemberInsert(member)
             // 응답 결과에 따른 처리
             .then((res) => {                
-                alert(res.status);
                 login(member); 
-                alert(`로그인 성공: ${member.mem_name}님 환영합니다.`);
-                alert("회원 가입되었습니다");
+                alert(`로그인 및 회원가입 성공: ${member.mem_name}님 환영합니다.`);
 
                 // 입력 후 전체목록 페이지로 이동
                 navigate("/");
@@ -107,8 +105,11 @@ const MemberInsertPage = () => {
 
     /* 입력 화면 정의하기 */
     return(
-        <div>
+        <div className="register-container">
             <h3>회원 가입하기</h3>
+
+            <p>처음 가입한 경우 회원정보 관리를 위한 추가정보(전화번호, 닉네임)를 </p>
+            <p>입력하셔야 서비스 이용이 가능합니다</p>
             <hr/>
 
             {/* 입력을 위한 공통 페이지(MemberForm.js) 불러들이기 */}

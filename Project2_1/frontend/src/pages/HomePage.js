@@ -8,11 +8,12 @@ import { getDataView } from "../springApi/modeldataSpringBootApi";
 import slideRunner from '../assets/slide-runner.svg';
 import slideChart from '../assets/slide-chart.svg';
 import slideCommunity from '../assets/slide-community.svg';
-import runningImg from '../assets/run.png';
-import foodImg from '../assets/food.png';
+import runningImg from '../assets/run_resized.png';
+import foodImg from '../assets/food_resized.png';
+import heart1 from '../assets/heart1_resized.png';
 
 import { useAuth } from './user/AuthContext';
-
+import {getCommunityTopList} from "../springApi/communitySpringBootApi";
 function HomePage() {
     const navigate = useNavigate();
     const [slideIndex, setSlideIndex] = useState(0);
@@ -26,9 +27,15 @@ function HomePage() {
     const authInstance = useAuth();
     const user = authInstance ? authInstance.user : null;
     const memId = user ? user.mem_name : "방문자";
-    const loginId = user? user.mem_id : "방문자";
+    const loginId = user ? user.mem_id : "방문자";
+    const [articleIndex, setArticleIndex] = useState(0);
+    const [isArticleHover, setIsArticleHover] = useState(false);
+
+    // 실제 데이터 반영
+    const [communityPosts, setCommunityPosts] = useState([]);
 
     useEffect(() => {
+
         // [핵심 교정] 비로그인 사용자는 Spring Boot 서버 호출을 전면 차단하고 unauthenticated 상태로 즉시 반환
         if (!user) {
             setDbStatus("unauthenticated");
@@ -41,6 +48,7 @@ function HomePage() {
         
         getDataView(loginId)
         .then((response) => {
+
             // 1. 응답 자체 혹은 데이터 필드 검증
             if (!response || !response.data) {
                 console.error("❌ [DB진단] 서버 응답은 왔으나 구조가 올바르지 않습니다. response.data가 없습니다.", response);
@@ -72,18 +80,77 @@ function HomePage() {
             setDbStatus("success");
             setLoading(false);
         })
+
         .catch((error) => {
             console.error("❌ [DB진단] 아예 Spring 서버와 통신에 실패했습니다.");
             setDbStatus("error");
             setLoading(false);
         });
-    }, [memId, user]);
+        
+    }, [memId, user, loginId]);
+    
+
+    useEffect(() => {const loadTopPosts = async() => {
+
+        try{
+            const response = await getCommunityTopList();
+            console.log(response.data);
+            setCommunityPosts( response.data);
+        }
+
+        catch(error){
+
+            console.log(error);
+        }
+    };
+
+    loadTopPosts();
+
+}, []);
 
     const articleLinks = {
         more: 'https://health.kdca.go.kr/healthinfo/biz/health/gnrlzHealthInfo/gnrlzHealthInfo/gnrlzHealthInfoView.do?cntnts_sn=6770',
         lifestyle: 'https://kormedi.com/1342441/',
         food: 'https://yuyu.co.kr/blog/b248f9bf-2f30-470b-858b-524d242a4204/'
     };
+
+    const articles = [
+    {
+        url: articleLinks.more,
+        img: heart1,
+        title: "급성심근경색이란?",
+        desc: "심근경색의 원인과 증상, 응급 대처법",
+        objectPosition: "center center"
+        
+    },
+    {
+        url: articleLinks.lifestyle,
+        img: runningImg,
+        title: "혈관 건강을 지키는 7가지 생활습관",
+        desc: "매일 실천할 수 있는 건강 루틴",
+        // objectPosition: "left center" 
+        
+    },
+    {
+        url: articleLinks.food,
+        img: foodImg,
+        title: "혈관 건강을 지키는 5가지 핵심 식단 전략",
+        desc: "심혈관 질환 예방에 좋은 음식",
+        objectPosition: "center center"
+        
+    }
+];
+
+    // 자동 슬라이드 useEffect 추가
+    useEffect(() => {
+        if (isArticleHover) return;
+        const interval = setInterval(() => {
+            setArticleIndex((prev) => (prev + 1) % articles.length);
+        }, 3000);
+        return () => clearInterval(interval);
+    }, [isArticleHover, articles.length]);
+
+
 
     const openArticle = (url) => {
         window.open(url, '_blank', 'noopener,noreferrer');
@@ -95,31 +162,50 @@ function HomePage() {
         { title: '건강 정보를 나누는\n커뮤니티 공간', buttonText: '커뮤니티 가기', link: '/community', image: slideCommunity, alt: '커뮤니티 일러스트' }
     ];
 
-    const communityPosts = [
-        { id: 1, category: '건강 정보', title: '아침 공복 유산소, 정말 효과 있을까요?', time: '5시간 전' },
-        { id: 2, category: '식단 이야기', title: '다이어트 식단 공유합니다!', time: '3시간 전' },
-        { id: 3, category: '운동 공유', title: '단백질 섭취량, 하루에 얼마나 적당할까요?', time: '5시간 전' },
-        { id: 4, category: '자유 게시판', title: '스트레스 관리에 좋은 방법 추천해주세요!', time: '1일 전' }
-    ];
-
     const moveSlide = (direction) => {
         if (direction === 'prev') {
             setSlideIndex((prev) => (prev === 0 ? slides.length - 1 : prev - 1));
             return;
         }
+
         setSlideIndex((prev) => (prev === slides.length - 1 ? 0 : prev + 1));
     };
+
+    const [isHover, setIsHover] = useState(false);
+
+    // 자동으로 넘어가게 하고 마우스 올리면 멈추기
+    useEffect(() => {
+
+        if (isHover) return;
+        const interval = setInterval(() => {
+            setSlideIndex((prev) => (prev + 1) % slides.length);
+        }, 3000);
+
+        return () => clearInterval(interval);
+
+    }, [isHover, slides.length]);
+
+    const handleDetailView = () => {
+
+        if(!user){
+            alert("로그인이 필요한 서비스입니다 ");
+            return ;
+        }
+
+        navigate("/result");
+        
+    }
 
     return (
         <main className="page home-page">
         <section className="home-grid">
-            <div className="card chart-card" style={{ display: "flex", flexDirection: "column" }}>
+            <div className="card chart-card" style={{ display: "flex", flexDirection: "column"  }}>
             <div className="card-title-row" style={{ display: "flex", justifyContent: "space-between", alignItems: "center" }}>
                 <h3>오늘의 심근경색 발생 예측 ({memId}님)</h3>
                 <button 
                     type="button" 
                     className="text-button" 
-                    onClick={() => navigate(user ? '/result' : '/login')} 
+                    onClick={handleDetailView} 
                     style={{ fontSize: '13px', color: '#007bff', background: 'none', border: 'none', cursor: 'pointer' }}
                 >
                     자세히 보기 〉
@@ -155,10 +241,10 @@ function HomePage() {
                     <ResponsiveContainer width="100%" height="100%">
                         <LineChart
                          data={chartData}
-                         margin={{ top: 5, right: 20, left: -20, bottom: 5 }}>
+                         >
                         <CartesianGrid strokeDasharray="3 3" stroke="#e0e0e0" />
-                        <XAxis dataKey="CHECK_DATE" tick={{ fontSize: 10 }} />
-                        <YAxis domain={[0, 'auto']} tick={{ fontSize: 10 }} />
+                        <XAxis dataKey="CHECK_DATE" tick={{ fontSize: "15px" , fontWeight : "bold"}} />
+                        <YAxis domain={[0, 'auto']} tick={{ fontSize: "15px" , fontWeight : "bold"}} />
                         <Tooltip wrapperStyle={{ pointerEvents: "none" }} />
                         <Line
                             type="monotone"
@@ -176,45 +262,83 @@ function HomePage() {
             </div>
 
             {/* 오른쪽 상단: 기사 카드 */}
+            {/* 오른쪽 상단: 기사 카드 — 기존 div 전체 교체 */}
             <div className="card article-card">
-            <div className="card-title-row">
-                <h3>심혈관 및 심근경색에 대한 정보</h3>
-            </div>
-
-            <button type="button" className="article-link-card main-article-link" onClick={() => openArticle(articleLinks.more)}>
-                <div >
-                <img className="article-main-img" src="https://cdn.bosa.co.kr/news/photo/202303/2193835_226001_417.jpg" alt="article"/>
+                <div className="card-title-row">
+                    <h3>심혈관 및 심근경색에 대한 정보</h3>
                 </div>
-          </button>
 
-            <div className="article-small-list">
-            <button
-              type="button"
-              className="article-link-card"
-              onClick={() => openArticle(articleLinks.lifestyle)}
-            >
-            <img
-              className="article-thumb-img"
-              src={runningImg}
-              alt="혈관 건강을 지키는 7가지 생활습관"
-            />
-            <p>혈관 건강을 지키는 7가지 생활습관</p>
-            </button>
+                <div
+                    style={{ position: "relative", overflow: "hidden", borderRadius: "10px" }}
+                    onMouseEnter={() => setIsArticleHover(true)}
+                    onMouseLeave={() => setIsArticleHover(false)}
+                >
+                    {/* 슬라이드 트랙 */}
+                    <div style={{
+                        display: "flex",
+                        transform: `translateX(-${articleIndex * 100}%)`,
+                        transition: "transform 0.4s ease"
+                    }}>
+                        {articles.map((article, index) => (
+                            <button
+                                key={index}
+                                type="button"
+                                onClick={() => openArticle(article.url)}
+                                style={{
+                                    minWidth: "100%",
+                                    border: "none",
+                                    background: "none",
+                                    cursor: "pointer",
+                                    padding: 0,
+                                }}
+                            >
+                                <img
+                                    src={article.img}
+                                    alt={article.title}
+                                    style={{
+                                        width: "100%",
+                                        height: "80%",
+                                        objectFit: "cover",
+                                        objectPosition: article.objectPosition,
+                                        borderRadius: "8px",
+                                        display: "block"
+                                    }}
+                                />
+                                <p style={{ fontWeight: "500", margin: "8px 0 2px", fontSize: "14px", textAlign : 'center'}}>{article.title}</p>
+                                <p style={{ fontSize: "12px", color: "#888", margin: 0 ,textAlign : 'center'}}>{article.desc}</p>
+                            </button>
+                        ))}
+                    </div>
 
-            <button
-              type="button"
-              className="article-link-card"
-              onClick={() => openArticle(articleLinks.food)}
-            >
-              <img
-                className="article-thumb-img"
-                src={foodImg}
-                alt="혈관 건강을 지키는 5가지 핵심 식단 전략"
-              />
-              <p>혈관 건강을 지키는 5가지 핵심 식단 전략</p>
-            </button>
-          </div>
-        </div>
+                    {/* 좌우 화살표 */}
+                    <button
+                        type="button"
+                        onClick={() => setArticleIndex((prev) => (prev === 0 ? articles.length - 1 : prev - 1))}
+                        style={{ position: "absolute", left: "6px", top: "50%", background: "rgba(0,0,0,0.35)", color: "#fff", border: "none", borderRadius: "50%", width: "28px", height: "28px", cursor: "pointer", fontSize: "16px" }}
+                    >‹</button>
+                    <button
+                        type="button"
+                        onClick={() => setArticleIndex((prev) => (prev + 1) % articles.length)}
+                        style={{ position: "absolute", right: "6px", top: "50%", background: "rgba(0,0,0,0.35)", color: "#fff", border: "none", borderRadius: "50%", width: "28px", height: "28px", cursor: "pointer", fontSize: "16px" }}
+                    >›</button>
+                </div>
+
+                {/* 점 인디케이터 */}
+                <div style={{ display: "flex", justifyContent: "center", gap: "6px", marginTop: "10px" }}>
+                    {articles.map((_, i) => (
+                        <button
+                            key={i}
+                            type="button"
+                            onClick={() => setArticleIndex(i)}
+                            style={{
+                                width: "8px", height: "8px", borderRadius: "50%", border: "none", cursor: "pointer",
+                                background: articleIndex === i ? "#007bff" : "#ccc",
+                                padding: 0
+                            }}
+                        />
+                    ))}
+                </div>
+            </div>
 
             {/* 왼쪽 하단: 커뮤니티 인기글 */}
             <div className="card community-preview-card">
@@ -227,10 +351,10 @@ function HomePage() {
 
             <ul className="post-preview-list">
                 {communityPosts.map((post) => (
-                <li key={post.id} onClick={() => navigate(`/community/${post.id}`)}>
-                    <span className="category-badge">{post.category}</span>
-                    <span className="post-title">{post.title}</span>
-                    <span className="post-meta time">{post.time}</span>
+                <li key={post.com_id} onClick={() => navigate(`/community/${post.com_id}`)}>
+                    <span className="category-badge">{post.com_category}</span>
+                    <span className="post-title">{post.com_title}</span>
+                    <span className="post-meta time">{post.com_like}</span>
                 </li>
                 ))}
             </ul>
@@ -243,7 +367,10 @@ function HomePage() {
                 ‹
                 </button>
 
-                <div className="slide-viewport">
+                <div className="slide-viewport" 
+                     onMouseEnter={() => setIsHover(true)}
+                     onMouseLeave={() => setIsHover(false)}>
+
                 <div className="slide-track" style={{ transform: `translateX(-${slideIndex * 100}%)` }}>
                     {slides.map((slide, index) => (
                     <div className="slide-content" key={index}>

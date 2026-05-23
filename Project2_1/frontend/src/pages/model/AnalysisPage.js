@@ -11,63 +11,38 @@ function AnalysisPage() {
     const navigate = useNavigate();
     const { user } = useAuth() || {}; // [수정] 수정 완료 후 전역 세션 갱신을 위해 login 함수 구독
 
-    const [features, setFeatures] = useState([
-                    0,    // 0: 고혈압 의사진단 (없음 0으로 세팅)
-                    0,    // 1: 이상지질혈증 의사진단 (없음)
-                    0,    // 2: 당뇨병 의사진단 (없음)
-                    0,    // 3: 뇌졸중 의사진단 (없음)
-                    2,    // 4: 고혈압 유병여부 (2: 고혈압 전단계)
-                    115.0, // 5: 공복 혈당
-                    6.1,  // 6: 당화혈색소
-                    220.0, // 7: 총콜레스테롤
-                    180.0, // 8: 중성지방
-                    25.5, // 9: 체질량지수 BMI
-                    88.0, // 10: 허리둘레
-                    2,    // 11: 평생 담배 흡연 여부 (5갑 미만 혹은 과거 흡연)
-                    3,    // 12: 1년간 음주 빈도
-                    2,    // 13: 한번에 마시는 음주량
-                    8,    // 14: 하루에 앉아서 보내는 시간
-                    2,    // 15: 유산소 신체활동 실천율 (실천함)
-                    1,    // 16: 성별 (남자)
-                    55,   // 17: 나이
-                    3,    // 18: 최종 학력
-                    2     // 19: 소득 분위수
-                ]);
+    const [features, setFeatures] = useState([]);
 
     const handleChange = (index, value) => {
-    const update = [...features];
-    update[index] = Number(value);
-    setFeatures(update);
+        const update = [...features];
+        update[index] = Number(value);
+        setFeatures(update);
     };
 
     const handleSubmit = async(e) => {
-    e.preventDefault();
-    // 아이디가져오고 없으면 일단 user4
-    // const loginId = sessionStorage.getItem("mem_id") || "user4";
-    const loginId = user.mem_id;
-    
-    try {
-        const checkres = await checkTodayPredict(loginId);
-        console.log("체크 응답:", checkres);
-        console.log("체크 응답 data:", checkres.data);
-        console.log("타입:", typeof checkres.data);
-        
-        if(checkres.data === true) {
-            alert("오늘은 이미 예측을 완료했습니다.\n예측은 하루에 한 번만 가능합니다.\n결과창으로 이동합니다.");
-            const todayRes = await getTodayPredict(loginId);
-            navigate("/result", {state: { result: { probability: todayRes.data } }});
-            return;
-        }
+        e.preventDefault();
+        const loginId = user.mem_id;
+        try {
+            const checkres = await checkTodayPredict(loginId);
+            console.log("체크 응답:", checkres);
+            console.log("체크 응답 data:", checkres.data);
+            console.log("타입:", typeof checkres.data);
+            
+            if(checkres.data === true) {
+                alert("오늘은 이미 예측을 완료했습니다.\n예측은 하루에 한 번만 가능합니다.\n결과창으로 이동합니다.");
+                const todayRes = await getTodayPredict(loginId);
+                navigate("/result", {state: { result: { probability: todayRes.data } }});
+                return;
+            }
 
-        const requestData = { features: features, mem_id: loginId };
-        const res = await getHeartPredict(requestData);
-        alert("예측성공 : " + res.data.probability * 100  + "%" );
-        navigate("/result", {state : {result : {probability  : res.data.probability }}});
-    } catch(err){
-        console.error("예측중 오류 발생 : " , err);
-        
-        alert("예측실패");
-        }
+            const requestData = { features: features, mem_id: loginId };
+            const res = await getHeartPredict(requestData);
+            alert("예측성공 : " + res.data.probability * 100  + "%" );
+            navigate("/result", {state : {result : {probability  : res.data.probability }}});
+            } catch(err){
+                console.error("예측중 오류 발생 : " , err);
+                alert("예측실패");
+                }
     }
 
     
@@ -88,20 +63,19 @@ function AnalysisPage() {
                         <InputRow label="공복 혈당" name="fastingGlucose" value={features[5]} unit="mg/dL" onChange={(e)=> handleChange(5, e.target.value)} />
                         <InputRow label="당화혈색소" name="hba1c" value={features[6]} unit="%" onChange={(e)=> handleChange(6, e.target.value)} />
                         <InputRow label="총콜레스테롤" name="cholesterol" value={features[7]} unit="mg/dL" onChange={(e)=> handleChange(7, e.target.value)} />
-                        <InputRow label="중성지방" name="neutralFat" value={features[8]} unit="mg/dL" onChange={(e)=> handleChange(8, e.target.value)} />
-                        <InputRow label="체질량지수(BMI)" name="bmi" value={features[9]} unit="kg/m²" onChange={(e)=> handleChange(9, e.target.value)} />
-                        <InputRow label="허리둘레" name="waist" value={features[10]} unit="cm" onChange={(e)=> handleChange(10, e.target.value)} />
+                        <InputRow label="체질량지수(BMI)" name="bmi" value={features[8]} unit="kg/m²" onChange={(e)=> handleChange(8, e.target.value)} />
+                        <InputRow label="허리둘레" name="waist" value={features[9]} unit="cm" onChange={(e)=> handleChange(9, e.target.value)} />
                     </div>
                     <div>
-                        <div className="form-row radio-row vertical-radio"><label>평생 일반담배 흡연 여부 :</label><RadioGroup name="smoking" value={features[11]} options={[{label : '5갑(100개비) 미만', value : 1}, {label : '5갑(100개비) 이상', value : 2}, {label : '피운적 없음', value : 3}]} onChange={(value)=> handleChange(11, value)} /></div>
-                        <div className="form-row radio-row vertical-radio"><label>1년간 음주 빈도 :</label><RadioGroup name="drinkingFrequency" value={features[12]} options={[{label : '최근 1년간 전혀 마시지 않았다.', value : 1}, {label : '월 1회미만', value : 2}, {label : '월 1회정도', value : 3}, {label : '월 2~4회정도', value : 4},{label : '주 2~3회정도', value : 5}, {label : '주 4회정도이상', value : 6}]} onChange={(value)=> handleChange(12, value)} /></div>
-                        <div className="form-row radio-row vertical-radio"><label>한번에 마시는 음주량 :</label><RadioGroup name="drinkingAmount" value={features[13]} options={[{label : '1~2잔', value : 1},{label : '3~4잔', value : 2} , {label : '5~6잔', value : 3}, {label : '7~9잔', value : 4}, {label : '10잔 이상', value : 5}]} onChange={(value)=> handleChange(13, value)} /></div>
-                        <InputRow label="하루에 앉아서 보내는 시간" name="sittingTime" value={features[14]} unit="시간" onChange={(e)=> handleChange(14, e.target.value)} />
-                        <div className="form-row radio-row"><label>유산소 신체 활동 실천율 :</label><RadioGroup name="exercise" value={features[15]} options={[{label : '실천하지않음', value : 0}, {label : '실천함', value : 1}]} onChange={(value)=> handleChange(15, value)} /></div>
-                        <div className="form-row radio-row"><label>성별 :</label><RadioGroup name="gender" value={features[16]} options={[{label : '남자', value : 1}, {label : '여자', value : 2}]} onChange={(value)=> handleChange(16, value)} /></div>
-                        <InputRow label="나이" name="age" value={features[17]} unit="세" onChange={(e)=> handleChange(17, e.target.value)} />
-                        <div className="form-row radio-row"><label>최종 학력 :</label><RadioGroup name="education" value={features[18]} options={[{label : '초졸 이하', value : 1}, {label : '중졸', value : 2}, {label : '고졸', value : 3}, {label : '대졸이상', value : 4}]} onChange={(value)=> handleChange(18, value)} /></div>
-                        <div className="form-row radio-row"><label>소득 분위수 :</label><RadioGroup name="income" value={features[19]} options={[{label : '하', value : 1}, {label : '중하', value : 2}, {label : '중상', value : 3}, {label : '상', value : 4}]} onChange={(value)=> handleChange(19, value)} /></div>
+                        <div className="form-row radio-row vertical-radio"><label>평생 일반담배 흡연 여부 :</label><RadioGroup name="smoking" value={features[10]} options={[{label : '5갑(100개비) 미만', value : 1}, {label : '5갑(100개비) 이상', value : 2}, {label : '피운적 없음', value : 3}]} onChange={(value)=> handleChange(10, value)} /></div>
+                        <div className="form-row radio-row vertical-radio"><label>1년간 음주 빈도 :</label><RadioGroup name="drinkingFrequency" value={features[11]} options={[{label : '최근 1년간 전혀 마시지 않았다.', value : 1}, {label : '월 1회미만', value : 2}, {label : '월 1회정도', value : 3}, {label : '월 2~4회정도', value : 4},{label : '주 2~3회정도', value : 5}, {label : '주 4회정도이상', value : 6}]} onChange={(value)=> handleChange(11, value)} /></div>
+                        <div className="form-row radio-row vertical-radio"><label>한번에 마시는 음주량 :</label><RadioGroup name="drinkingAmount" value={features[12]} options={[{label : '1~2잔', value : 1},{label : '3~4잔', value : 2} , {label : '5~6잔', value : 3}, {label : '7~9잔', value : 4}, {label : '10잔 이상', value : 5}]} onChange={(value)=> handleChange(12, value)} /></div>
+                        <InputRow label="하루에 앉아서 보내는 시간" name="sittingTime" value={features[13]} unit="시간" onChange={(e)=> handleChange(13, e.target.value)} />
+                        <div className="form-row radio-row"><label>유산소 신체 활동 실천율 :</label><RadioGroup name="exercise" value={features[14]} options={[{label : '실천하지않음', value : 0}, {label : '실천함', value : 1}]} onChange={(value)=> handleChange(14, value)} /></div>
+                        <div className="form-row radio-row"><label>성별 :</label><RadioGroup name="gender" value={features[15]} options={[{label : '남자', value : 1}, {label : '여자', value : 2}]} onChange={(value)=> handleChange(15, value)} /></div>
+                        <InputRow label="나이" name="age" value={features[16]} unit="세" onChange={(e)=> handleChange(16, e.target.value)} />
+                        <div className="form-row radio-row"><label>최종 학력 :</label><RadioGroup name="education" value={features[17]} options={[{label : '초졸 이하', value : 1}, {label : '중졸', value : 2}, {label : '고졸', value : 3}, {label : '대졸이상', value : 4}]} onChange={(value)=> handleChange(17, value)} /></div>
+                        <div className="form-row radio-row"><label>소득 분위수 :</label><RadioGroup name="income" value={features[18]} options={[{label : '하', value : 1}, {label : '중하', value : 2}, {label : '중상', value : 3}, {label : '상', value : 4}]} onChange={(value)=> handleChange(18, value)} /></div>
                     </div>
                 </div>
 
@@ -119,7 +93,7 @@ function InputRow({ label, name, value, unit, onChange }) {
     return (
         <div className="form-row input-row">
             <label>{label} :</label>
-            <input  type="number" step="any" name={name} value={value} onChange={onChange} required />
+            <input  type="number" step="any" name={name} value={value === 0 ? '' : value} onChange={onChange} required />
             <span>{unit}</span>
         </div>
     );

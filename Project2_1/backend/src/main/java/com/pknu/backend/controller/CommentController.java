@@ -35,8 +35,7 @@ public class CommentController {
      * 댓글 조회
     */
     @GetMapping("/list/{comid}")
-    public List<Comment>
-        getCommentList(@PathVariable Integer comid){
+    public List<Comment> getCommentList(@PathVariable Integer comid){
 
         return this.commentService.getCommentList(comid);
     }
@@ -45,12 +44,9 @@ public class CommentController {
      * 댓글 등록
      */
     @PostMapping("/insert")
-    public Comment
-        setCommentInsert(
-                @RequestBody Comment comment){
+    public Comment setCommentInsert(@RequestBody Comment comment){
 
-        return this.commentService
-            .setCommentInsert(comment);
+        return this.commentService.setCommentInsert(comment);
     }
 
     /**
@@ -67,24 +63,19 @@ public class CommentController {
 
         DateTimeFormatter formatter = DateTimeFormatter.ofPattern("yyyy-MM-dd HH:mm");
 
-        LocalDateTime time = LocalDateTime.parse(
-                commentcreated,
-                formatter
-            );
+        LocalDateTime time = LocalDateTime.parse(commentcreated, formatter);
 
-    CommentId commentId = new CommentId(comid, memid, time);
+        CommentId commentId = new CommentId(comid, memid, time);
 
-    return this.commentService
-        .setCommentDelete(commentId);
-}
+        return this.commentService.setCommentDelete(commentId);
+    }
 
     /**
     * 댓글 수정
     */
     @PutMapping("/update")
 
-    public Comment
-        setCommentUpdate(@RequestBody Comment comment){
+    public Comment setCommentUpdate(@RequestBody Comment comment){
 
         return this.commentService.setCommentUpdate(comment);
     }

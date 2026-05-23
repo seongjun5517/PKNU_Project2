@@ -1,91 +1,155 @@
-import React, { useState, useEffect } from 'react'; // useEffect 추가
+import React, { useState, useEffect } from 'react';
 import { useNavigate, useSearchParams } from 'react-router-dom';
 
 import '../../styles/pages/CommunityPage.css';
 
 import { getCommunityList } from "../../springApi/communitySpringBootApi"; 
 
+import { useAuth } from '../user/AuthContext';
+
 function CommunityPage() {
   const navigate = useNavigate();
+  const { user } = useAuth() || {};
   const [searchParams] = useSearchParams();
   const mem_id = searchParams.get("mem_id");
 
-  // 카테고리 버튼 목록
-  const categories = ['전체 게시글', '건강 정보', '식단 이야기', '운동 공유', '질문 & 답변', '자유 게시판'];
+  const categories = ['전체 게시글', '건강 정보', '식단 이야기', '운동 공유', '자유 게시판'];
 
-  // 현재 선택된 카테고리와 페이지 번호
+  const [sortType, setSortType] = useState(localStorage.getItem("communitySort") || "latest");
+
   const [selectedCategory, setSelectedCategory] = useState('전체 게시글');
-  const [currentPage, setCurrentPage] = useState(1);
+  const [currentPage, setCurrentPage] = useState(Number(localStorage.getItem("communityPage")) || 1);
+  const [viewMode] = useState('all');
 
+  const [searchKeyword, setSearchKeyword] = useState('');
+  const [appliedKeyword, setAppliedKeyword] = useState('');
 
-  // 1. API로 가져온 게시글 데이터를 저장할 상태(State) 생성
   const [posts, setPosts] = useState([]);
-  // 로딩 상태 추가 (선택사항이지만 UX에 좋습니다)
   const [isLoading, setIsLoading] = useState(true);
 
-  // 2. 컴포넌트 마운트 시 API 호출하여 데이터 가져오기
   useEffect(() => {
     const fetchPosts = async () => {
       try {
         setIsLoading(true);
         const response = await getCommunityList(mem_id);
-        
-        // 백엔드 응답 구조(response.data)에 따라 넣어줍니다.
-        // Spring 백엔드가 보통 객체나 배열을 넘겨주므로 response.data를 확인해 보세요.
         setPosts(response.data || []); 
-      } 
-      
-      catch (error) {
+      } catch (error) {
         console.error("게시글 목록을 불러오는 중 오류 발생:", error);
         alert("데이터를 로드하는 데 실패했습니다.");
-      } 
-      
-      finally {
+      } finally {
         setIsLoading(false);
       }
     };
 
     fetchPosts();
-  }, [mem_id]); // 빈 배열을 넣어 처음 렌더링될 때 딱 한 번만 실행되도록 합니다.
+  }, [mem_id]);
 
-  // 카테고리 필터링
-  const filteredPosts = selectedCategory === '전체 게시글'
-    ? posts
-    : posts.filter((post) => post.com_category === selectedCategory);
+  const getPostWriter = (post) => post.mem_id || post.writer || post.userId || '';
+  const getPostTitle = (post) => post.com_title || post.title || '';
+  const getPostCategory = ((post) => post.com_category || post.category || '');
 
-  // 페이지네이션 계산
+  const modeFilteredPosts =
+    viewMode === 'mine'
+      ? posts.filter((post) => getPostWriter(post) === mem_id)
+      : posts;
+
+  const categoryFilteredPosts =
+     selectedCategory === '전체 게시글' || viewMode === 'mine'
+      ? modeFilteredPosts
+      : modeFilteredPosts.filter((post) => getPostCategory(post).trim() === selectedCategory.trim());
+
+  const filteredPosts = categoryFilteredPosts.filter((post) => {
+    const title = getPostTitle(post);
+    const writer = getPostWriter(post);
+    return (
+      title.toLowerCase().includes(appliedKeyword.toLowerCase()) ||
+      writer.toLowerCase().includes(appliedKeyword.toLowerCase())
+    );
+  });
+
   const postsPerPage = 5;
   const totalPages = Math.max(1, Math.ceil(filteredPosts.length / postsPerPage));
-  
-  // 데이터 양에 맞게 동적으로 페이지 번호 배열 생성 (기존 고정값 [1,2,3,4,5] 대신 변경)
   const pageNumbers = Array.from({ length: totalPages }, (_, i) => i + 1);
-  
   const startIndex = (currentPage - 1) * postsPerPage;
-  const currentPosts = filteredPosts.slice(startIndex, startIndex + postsPerPage);
+  const sortedPosts = [...filteredPosts].sort(
 
-  // 카테고리 선택 시 1페이지로 초기화
-  const handleCategoryClick = (category) => {
-    setSelectedCategory(category);
+        (a, b) => {
+
+        // 최신순
+        if(sortType === "latest"){
+
+            return new Date(
+                b.com_created
+            )
+            -
+            new Date(
+                a.com_created
+            );
+        }
+
+        // 좋아요순
+        else if(
+            sortType === "like"
+        ){
+            return b.com_like -
+                   a.com_like;
+        }
+
+        // 조회수순
+        else if(
+            sortType === "view"
+        ){
+
+            return b.com_view -
+                   a.com_view;
+        }
+
+        return 0;
+  });
+
+  /**
+   * 페이지 저장
+  */
+  useEffect(() => {localStorage.setItem("communityPage",currentPage);}, [currentPage]);
+
+  /**
+   * 정렬 저장
+  */
+  useEffect(() => {localStorage.setItem("communitySort",sortType );}, [sortType]);
+
+  const currentPosts = sortedPosts.slice(startIndex, startIndex + postsPerPage);
+
+  const handleCategoryClick = (com_category) => {
+    setSelectedCategory(com_category);
     setCurrentPage(1);
   };
 
-  // 숫자 페이지 버튼 클릭
   const handlePageClick = (page) => {
     setCurrentPage(page);
   };
 
-  // 다음 페이지 버튼 클릭
   const handleNextPage = () => {
     setCurrentPage((prev) => (prev >= totalPages ? 1 : prev + 1));
   };
 
-  // iISO 날짜 문자열에서 날짜 부분만 추출
   const formatDate = (dateString) => {
-  if (!dateString) {
-    return '';
-  }
+    if (!dateString) return '';
+    return dateString.split('T')[0];
+  };
 
-  return dateString.split('T')[0];
+  const handleSearchChange = (e) => {
+    setSearchKeyword(e.target.value);
+  };
+
+  const handleSearchSubmit = () => {
+    setAppliedKeyword(searchKeyword);
+    setCurrentPage(1);
+  };
+
+  const handleSearchKeyDown = (e) => {
+    if (e.key === 'Enter') {
+      handleSearchSubmit();
+    }
   };
 
   return (
@@ -94,14 +158,13 @@ function CommunityPage() {
         {/* 왼쪽 카테고리 메뉴 */}
         <aside className="card community-sidebar">
           <h3>카테고리</h3>
-
-          {categories.map((category) => (
+          {categories.map((com_category) => (
             <button
-              key={category}
-              className={selectedCategory === category ? 'active' : ''}
-              onClick={() => handleCategoryClick(category)}
+              key={com_category}
+              className={selectedCategory === com_category ? 'active' : ''}
+              onClick={() => handleCategoryClick(com_category)}
             >
-              {category}
+              {com_category}
             </button>
           ))}
         </aside>
@@ -112,10 +175,41 @@ function CommunityPage() {
             <h2>{selectedCategory}</h2>
 
             <div className="community-actions">
-              <input placeholder="검색어를 입력하세요" />
-              <button className="btn-primary small" onClick={() => navigate('/community/write')}>
-                글 작성하기
+              <input
+                placeholder="검색어를 입력하세요"
+                value={searchKeyword}
+                onChange={handleSearchChange}
+                onKeyDown={handleSearchKeyDown}
+              />
+              <button className="btn-primary small" onClick={handleSearchSubmit}>
+                  확인
               </button>
+
+              <button className="btn-primary small"
+                      onClick={() => setSortType("latest")}>
+                  최신순
+              </button>
+
+              <button className="btn-primary small"
+                      onClick={() => setSortType("like")}>
+                  좋아요순
+              </button>
+
+              <button className="btn-primary small"
+                      onClick={() => setSortType("view")}>
+                  조회수순
+              </button>
+
+              <button className="btn-primary small"
+                      onClick={() => {
+
+                  if (!user) {
+                    alert("로그인 후 이용 가능합니다.");
+                    return;
+                  }
+                    navigate('/community/write');}}>
+                글 작성하기
+            </button>
             </div>
           </div>
 
@@ -126,6 +220,7 @@ function CommunityPage() {
                 <th>작성자</th>
                 <th>작성일</th>
                 <th>조회수</th>
+                <th>좋아요수</th>
               </tr>
             </thead>
 
@@ -136,12 +231,16 @@ function CommunityPage() {
                 </tr>
               ) : currentPosts.length > 0 ? (
                 currentPosts.map((post) => (
-                  // 만약 백엔드 DB의 PK(아이디) 컬럼명이 id가 아니라 com_id라면 post.com_id로 변경해야 합니다.
-                  <tr key={post.com_id || post.id} onClick={() => navigate(`/community/${post.com_id || post.id}`)} className="clickable-row">
+                  <tr
+                    key={post.com_id || post.id}
+                    onClick={() => navigate(`/community/${post.com_id || post.id}`)}
+                    className="clickable-row"
+                  >
                     <td>{post.com_title}</td>
-                    <td>{post.mem_nickname || post.mem_id}</td> 
-                    <td>{formatDate(post.com_created)}</td>    
-                    <td>{post.com_view}</td>   
+                    <td>{post.mem_nickname || post.mem_id}</td>
+                    <td>{formatDate(post.com_created)}</td>
+                    <td>{post.com_view}</td>
+                    <td>{post.com_like}</td>
                   </tr>
                 ))
               ) : (
@@ -155,6 +254,9 @@ function CommunityPage() {
           </table>
 
           <div className="pagination">
+            <button onClick={() => setCurrentPage(currentPage <= 1 ? totalPages : currentPage - 1)}>
+              〈
+            </button>
             {pageNumbers.map((page) => (
               <button
                 key={page}
@@ -164,11 +266,13 @@ function CommunityPage() {
                 {page}
               </button>
             ))}
-            <button onClick={handleNextPage}>〉</button>
+            <button onClick={handleNextPage}>
+              〉
+            </button>
           </div>
 
           <p className="page-helper-text">
-            현재 {currentPage}페이지 / 실제 게시글 페이지 수 {totalPages}페이지
+            현재 {currentPage} 페이지 / 총 페이지 수 {totalPages} 페이지
           </p>
         </section>
       </section>

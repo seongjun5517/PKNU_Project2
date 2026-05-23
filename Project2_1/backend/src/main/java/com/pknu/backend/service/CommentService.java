@@ -23,8 +23,7 @@ public class CommentService {
     /**
      * 댓글 조회
     */
-    public List<Comment>
-        getCommentList(Integer comid){
+    public List<Comment> getCommentList(Integer comid){
 
         return this.commentRepository.findByComid(comid);
     }
@@ -50,12 +49,10 @@ public class CommentService {
     System.out.println(time);
     
     int result = this.commentRepository.deleteComment(
-            commentId.getComid(),
-            commentId.getMemid(),
-            time
-  
-        
-        );
+                    commentId.getComid(),
+                    commentId.getMemid(),
+                    time
+                );
 
     System.out.println(result);
 
@@ -89,8 +86,7 @@ public class CommentService {
                 p_comment.getCommentcontent()
             );
 
-            return this.commentRepository
-                .save(comment_update);
+            return this.commentRepository.save(comment_update);
         }
 
         return null;

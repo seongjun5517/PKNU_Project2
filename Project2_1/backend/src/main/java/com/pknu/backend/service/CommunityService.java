@@ -3,6 +3,7 @@ package com.pknu.backend.service;
 import java.util.List;
 import java.util.Optional;
 
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.PageRequest;
 import org.springframework.data.domain.Pageable;
@@ -128,22 +129,43 @@ public class CommunityService {
 
         return null;
     }
+   
+    /**
+     * Paging 처리
+    */
+    public Page<Community>getCommunityListPaging(int page,int size, String mem_id){
+            log.info("게시판 Paging 조회");
 
-/**
- * Paging 처리
-*/
-public Page<Community>getCommunityListPaging(int page,int size, String mem_id){
-        log.info("게시판 Paging 조회");
+            Pageable pageable = PageRequest.of(page, size);
 
-        Pageable pageable = PageRequest.of(page, size);
+            log.info("mem_id = {}",mem_id);
 
-        log.info("mem_id = {}",mem_id);
+            // 내 게시글 조회
+            if(mem_id != null){return this.communityRepository.findByMemId(mem_id, pageable);
+            }
 
-        // 내 게시글 조회
-        if(mem_id != null){return this.communityRepository.findByMemId(mem_id, pageable);
+            // 전체 조회
+            return this.communityRepository.findAllPaging(pageable);
         }
 
-        // 전체 조회
-        return this.communityRepository.findAll(pageable);
+    /**
+     * 인기글 조회
+    */
+    public List<Community>
+        getTopCommunityList(){
+
+        return this.communityRepository.findTopCommunityList();
+    }
+
+    /*
+    * 마이페이지에서 내 게시글 조회
+    * @Autowired : 객체를 자동으로 넣어주는 기능
+    */
+    @Autowired
+    private CommunityRepository repository;
+
+    public List<Community> myBoard(String mem_id) {
+
+        return repository.myBoard(mem_id);
     }
 }

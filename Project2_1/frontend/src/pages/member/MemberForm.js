@@ -41,12 +41,46 @@ const MemberForm = ({member, handleChange, handleCancel, handleSubmit, mode}) =>
     return(
         <form onSubmit={handleSubmit}>
             {/* 회원 아이디 입력 폼 정의 */}
-            <div>
+            {/* <div>
                 <label>회원 이메일 : </label>
                 <input type="email" name="mem_id" value={member.mem_id || member.mem_email}
                         onChange={handleChange}
                         readOnly={isReadOnly("mem_id")}
                         style={{backgroundColor : setBackGroundColor("mem_id")}} />
+            </div> */}
+
+            {/* 회원 이름 입력 폼 정의 */}
+            {/* <div>
+                <label>회원 이름 : </label>
+                <input type="text" name="mem_name" value={member.mem_name || ""}
+                        onChange={handleChange}
+                        readOnly={isReadOnly("mem_name")}
+                        style={{backgroundColor : setBackGroundColor("mem_name")}} />
+            </div> */}
+
+            {/* 회원 이메일 입력 폼 정의 */}
+            {/* <div>
+                <label>회원 전화번호 : </label>
+                <input type="text" name="mem_phone" value={member.mem_phone || ""}
+                        onChange={handleChange}
+                        readOnly={isReadOnly("mem_phone")}
+                        style={{backgroundColor : setBackGroundColor("mem_phone")}} />
+            </div> */}
+
+
+            {/* <div>
+                <label>회원 닉네임: </label>
+                <input type="text" name="mem_nickname" value={member.mem_nickname || ""}
+                        onChange={handleChange}
+                        readOnly={isReadOnly("mem_nickname")}
+                        style={{backgroundColor : setBackGroundColor("mem_nickname")}} />
+            </div> */}
+
+            <div>
+                <label>회원 이메일 : </label>
+                <input type="email" name="mem_id" value={member.mem_id || member.mem_email}
+                        onChange={handleChange}
+                        readOnly={isReadOnly("mem_id")} />
             </div>
 
             {/* 회원 이름 입력 폼 정의 */}
@@ -54,17 +88,15 @@ const MemberForm = ({member, handleChange, handleCancel, handleSubmit, mode}) =>
                 <label>회원 이름 : </label>
                 <input type="text" name="mem_name" value={member.mem_name || ""}
                         onChange={handleChange}
-                        readOnly={isReadOnly("mem_name")}
-                        style={{backgroundColor : setBackGroundColor("mem_name")}} />
+                        readOnly={isReadOnly("mem_name")} />
             </div>
 
             {/* 회원 이메일 입력 폼 정의 */}
             <div>
                 <label>회원 전화번호 : </label>
-                <input type="text" name="mem_phone" value={member.mem_phone || ""}
+                <input type="number" name="mem_phone" value={member.mem_phone || ""}
                         onChange={handleChange}
-                        readOnly={isReadOnly("mem_phone")}
-                        style={{backgroundColor : setBackGroundColor("mem_phone")}} />
+                        readOnly={isReadOnly("mem_phone")} />
             </div>
 
 
@@ -72,8 +104,7 @@ const MemberForm = ({member, handleChange, handleCancel, handleSubmit, mode}) =>
                 <label>회원 닉네임: </label>
                 <input type="text" name="mem_nickname" value={member.mem_nickname || ""}
                         onChange={handleChange}
-                        readOnly={isReadOnly("mem_nickname")}
-                        style={{backgroundColor : setBackGroundColor("mem_nickname")}} />
+                        readOnly={isReadOnly("mem_nickname")} />
             </div>
 
 
