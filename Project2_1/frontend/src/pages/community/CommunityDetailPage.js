@@ -600,24 +600,12 @@ function CommunityDetailPage() {
 
                 <div className="comment-actions">
 
-                  <button
-                    onClick={() => {
-
-                      setEditComment(comment);
-
-                      setCommentContent(
-                        comment.commentcontent
-                      );
-                    }}
-                  >
+                  <button onClick={() => {setEditComment(comment);
+                                          setCommentContent(comment.commentcontent);}}>
                     수정
                   </button>
 
-                  <button
-                    onClick={() =>
-                      deleteComment(comment)
-                    }
-                  >
+                  <button onClick={() =>deleteComment(comment)}>
                     삭제
                   </button>
 
