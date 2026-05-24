@@ -179,6 +179,7 @@ function HomePage() {
         if (isHover) return;
         const interval = setInterval(() => {
             setSlideIndex((prev) => (prev + 1) % slides.length);
+            
         }, 3000);
 
         return () => clearInterval(interval);

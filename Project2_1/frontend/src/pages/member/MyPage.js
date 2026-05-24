@@ -255,7 +255,7 @@ useEffect(() => {
     */
     const boardLastIndex = boardPage * itemsPerPage;
     const boardFirstIndex =  boardLastIndex - itemsPerPage;
-    const currentBoardList = boardList.slice( boardFirstIndex, boardLastIndex);
+    const currentBoardList = boardList.slice(boardFirstIndex, boardLastIndex);
     const boardTotalPages = Math.ceil( boardList.length /itemsPerPage);
 
     /**
@@ -416,8 +416,7 @@ useEffect(() => {
                     </h3>
 
                     <button className="btn-outline mint"
-                            onClick={() => navigate('/community/write')}
-                            >
+                            onClick={() => navigate('/community/write')}>
 
                         게시글 작성하기
                     </button>
@@ -466,6 +465,7 @@ useEffect(() => {
                     ))}
                 </>             
             }
+            
             <div className="pagination">
                 <button onClick={() =>setBoardPage(boardPage <= 1 ? boardTotalPages: boardPage - 1)}>
                     〈
@@ -474,11 +474,10 @@ useEffect(() => {
             {Array.from({length:boardTotalPages},
 
                 (_, i) => (
-                <button
-                    key={i + 1}
-                    className={ boardPage === i + 1? "active": ""}
-                    onClick={() =>  setBoardPage(i + 1)}>
-                    {i + 1}
+                <button key={i + 1}
+                        className={ boardPage === i + 1? "active": ""}
+                        onClick={() =>  setBoardPage(i + 1)}>
+                        {i + 1}
                 </button>
             ))}
 
@@ -532,36 +531,33 @@ useEffect(() => {
                         내 문의사항
                     </h3>
 
-                <button className="btn-outline mint" onClick={() =>navigate('/customer-center')}
+                <button className="btn-outline mint" onClick={() =>navigate('/customer-center')}>
 
-                >
-
-                문의사항 작성하기
-            </button>
-
-        </div>
-        <p>
-            내가 작성한 문의사항 목록입니다.
-        </p>
-
-        {inquiryLoading ? (
-
+                    문의사항 작성하기
+                </button>
+            </div>
             <p>
-                불러오는 중...
+                내가 작성한 문의사항 목록입니다.
             </p>
 
-        ) : currentInquiryList.length > 0 ? (
+            {inquiryLoading ? (
 
-            <>
-                <table className="post-table">
-                    <thead>
-                        <tr>
-                            <th>제목</th>
-                            <th>문의내용</th>
-                            <th>작성일</th>
-                        </tr>
+                <p>
+                    불러오는 중...
+                </p>
 
-                    </thead>
+            ) : currentInquiryList.length > 0 ? (
+
+                <>
+                    <table className="post-table">
+                        <thead>
+                            <tr>
+                                <th>제목</th>
+                                <th>문의내용</th>
+                                <th>작성일</th>
+                            </tr>
+
+                        </thead>
 
                     <tbody>
 
@@ -599,7 +595,7 @@ useEffect(() => {
                     </button>
 
                     {/* 페이지 번호 */}
-                    {Array.from( { length:inquiryTotalPages},
+                    {Array.from( {length:inquiryTotalPages},
                         (_, i) => (
                         <button key={i + 1}
                                 className={ inquiryPage ===i + 1 ? "active" : ""}

@@ -1,6 +1,5 @@
-import React, { useState } from 'react';
+import React from 'react';
 import { useLocation, useNavigate } from 'react-router-dom';
-import { LineChart, Line, XAxis, YAxis, CartesianGrid, Tooltip, ResponsiveContainer } from "recharts";
 import { calcHeartAgeFromSelectedData } from '../../assets/heartagecalc/Heartagelogic';
 import { NON_SMOKER, SMOKER } from '../../assets/heartagecalc/Heartagedata';
 

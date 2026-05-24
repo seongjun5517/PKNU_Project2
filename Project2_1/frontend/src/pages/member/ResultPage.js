@@ -66,11 +66,9 @@ function ResultPage() {
         return comments;
     };
 
-
-    
-
     useEffect(() => {
         setLoading(true);
+        
         // 오늘 예측 여부 확인
         const checkPredict = async () => {
             try {
@@ -81,6 +79,7 @@ function ResultPage() {
                 setHasPredictedToday(false);
             }
         };
+
         checkPredict();
         
         getDataView(memId)
@@ -88,13 +87,16 @@ function ResultPage() {
                 const sortedData = response.data.sort((a, b) => {
                     return new Date(a.CHECK_DATE) - new Date(b.CHECK_DATE);
                 });
+
                 setChartData(sortedData);
 
                 if (sortedData.length > 0) {
                     const latest = sortedData[sortedData.length - 1];
                     setProbability(latest.PREDICT);
-                }setLoading(false);
+                }
+                setLoading(false);
             })
+
             .catch((error) => {
                 console.error("데이터 로딩 실패:", error);
                 setLoading(false);
@@ -369,9 +371,6 @@ function ResultPage() {
                 )}
                 </div>
         </div>
-
-        
-
         
     </main>
     );

@@ -141,6 +141,9 @@ public class CommunityController {
         return ResponseEntity.ok(this.communityService.getTopCommunityList());
     }
 
+    /*
+     * 내 게시글 조회
+    */
     @GetMapping("/board/my/{mem_id}")
     public List<Community> myBoard(@PathVariable("mem_id") String mem_id) {
         return communityService.myBoard(mem_id);

@@ -74,6 +74,9 @@ public class CommunityService {
 
             Community community_update = community.get();
 
+            community_update.setCom_category(
+                    p_community.getCom_category());
+
             community_update.setCom_title(
                     p_community.getCom_title());
 

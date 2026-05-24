@@ -13,11 +13,11 @@ function CommunityEditPage() {
      */
     const [post, setPost] = useState({
 
-        mem_id : "",
-        com_category : "자유",
-        com_title : "",
-        com_content : ""
-    });
+      mem_id : "",
+      com_category : "",
+      com_title : "",
+      com_content : ""
+  });
 
     /**
      * 수정할 게시글 조회
@@ -110,20 +110,16 @@ function CommunityEditPage() {
               value={post.com_category}
               onChange={changePost}>
 
-              <option value="자유">
-                자유
+              <option value="자유 게시판">
+                자유 게시판
               </option>
 
-              <option value="운동">
-                운동
+              <option value="운동 공유">
+                운동 공유
               </option>
 
-              <option value="식단">
-                식단
-              </option>
-
-              <option value="질문">
-                질문
+              <option value="식단이야기">
+                식단 이야기
               </option>
 
               <option value="건강정보">
@@ -174,18 +170,16 @@ function CommunityEditPage() {
 
           <div className="write-button-group">
 
-            <button
-              type="submit"
-              className="btn-primary">
+            <button type="submit"
+                    className="btn-primary">
 
               수정
 
             </button>
 
-            <button
-              type="button"
-              className="btn-outline"
-              onClick={() => navigate(-1)}>
+            <button type="button"
+                    className="btn-outline"
+                    onClick={() => navigate(-1)}>
 
               취소
 
