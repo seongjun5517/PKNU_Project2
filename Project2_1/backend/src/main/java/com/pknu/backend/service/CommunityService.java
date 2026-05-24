@@ -26,7 +26,6 @@ public class CommunityService {
      * 전체 조회
     */
     public List<Community> getCommunityList() {
-
         log.info("게시판 전체 조회");
         return this.communityRepository.findAll();
     }
@@ -34,13 +33,12 @@ public class CommunityService {
     /**
      * 상세 조회
     */
-    public Community getCommunityView(
-            Integer com_id) {
-
+    public Community getCommunityView(Integer com_id) {
+        
         Optional<Community> community = this.communityRepository.findById(com_id);
 
         if (community.isPresent()) {
-
+            
             Community community_view = community.get();
 
             // 조회수 증가
@@ -57,9 +55,8 @@ public class CommunityService {
     /**
      * 등록
     */
-    public Community setCommunityInsert(
-            Community community) {
-
+    public Community setCommunityInsert(Community community) {
+        
         community.setCom_view(0);
         community.setCom_like(0);
 
@@ -69,8 +66,7 @@ public class CommunityService {
     /**
      * 수정
     */
-    public Community setCommunityUpdate(
-            Community p_community) {
+    public Community setCommunityUpdate(Community p_community) {
 
         Optional<Community> community = this.communityRepository.findById(p_community.getCom_id());
 
@@ -94,8 +90,7 @@ public class CommunityService {
     /**
      * 삭제
     */
-    public String setCommunityDelete(
-            Integer com_id) {
+    public String setCommunityDelete(Integer com_id) {
 
         if (this.communityRepository
                 .existsById(com_id)) {
@@ -112,8 +107,7 @@ public class CommunityService {
     /**
      * 좋아요 증가
     */
-    public Community setCommunityLike(
-            Integer com_id) {
+    public Community setCommunityLike(Integer com_id) {
 
         Optional<Community> community = this.communityRepository
                 .findById(com_id);
@@ -133,16 +127,10 @@ public class CommunityService {
     /**
      * Paging 처리
     */
-    public Page<Community>getCommunityListPaging(int page,int size, String mem_id){
+    public Page<Community>getCommunityListPaging(int page,int size){
             log.info("게시판 Paging 조회");
 
             Pageable pageable = PageRequest.of(page, size);
-
-            log.info("mem_id = {}",mem_id);
-
-            // 내 게시글 조회
-            if(mem_id != null){return this.communityRepository.findByMemId(mem_id, pageable);
-            }
 
             // 전체 조회
             return this.communityRepository.findAllPaging(pageable);
@@ -151,9 +139,7 @@ public class CommunityService {
     /**
      * 인기글 조회
     */
-    public List<Community>
-        getTopCommunityList(){
-
+    public List<Community> getTopCommunityList(){
         return this.communityRepository.findTopCommunityList();
     }
 

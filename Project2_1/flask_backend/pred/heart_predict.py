@@ -22,7 +22,21 @@ def getheartPredict(features):
     
     # 3. 범주형 변수들을 원핫 인코딩 (pd.get_dummies)
     # 국건영 범주형 데이터 변수들 지정
-    cate_cols = ['di1_dg', 'di2_dg', 'de1_dg', 'di3_dg', 'he_hp', 'bs1_1', 'bd1_11', 'bd2_1', 'be8_1', 'pa_aerobic', 'sex', 'edu', 'incm']
+    cate_cols = ['di1_dg', 'di2_dg', 'de1_dg', 'di3_dg', 'he_hp', 'bs1_1', 'bd1_11', 'bd2_1', 'pa_aerobic', 'sex', 'edu', 'incm']
+    categories_dict = {
+        "di1_dg" : [0, 1],
+        "di2_dg" : [0, 1],
+        "de1_dg" : [0, 1],
+        "di3_dg" : [0, 1],
+        "he_hp" : [1,2,3,4],
+        "bs1_1" : [1,2,3],
+        "bd1_11" : [1,2,3,4,5,6],
+        "bd2_1" : [1,2,3,4,5],
+        "pa_aerobic" : [0, 1],
+        "sex" : [1, 2],
+        "edu" : [1, 2, 3, 4],
+        "incm" : [1, 2, 3, 4]
+    }
     df_encoded = pd.get_dummies(df_raw, columns=cate_cols, drop_first=True)
     
     # 4. ⭐ [핵심] 35개 컬럼 틀에 강제로 맞추기

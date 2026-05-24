@@ -5,83 +5,83 @@ import {getCommunityView, setCommunityUpdate} from "../../springApi/communitySpr
 
 function CommunityEditPage() {
 
-  const navigate = useNavigate();
-  const { postId } = useParams();
+    const navigate = useNavigate();
+    const { postId } = useParams();
 
-  /**
-   * 게시글 state
-  */
-  const [post, setPost] = useState({
+    /**
+     * 게시글 state
+     */
+    const [post, setPost] = useState({
 
-    mem_id : "",
-    com_category : "자유",
-    com_title : "",
-    com_content : ""
-  });
+        mem_id : "",
+        com_category : "자유",
+        com_title : "",
+        com_content : ""
+    });
 
-  /**
-   * 수정할 게시글 조회
-  */
-  useEffect(() => {
+    /**
+     * 수정할 게시글 조회
+     */
+    useEffect(() => {
 
     const loadData = async() => {
-      try{
+        try{
 
         const response = await getCommunityView(postId);
         setPost(response.data);
-      }
+        }
 
-      catch(error){
+        catch(error){
 
         console.log(error);
         alert(
-          "게시글 조회 실패하였습니다!!!"
+            "게시글 조회 실패하였습니다!!!"
         );
-      }
+        }
     };
 
     loadData();
 
-  }, [postId]);
+    }, [postId]);
 
-  /**
-   * 입력값 변경
-  */
-  const changePost = (e) => {
+    /**
+     * 입력값 변경
+     */
+    const changePost = (e) => {
 
     setPost({
 
-      ...post,
+        ...post,
 
-      [e.target.name] : e.target.value
+        [e.target.name] : e.target.value
     });
-  };
+    };
 
-  /**
-   * 게시글 수정
-  */
-  const handleSubmit = async(e) => {
+    /**
+     * 게시글 수정
+     */
+    const handleSubmit = async(e) => {
 
     e.preventDefault();
 
     try{
-      await setCommunityUpdate(post);
+        await setCommunityUpdate(post);
 
-      alert(
+        alert(
         "게시글 수정 완료하였습니다!!!"
-      );
+        );
 
-      navigate(`/community/${postId}`);
+        navigate(`/community/${postId}`);
 
     }
 
     catch(error){
 
-      console.log(error);
+        console.log(error);
 
-      alert(
+        alert(
         "게시글 수정 실패하였습니다!!!"
-      );
+        );
     }
   };
 
