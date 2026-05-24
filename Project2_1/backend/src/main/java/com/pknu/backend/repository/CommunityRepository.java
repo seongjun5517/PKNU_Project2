@@ -23,7 +23,7 @@ public interface CommunityRepository extends JpaRepository<Community, Integer> {
     */
     @Query(value = """
                     SELECT *
-                    FROM(SELECT *FROM community_testORDER BY com_like DESC)
+                    FROM(SELECT *FROM community_test ORDER BY com_like DESC)
                     WHERE ROWNUM <= 4
                     """,
             nativeQuery = true)
