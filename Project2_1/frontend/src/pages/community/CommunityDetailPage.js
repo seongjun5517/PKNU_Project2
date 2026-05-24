@@ -484,6 +484,7 @@ function CommunityDetailPage() {
 
                 <div className="comment-actions">
 
+<<<<<<< HEAD
                     <button
                     onClick={() => {
 
@@ -494,14 +495,22 @@ function CommunityDetailPage() {
                         );
                     }}
                     >
+=======
+                  <button onClick={() => {setEditComment(comment);
+                                          setCommentContent(comment.commentcontent);}}>
+>>>>>>> 8ee1687c0f14a1459291cbad7db881e39f96b5aa
                     수정
                     </button>
 
+<<<<<<< HEAD
                     <button
                     onClick={() =>
                         deleteComment(comment)
                     }
                     >
+=======
+                  <button onClick={() =>deleteComment(comment)}>
+>>>>>>> 8ee1687c0f14a1459291cbad7db881e39f96b5aa
                     삭제
                     </button>
 

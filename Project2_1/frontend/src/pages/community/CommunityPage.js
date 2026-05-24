@@ -29,14 +29,19 @@ function CommunityPage() {
 
   useEffect(() => {
     const fetchPosts = async () => {
+      
       try {
         setIsLoading(true);
         const response = await getCommunityList(mem_id);
         setPosts(response.data || []); 
-      } catch (error) {
+      } 
+      
+      catch (error) {
         console.error("게시글 목록을 불러오는 중 오류 발생:", error);
         alert("데이터를 로드하는 데 실패했습니다.");
-      } finally {
+      } 
+      
+      finally {
         setIsLoading(false);
       }
     };
