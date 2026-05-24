@@ -45,7 +45,6 @@ public class CommunityController {
     */
     @GetMapping("/check")
     public String checkLink() {
-
         return "CommunityController 정상";
     }
 
@@ -54,24 +53,16 @@ public class CommunityController {
      * url : http://localhost:8080/community/list
     */
     @GetMapping(path = "/list")
-    public ResponseEntity<List<Community>> getCommunityList(
-        @RequestParam(required = false)
-            String mem_id,
-            Pageable pageable
-        ) 
-    {
+    public ResponseEntity<List<Community>> getCommunityList(@RequestParam(required = false) String mem_id, Pageable pageable) {
         log.info("getCommunityList() 메소드 호출");
-
-    // 내 게시글 조회
-    if(mem_id != null){
+        // 내 게시글 조회
+        if(mem_id != null){
             return ResponseEntity.ok(this.communityRepository.findByMemId(mem_id, pageable).getContent()
-        );
+                );
+            }
+        // 전체 게시글 조회
+        return ResponseEntity.ok(this.communityRepository .findAll(pageable).getContent());
     }
-
-    // 전체 게시글 조회
-        return ResponseEntity.ok(this.communityRepository .findAll(pageable).getContent()
-    );
-}
 
     /**
      * 상세 조회
@@ -79,7 +70,6 @@ public class CommunityController {
     */
     @GetMapping("/view/{com_id}")
     public ResponseEntity<Community> getCommunityView(@PathVariable Integer com_id) {
-
         log.info("게시글 상세 조회 : {}", com_id);
         return ResponseEntity.ok(this.communityService.getCommunityView(com_id));
     }
@@ -94,7 +84,6 @@ public class CommunityController {
         Community insert_community = this.communityService.setCommunityInsert(community);
 
         if (insert_community == null) {
-
             return ResponseEntity.status(HttpStatus.CONFLICT).body("게시글 번호 중복");
         }
 
@@ -106,12 +95,9 @@ public class CommunityController {
      * http://localhost:8080/community/update
     */
     @PutMapping("/update")
-    public ResponseEntity<Community> setCommunityUpdate(
-            @RequestBody Community community) {
+    public ResponseEntity<Community> setCommunityUpdate(@RequestBody Community community) {
 
-        return ResponseEntity.ok(this.communityService.setCommunityUpdate(community)
-
-        );
+        return ResponseEntity.ok(this.communityService.setCommunityUpdate(community));
     }
 
     /**
@@ -139,19 +125,11 @@ public class CommunityController {
     */
     @GetMapping("/list_paging")
 
-    public ResponseEntity<Page<Community>>
-        getCommunityListPaging(
-
-                @RequestParam(name = "page", defaultValue = "1")
-                int page,
-
-                @RequestParam(name = "size", defaultValue = "10")
-                int size
-            )
-        {
-
+    public ResponseEntity<Page<Community>>getCommunityListPaging(@RequestParam(name = "page",defaultValue = "1") int page,
+                                                                 @RequestParam(name = "size", defaultValue = "10") int size) {
+            log.info("MemberListPaging() 메소드 호출,,,");
+            
             Page<Community> community_list = this.communityService.getCommunityListPaging(page - 1, size);
-
             return ResponseEntity.ok(community_list);
     }
 
@@ -159,9 +137,7 @@ public class CommunityController {
      * 인기글 조회
     */
     @GetMapping("/top_list")
-    public ResponseEntity<List<Community>>
-        getTopCommunityList(){
-            
+    public ResponseEntity<List<Community>> getTopCommunityList(){
         return ResponseEntity.ok(this.communityService.getTopCommunityList());
     }
 
@@ -169,12 +145,7 @@ public class CommunityController {
      * 내 게시글 조회
     */
     @GetMapping("/board/my/{mem_id}")
-    public List<Community> myBoard(
-    @PathVariable("mem_id") String mem_id
-        ) 
-    {
-
+    public List<Community> myBoard(@PathVariable("mem_id") String mem_id) {
         return communityService.myBoard(mem_id);
-
     }
 }

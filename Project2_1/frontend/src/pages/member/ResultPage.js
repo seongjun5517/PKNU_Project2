@@ -29,8 +29,8 @@ function ResultPage() {
     const memId = user?.mem_id; 
 
     const getRiskColor = (prob) => {
-        if (prob < 0.1) return { main: "#0f9f8d", light: "#e0f7f4", label: "낮음" };
-        if (prob < 0.3) return { main: "#f59e0b", light: "#fde68a", label: "보통" };
+        if (prob < 0.05) return { main: "#0f9f8d", light: "#e0f7f4", label: "낮음" };
+        if (prob < 0.1) return { main: "#f59e0b", light: "#fde68a", label: "보통" };
         return          { main: "#ef4444", light: "#fca5a5", label: "높음" };
     };
 
