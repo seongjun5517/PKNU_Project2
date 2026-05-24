@@ -78,6 +78,9 @@ public class CommunityService {
 
             Community community_update = community.get();
 
+            community_update.setCom_category(
+                    p_community.getCom_category());
+
             community_update.setCom_title(
                     p_community.getCom_title());
 
@@ -133,18 +136,11 @@ public class CommunityService {
     /**
      * Paging 처리
     */
-    public Page<Community>getCommunityListPaging(int page,int size, String mem_id){
+    public Page<Community>getCommunityListPaging(int page, int size){
             log.info("게시판 Paging 조회");
 
             Pageable pageable = PageRequest.of(page, size);
-
-            log.info("mem_id = {}",mem_id);
-
-            // 내 게시글 조회
-            if(mem_id != null){return this.communityRepository.findByMemId(mem_id, pageable);
-            }
-
-            // 전체 조회
+            
             return this.communityRepository.findAllPaging(pageable);
         }
 

@@ -142,18 +142,15 @@ public class CommunityController {
     public ResponseEntity<Page<Community>>
         getCommunityListPaging(
 
-                @RequestParam(name = "page",defaultValue = "1")
+                @RequestParam(name = "page", defaultValue = "1")
                 int page,
 
                 @RequestParam(name = "size", defaultValue = "10")
-                int size,
-
-                @RequestParam( value = "mem_id", required = false)
-                String mem_id
+                int size
             )
         {
 
-            Page<Community> community_list = this.communityService.getCommunityListPaging(page - 1, size, mem_id);
+            Page<Community> community_list = this.communityService.getCommunityListPaging(page - 1, size);
 
             return ResponseEntity.ok(community_list);
     }
@@ -168,6 +165,9 @@ public class CommunityController {
         return ResponseEntity.ok(this.communityService.getTopCommunityList());
     }
 
+    /*
+     * 내 게시글 조회
+    */
     @GetMapping("/board/my/{mem_id}")
     public List<Community> myBoard(
     @PathVariable("mem_id") String mem_id

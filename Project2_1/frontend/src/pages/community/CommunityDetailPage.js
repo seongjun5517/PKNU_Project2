@@ -122,6 +122,7 @@ function CommunityDetailPage() {
 
       alert("로그인 후 이용하세요.");
       return;
+      
     }
 
     // 게시글별 좋아요 key 생성

@@ -26,12 +26,10 @@ public interface CommunityRepository extends JpaRepository<Community, Integer> {
     @Query(value = """
 
         SELECT *
-        FROM
-        (
-            SELECT *
-            FROM community_test
-            ORDER BY com_like DESC      
-        )
+        FROM(SELECT * 
+             FROM community_test
+             ORDER BY com_like DESC      
+            )
         WHERE ROWNUM <= 4
 
         """,
@@ -62,7 +60,6 @@ public interface CommunityRepository extends JpaRepository<Community, Integer> {
     @Query(value = """
     SELECT *
     FROM community_test
-
     ORDER BY com_created DESC
 
     """,

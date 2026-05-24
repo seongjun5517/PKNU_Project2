@@ -13,7 +13,7 @@ function CommunityPage() {
   const [searchParams] = useSearchParams();
   const mem_id = searchParams.get("mem_id");
 
-  const categories = ['전체 게시글', '건강 정보', '식단 이야기', '운동 공유', '자유 게시판'];
+  const categories = ['전체 게시글', '자유 게시판', '건강 정보', '식단 이야기', '운동 공유'];
 
   const [sortType, setSortType] = useState(localStorage.getItem("communitySort") || "latest");
 
@@ -53,13 +53,9 @@ function CommunityPage() {
   const getPostTitle = (post) => post.com_title || post.title || '';
   const getPostCategory = ((post) => post.com_category || post.category || '');
 
-  const modeFilteredPosts =
-    viewMode === 'mine'
-      ? posts.filter((post) => getPostWriter(post) === mem_id)
-      : posts;
+  const modeFilteredPosts = viewMode === 'mine' ? posts.filter((post) => getPostWriter(post) === mem_id) : posts;
 
-  const categoryFilteredPosts =
-     selectedCategory === '전체 게시글' || viewMode === 'mine'
+  const categoryFilteredPosts = selectedCategory === '전체 게시글' || viewMode === 'mine'
       ? modeFilteredPosts
       : modeFilteredPosts.filter((post) => getPostCategory(post).trim() === selectedCategory.trim());
 
@@ -74,40 +70,20 @@ function CommunityPage() {
 
   const postsPerPage = 5;
   const totalPages = Math.max(1, Math.ceil(filteredPosts.length / postsPerPage));
-  const pageNumbers = Array.from({ length: totalPages }, (_, i) => i + 1);
+  const pageNumbers = Array.from({length: totalPages}, (_, i) => i + 1);
   const startIndex = (currentPage - 1) * postsPerPage;
   const sortedPosts = [...filteredPosts].sort(
 
         (a, b) => {
 
         // 최신순
-        if(sortType === "latest"){
-
-            return new Date(
-                b.com_created
-            )
-            -
-            new Date(
-                a.com_created
-            );
-        }
+        if(sortType === "latest"){return new Date(b.com_created) - new Date(a.com_created);}
 
         // 좋아요순
-        else if(
-            sortType === "like"
-        ){
-            return b.com_like -
-                   a.com_like;
-        }
+        else if(sortType === "like"){return b.com_like - a.com_like;}
 
         // 조회수순
-        else if(
-            sortType === "view"
-        ){
-
-            return b.com_view -
-                   a.com_view;
-        }
+        else if(sortType === "view"){return b.com_view - a.com_view;}
 
         return 0;
   });
@@ -115,12 +91,12 @@ function CommunityPage() {
   /**
    * 페이지 저장
   */
-  useEffect(() => {localStorage.setItem("communityPage",currentPage);}, [currentPage]);
+  useEffect(() => {localStorage.setItem("communityPage", currentPage);}, [currentPage]);
 
   /**
    * 정렬 저장
   */
-  useEffect(() => {localStorage.setItem("communitySort",sortType );}, [sortType]);
+  useEffect(() => {localStorage.setItem("communitySort", sortType );}, [sortType]);
 
   const currentPosts = sortedPosts.slice(startIndex, startIndex + postsPerPage);
 
@@ -186,7 +162,8 @@ function CommunityPage() {
                 onChange={handleSearchChange}
                 onKeyDown={handleSearchKeyDown}
               />
-              <button className="btn-primary small" onClick={handleSearchSubmit}>
+              <button className="btn-primary small" 
+                      onClick={handleSearchSubmit}>
                   확인
               </button>
 
@@ -213,7 +190,7 @@ function CommunityPage() {
                     return;
                   }
                     navigate('/community/write');}}>
-                글 작성하기
+                  글 작성하기
             </button>
             </div>
           </div>
@@ -229,8 +206,7 @@ function CommunityPage() {
               </tr>
             </thead>
 
-            <tbody>
-              {isLoading ? (
+            <tbody> {isLoading ? (
                 <tr>
                   <td colSpan="4" className="empty-post-message">데이터를 불러오는 중입니다...</td>
                 </tr>
@@ -239,8 +215,8 @@ function CommunityPage() {
                   <tr
                     key={post.com_id || post.id}
                     onClick={() => navigate(`/community/${post.com_id || post.id}`)}
-                    className="clickable-row"
-                  >
+                    className="clickable-row">
+                      
                     <td>{post.com_title}</td>
                     <td>{post.mem_nickname || post.mem_id}</td>
                     <td>{formatDate(post.com_created)}</td>
@@ -266,8 +242,7 @@ function CommunityPage() {
               <button
                 key={page}
                 className={currentPage === page ? 'active' : ''}
-                onClick={() => handlePageClick(page)}
-              >
+                onClick={() => handlePageClick(page)}>
                 {page}
               </button>
             ))}

@@ -24,9 +24,7 @@ public class ModelService {
             return list;
         }
         log.warn("회원아이디[{}]의 데이터가 존재하지 않습니다.", mem_id);
-        return list; // 빈 리스트 반환
-
-        
+        return list; // 빈 리스트 반환        
     }
     
     public boolean hasPredictedToday(String mem_id) {

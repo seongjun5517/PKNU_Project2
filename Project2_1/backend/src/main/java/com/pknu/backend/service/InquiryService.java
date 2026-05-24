@@ -42,9 +42,7 @@ public class InquiryService {
     public Inquiry getInquiryView(
             Integer inq_id){
 
-        Optional<Inquiry> inquiry =
-            this.inquiryRepository
-                .findById(inq_id);
+        Optional<Inquiry> inquiry =this.inquiryRepository.findById(inq_id);
 
         if(inquiry.isPresent()){
 
@@ -130,8 +128,7 @@ public class InquiryService {
         // 내 문의사항 조회
         if(mem_id != null){
 
-            return this.inquiryRepository
-                .findByMemId(
+            return this.inquiryRepository.findByMemId(
                     mem_id,
                     pageable
                 );
