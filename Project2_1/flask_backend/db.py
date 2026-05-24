@@ -13,7 +13,6 @@ def save_prediction(mem_id, features, result):
     conn = get_connection()
     cursor = conn.cursor()
     try:
-        # DB 명세서 구조와 100% 일치시킨 SQL문
         sql = """
             INSERT INTO data_test (
                 mem_id, check_date,
@@ -28,11 +27,6 @@ def save_prediction(mem_id, features, result):
                 :17, :18, :19, :20, :21
             )
         """
-        
-        # [검증]
-        # :1 -> mem_id
-        # :2 ~ :20 -> features (19개 변수: di1_dg 시작 ~ incm 끝)
-        # :21 -> result (확률값)
         params = [mem_id] + features + [result]
         
         cursor.execute(sql, params)
