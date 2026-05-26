@@ -133,6 +133,6 @@ public class InquiryController {
             String mem_id
         )
     {
-        return ResponseEntity.ok( this.inquiryService.getInquiryListPaging(page, size, mem_id));
+        return ResponseEntity.ok(this.inquiryService.getInquiryListPaging(page, size, mem_id));
     }
 }

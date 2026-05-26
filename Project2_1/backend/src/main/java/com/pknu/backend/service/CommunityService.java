@@ -130,12 +130,11 @@ public class CommunityService {
     /**
      * Paging 처리
     */
-    public Page<Community>getCommunityListPaging(int page,int size){
+    public Page<Community>getCommunityListPaging(int page, int size){
             log.info("게시판 Paging 조회");
 
             Pageable pageable = PageRequest.of(page, size);
-
-            // 전체 조회
+            
             return this.communityRepository.findAllPaging(pageable);
         }
 
