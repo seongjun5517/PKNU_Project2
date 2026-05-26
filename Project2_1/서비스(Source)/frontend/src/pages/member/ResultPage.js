@@ -295,8 +295,8 @@ function ResultPage() {
                                         <tr>
                                             <td style={{ padding: "10px", border: "1px solid #dee2e6", backgroundColor: "#fafafa" }}>유산소 운동 실천 여부 (PA_AEROBIC)</td>
                                             <td style={{ padding: "10px", border: "1px solid #dee2e6" }}>{selectedData.PA_AEROBIC}(코드식)</td>
-                                            <td style={{ padding: "10px", border: "1px solid #dee2e6", backgroundColor: "#fafafa" }}>주간 평균 수면 시간 (BE8_1)</td>
-                                            <td style={{ padding: "10px", border: "1px solid #dee2e6" }}>{selectedData.BE8_1} 시간</td>
+                                            <td style={{ padding: "10px", border: "1px solid #dee2e6", backgroundColor: "#fafafa" }}>흡연 여부 (BS1_1)</td>
+                                            <td style={{ padding: "10px", border: "1px solid #dee2e6" }}>{selectedData.BS1_1}(코드식)</td>
                                         </tr>
                                         {/* Row 7 */}
                                         <tr>
