@@ -1,224 +1,227 @@
-# Created by https://www.toptal.com/developers/gitignore/api/windows,python,jupyternotebooks
-# Edit at https://www.toptal.com/developers/gitignore?templates=windows,python,jupyternotebooks
+# ===========================
+# React / Node.js
+# ===========================
+node_modules/
+dist/
+build/
+.env
+.env.local
+.env.development.local
+.env.test.local
+.env.production.local
+npm-debug.log*
+yarn-debug.log*
+yarn-error.log*
+.pnpm-debug.log*
+.cache/
+.parcel-cache/
+.next/
+.nuxt/
+.vite/
+coverage/
+*.tsbuildinfo
 
-### JupyterNotebooks ###
-# gitignore template for Jupyter Notebooks
-# website: http://jupyter.org/
+# ===========================
+# Spring Boot / Gradle / Maven
+# ===========================
+.gradle/
+**/build/
+!gradle/wrapper/gradle-wrapper.jar
+!**/src/main/**/build/
+!**/src/test/**/build/
+target/
+*.class
+*.jar
+*.war
+*.ear
+*.nar
+hs_err_pid*
+replay_pid*
 
-.ipynb_checkpoints
-*/.ipynb_checkpoints/*
+# Maven
+.mvn/
+mvnw
+mvnw.cmd
 
-# IPython
-profile_default/
-ipython_config.py
+# application secrets
+**/src/main/resources/application-secret*.properties
+**/src/main/resources/application-secret*.yml
+**/src/main/resources/application-local*.properties
+**/src/main/resources/application-local*.yml
 
-# Remove previous ipynb_checkpoints
-#   git rm -r .ipynb_checkpoints/
+# ===========================
+# IDE
+# ===========================
 
-### Python ###
-# Byte-compiled / optimized / DLL files
+# IntelliJ IDEA
+.idea/
+*.iws
+*.iml
+*.ipr
+out/
+!**/src/main/**/out/
+!**/src/test/**/out/
+
+# Eclipse / STS
+.apt_generated
+.classpath
+.factorypath
+.project
+.settings
+.springBeans
+.sts4-cache
+bin/
+!**/src/main/**/bin/
+!**/src/test/**/bin/
+
+# VS Code
+.vscode/
+
+# NetBeans
+/nbproject/private/
+/nbbuild/
+/dist/
+/nbdist/
+/.nb-gradle/
+
+# ===========================
+# Python (Flask / ML)
+# ===========================
 __pycache__/
 *.py[cod]
 *$py.class
-
-# C extensions
 *.so
-
-# Distribution / packaging
 .Python
-build/
-develop-eggs/
-dist/
-downloads/
-eggs/
-.eggs/
-lib/
-lib64/
-parts/
-sdist/
-var/
-wheels/
-share/python-wheels/
-*.egg-info/
-.installed.cfg
-*.egg
-MANIFEST
-
-# PyInstaller
-#  Usually these files are written by a python script from a template
-#  before PyInstaller builds the exe, so as to inject date/other infos into it.
-*.manifest
-*.spec
-
-# Installer logs
+venv/
+.venv/
+env/
+ENV/
 pip-log.txt
 pip-delete-this-directory.txt
-
-# Unit test / coverage reports
-htmlcov/
 .tox/
-.nox/
-.coverage
-.coverage.*
-.cache
-nosetests.xml
-coverage.xml
-*.cover
-*.py,cover
-.hypothesis/
+.mypy_cache/
 .pytest_cache/
-cover/
+.ruff_cache/
+htmlcov/
+.coverage
+*.egg-info/
+dist/
+eggs/
+.eggs/
+*.egg
 
-# Translations
-*.mo
-*.pot
-
-# Django stuff:
-*.log
-local_settings.py
-db.sqlite3
-db.sqlite3-journal
-
-# Flask stuff:
+# Flask
 instance/
 .webassets-cache
-
-# Scrapy stuff:
-.scrapy
-
-# Sphinx documentation
-docs/_build/
-
-# PyBuilder
-.pybuilder/
-target/
+flask_session/
 
 # Jupyter Notebook
+.ipynb_checkpoints/
+*.ipynb_checkpoints
 
-# IPython
+# ===========================
+# Machine Learning / AI
+# ===========================
 
-# pyenv
-#   For a library or package, you might want to ignore these files since the code is
-#   intended to run in multiple environments; otherwise, check them in:
-# .python-version
+# 학습된 모델 파일 (대용량)
+*.pkl
+*.pickle
+*.h5
+*.hdf5
+*.pb
+*.pth
+*.pt
+*.ckpt
+*.safetensors
+*.bin
+*.onnx
+*.tflite
 
-# pipenv
-#   According to pypa/pipenv#598, it is recommended to include Pipfile.lock in version control.
-#   However, in case of collaboration, if having platform-specific dependencies or dependencies
-#   having no cross-platform support, pipenv may install dependencies that don't work, or not
-#   install all needed dependencies.
-#Pipfile.lock
+# 데이터셋 (대용량)
+data/raw/
+data/processed/
+datasets/
+*.csv
+*.tsv
+*.parquet
+*.feather
+*.npz
+*.npy
 
-# poetry
-#   Similar to Pipfile.lock, it is generally recommended to include poetry.lock in version control.
-#   This is especially recommended for binary packages to ensure reproducibility, and is more
-#   commonly ignored for libraries.
-#   https://python-poetry.org/docs/basic-usage/#commit-your-poetrylock-file-to-version-control
-#poetry.lock
+# MLflow / W&B / 실험 로그
+mlruns/
+wandb/
+runs/
+logs/
+outputs/
+checkpoints/
 
-# pdm
-#   Similar to Pipfile.lock, it is generally recommended to include pdm.lock in version control.
-#pdm.lock
-#   pdm stores project-wide configurations in .pdm.toml, but it is recommended to not include it
-#   in version control.
-#   https://pdm.fming.dev/#use-with-ide
-.pdm.toml
+# ===========================
+# SQL / Oracle DB
+# ===========================
 
-# PEP 582; used by e.g. github.com/David-OConnor/pyflow and github.com/pdm-project/pdm
-__pypackages__/
+# Oracle 접속 정보
+tnsnames.ora
+sqlnet.ora
+wallet/
+*.wallet
 
-# Celery stuff
-celerybeat-schedule
-celerybeat.pid
+# DB 덤프 파일 (대용량)
+*.sql.gz
+*.dmp
+*.dump
+*.bak
 
-# SageMath parsed files
-*.sage.py
+# DB 설정 파일 (비밀번호 포함 가능)
+db-config.properties
+database.yml
 
-# Environments
-.env
-.venv
-env/
-venv/
-ENV/
-env.bak/
-venv.bak/
+# ===========================
+# 보안 / 비밀 정보
+# ===========================
+.env*
+!.env.example
+*.pem
+*.key
+*.p12
+*.pfx
+*.crt
+*.cer
+secrets/
+*secret*
+*password*
+*credentials*
+config/local.yml
+config/local.properties
 
-# Spyder project settings
-.spyderproject
-.spyproject
+# ===========================
+# OS 생성 파일
+# ===========================
 
-# Rope project settings
-.ropeproject
+# macOS
+.DS_Store
+.AppleDouble
+.LSOverride
+._*
 
-# mkdocs documentation
-/site
-
-# mypy
-.mypy_cache/
-.dmypy.json
-dmypy.json
-
-# Pyre type checker
-.pyre/
-
-# pytype static type analyzer
-.pytype/
-
-# Cython debug symbols
-cython_debug/
-
-# PyCharm
-#  JetBrains specific template is maintained in a separate JetBrains.gitignore that can
-#  be found at https://github.com/github/gitignore/blob/main/Global/JetBrains.gitignore
-#  and can be added to the global gitignore or merged into this file.  For a more nuclear
-#  option (not recommended) you can uncomment the following to ignore the entire idea folder.
-#.idea/
-
-### Python Patch ###
-# Poetry local configuration file - https://python-poetry.org/docs/configuration/#local-configuration
-poetry.toml
-
-# ruff
-.ruff_cache/
-
-# LSP config files
-pyrightconfig.json
-
-### Windows ###
-# Windows thumbnail cache files
+# Windows
 Thumbs.db
-Thumbs.db:encryptable
 ehthumbs.db
-ehthumbs_vista.db
-
-# Dump file
-*.stackdump
-
-# Folder config file
-[Dd]esktop.ini
-
-# Recycle Bin used on file shares
+Desktop.ini
 $RECYCLE.BIN/
 
-# Windows Installer files
-*.cab
-*.msi
-*.msix
-*.msm
-*.msp
+# Linux
+*~
 
-# Windows shortcuts
-*.lnk
+# ===========================
+# 기타
+# ===========================
+*.log
+*.tmp
+*.temp
+*.swp
+*.swo
+tmp/
+temp/
 
-# End of https://www.toptal.com/developers/gitignore/api/windows,python,jupyternotebooks
-# 데이터 파일 제외
-*.csv
-*.xlsx
-
-# 주피터 자동 생성 파일 제외
-.ipynb_checkpoints/
-
-# 캐시 파일 제외
-__pycache__/util/VSCodeUserSetup-x64-1.114.0.exe
-util/VSCodeUserSetup-x64-1.114.0.exe
-google인증키.json
+*.sas7bdat
