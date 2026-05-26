@@ -1,0 +1,28 @@
+
+
+1. 자신의 파일을 total 브랜치에 올리기 (Correct!)
+정리하신 순서가 맞습니다. total 브랜치로 가서 내 브랜치를 합친 뒤 올리는 정석적인 방법입니다.
+
+git switch total
+
+git pull origin total (원격의 최신 상태 유지)
+
+git merge [본인 브랜치]
+
+git add . (보통 머지 후 충돌이 없다면 생략 가능하지만 확인차 하면 좋습니다)
+
+git commit (머지 커밋 기록)
+
+git push
+
+2. 자신의 브랜치로 master 파일 가져오기 (Correction)
+
+git switch [본인 브랜치]
+
+git pull origin total
+
+
+새로운 폴더로 옮기고 싶을때
+새로운 폴더를 만든 후 ->
+git clone https://github.com/내아이디/내저장소이름.git .
+주의할 점 새로운 폴더 안에는 어떤 파일도 있어선 안됨

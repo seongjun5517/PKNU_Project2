@@ -1,0 +1,16 @@
+분석환경 
+ - pandas
+ - numpy
+ - matplotlib
+ - seaborn
+ - scipy
+ - sklearn
+ - imblearn
+
+머신러닝 모델
+ - RandomForestClassifier
+ - XGBClassifier
+ - LGBMClassifier
+
+모델 저장
+ - joblib
